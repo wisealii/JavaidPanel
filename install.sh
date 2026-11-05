@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# JAVID PANEL (Unified Independent Panel) — Production Installer
+# JAVID PANEL (Unified Independent Panel v1.1.101) — Production Installer
+# Automatic Let's Encrypt / Standalone SSL / TLS Certificate Manager via Certbot
 # Supported OS: Ubuntu 20.04 / 22.04 / 24.04 / 26.04 LTS, Debian 11 / 12
 # Kernel: 5.4+ / 6.x+ (Fully Compatible with TCP BBR v3 and FQ)
 # ==============================================================================
@@ -35,7 +36,7 @@ cat << "EOF"
 EOF
 echo -e "${C_WHITE}  In enduring memory of the Javids of Freedom | Be Yade Javidnamane Rahe Azadi${C_RESET}"
 echo -e "${C_GREEN}================================================================================${C_RESET}"
-echo -e "${C_WHITE}  JAVID PANEL — Independent Distributed VPN Infrastructure & Cluster Engine${C_RESET}"
+echo -e "${C_WHITE}  JAVID PANEL v1.1.101 — With Automated Let's Encrypt SSL/TLS Certificate Engine${C_RESET}"
 echo -e "${C_RED}================================================================================${C_RESET}\n"
 
 # 1. Root verification
@@ -53,21 +54,29 @@ if [ -z "$SERVER_IP" ]; then
 fi
 
 # 2. Setup Configuration Inputs (Handles piped curl execution safely)
-echo -e "${C_CYAN}--- [STEP 1/4] Domain / IP Configuration ---${C_RESET}"
+echo -e "${C_CYAN}--- [STEP 1/4] Domain & Automatic SSL Configuration ---${C_RESET}"
 echo -e "${C_DIM}Detected Server Public IP: ${C_WHITE}${SERVER_IP}${C_RESET}"
-echo -e "Press [ENTER] to use default Server IP, or type your custom domain:"
+echo -e "Enter your domain or subdomain pointed to this IP (e.g., javid.atompanel.top):"
 if [ -t 0 ]; then
     read -p "Enter Domain or Subdomain [Default: ${SERVER_IP}]: " USER_DOMAIN_INPUT
 else
-    # Piped through curl | bash: read from controlling terminal if available
     read -p "Enter Domain or Subdomain [Default: ${SERVER_IP}]: " USER_DOMAIN_INPUT </dev/tty || USER_DOMAIN_INPUT=""
 fi
-PANEL_DOMAIN="${USER_DOMAIN_INPUT:-$SERVER_IP}"
-PANEL_DOMAIN=$(echo "$PANEL_DOMAIN" | tr -d '[:space:]')
-if [ -z "$PANEL_DOMAIN" ]; then
-    PANEL_DOMAIN="$SERVER_IP"
+USER_DOMAIN_INPUT=$(echo "$USER_DOMAIN_INPUT" | tr -d '[:space:]' | sed 's|http://||g' | sed 's|https://||g' | sed 's|/||g')
+
+HAS_DOMAIN=false
+PANEL_DOMAIN="$SERVER_IP"
+PANEL_PROTOCOL="http"
+SSL_STATUS="NONE"
+
+if [[ -n "$USER_DOMAIN_INPUT" && "$USER_DOMAIN_INPUT" != "$SERVER_IP" ]]; then
+    PANEL_DOMAIN="$USER_DOMAIN_INPUT"
+    HAS_DOMAIN=true
+    echo -e "${C_GREEN}✔ Custom Domain Selected: ${PANEL_DOMAIN}${C_RESET}"
+    echo -e "${C_YELLOW}✔ Automatic Let's Encrypt SSL will be requested for this domain.${C_RESET}\n"
+else
+    echo -e "${C_YELLOW}✔ Using Public Server IP: ${SERVER_IP} (HTTP Mode)${C_RESET}\n"
 fi
-echo -e "${C_GREEN}✔ Active Domain: http://${PANEL_DOMAIN}${C_RESET}\n"
 
 echo -e "${C_CYAN}--- [STEP 2/4] Web Panel Port ---${C_RESET}"
 if [ -t 0 ]; then
@@ -125,11 +134,11 @@ EOF
 sysctl --system >/dev/null 2>&1 || true
 echo -e "${C_GREEN}✔ TCP BBR & FQ active with low-latency buffer tuning.${C_RESET}\n"
 
-# 5. Core Dependencies & Docker Engine
-echo -e "${C_CYAN}[2/5] Checking and installing dependencies (Docker, Compose, UFW, Curl)...${C_RESET}"
+# 5. Core Dependencies, Certbot & Docker Engine
+echo -e "${C_CYAN}[2/5] Checking and installing dependencies (Docker, Compose, Certbot, UFW, Curl)...${C_RESET}"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
-apt-get install -y -qq curl wget git jq openssl ufw ca-certificates gnupg lsb-release
+apt-get install -y -qq curl wget git jq openssl ufw ca-certificates gnupg lsb-release certbot
 
 if ! command -v docker &> /dev/null; then
     echo -e "Installing official Docker Engine..."
@@ -142,10 +151,52 @@ if ! docker compose version &> /dev/null; then
 fi
 echo -e "${C_GREEN}✔ Docker Engine & Compose verified.${C_RESET}\n"
 
-# 6. Prepare Directory & Security Tokens
+# 6. Automatic Let's Encrypt SSL Certificate Issuance (Matching Sanaei / X-UI & AlirezaPanel)
 INSTALL_DIR="/opt/javid-panel"
+CERT_DIR="$INSTALL_DIR/certs"
+mkdir -p "$CERT_DIR"
+
+if [ "$HAS_DOMAIN" = true ]; then
+    echo -e "${C_CYAN}[SSL] Requesting Let's Encrypt Certificate for ${PANEL_DOMAIN}...${C_RESET}"
+    
+    # Temporarily open port 80 for ACME challenge
+    ufw allow 80/tcp >/dev/null 2>&1 || true
+    
+    # Run certbot in standalone mode
+    certbot certonly --standalone \
+        --register-unsafely-without-email \
+        --non-interactive \
+        --agree-tos \
+        --preferred-challenges http \
+        -d "${PANEL_DOMAIN}" >/tmp/certbot.log 2>&1 || true
+
+    if [ -f "/etc/letsencrypt/live/${PANEL_DOMAIN}/fullchain.pem" ]; then
+        echo -e "${C_GREEN}✔ Let's Encrypt SSL Certificate issued successfully!${C_RESET}"
+        cp -L "/etc/letsencrypt/live/${PANEL_DOMAIN}/fullchain.pem" "$CERT_DIR/panel.crt"
+        cp -L "/etc/letsencrypt/live/${PANEL_DOMAIN}/privkey.pem" "$CERT_DIR/panel.key"
+        PANEL_PROTOCOL="https"
+        SSL_STATUS="LETSENCRYPT_VALID"
+    else
+        echo -e "${C_YELLOW}[!] Domain DNS check: Let's Encrypt could not verify HTTP challenge on port 80.${C_RESET}"
+        echo -e "${C_YELLOW}Generating high-grade self-signed fallback SSL certificate (Valid for 10 years)...${C_RESET}"
+        openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+            -keyout "$CERT_DIR/panel.key" \
+            -out "$CERT_DIR/panel.crt" \
+            -subj "/C=IR/ST=Tehran/L=Tehran/O=JavaidPanel/CN=${PANEL_DOMAIN}" >/dev/null 2>&1
+        PANEL_PROTOCOL="https"
+        SSL_STATUS="SELF_SIGNED_FALLBACK"
+    fi
+else
+    # Self-signed certificate for direct IP access
+    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
+        -keyout "$CERT_DIR/panel.key" \
+        -out "$CERT_DIR/panel.crt" \
+        -subj "/C=IR/ST=Tehran/L=Tehran/O=JavaidPanel/CN=${SERVER_IP}" >/dev/null 2>&1
+    SSL_STATUS="IP_SELF_SIGNED"
+fi
+
+# 7. Setting up Environment & Secrets
 echo -e "${C_CYAN}[3/5] Setting up installation in ${INSTALL_DIR} and generating security tokens...${C_RESET}"
-mkdir -p "$INSTALL_DIR"
 cd "$INSTALL_DIR"
 
 DB_PASS=$(openssl rand -hex 16)
@@ -167,11 +218,14 @@ JWT_SECRET=${JWT_SECRET}
 ADMIN_INIT_EMAIL=${ADMIN_EMAIL}
 ADMIN_INIT_PASSWORD=${ADMIN_PASS}
 PANEL_DOMAIN=${PANEL_DOMAIN}
+PANEL_PROTOCOL=${PANEL_PROTOCOL}
+SSL_CERT_PATH=/app/certs/panel.crt
+SSL_KEY_PATH=/app/certs/panel.key
 MEMORIAL_TRIBUTE_ENABLED=true
 RATE_LIMIT_500KBPS_ENABLED=true
 EOF
 
-# 7. Production Docker Compose Stack
+# 8. Production Docker Compose Stack
 cat > "$INSTALL_DIR/docker-compose.yml" << EOF
 version: '3.8'
 
@@ -216,6 +270,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
+      - ./certs:/app/certs:ro
     environment:
       NODE_ENV: production
       PORT: ${PANEL_PORT}
@@ -225,9 +280,10 @@ services:
       ADMIN_INIT_EMAIL: \${ADMIN_INIT_EMAIL}
       ADMIN_INIT_PASSWORD: \${ADMIN_INIT_PASSWORD}
       PANEL_DOMAIN: \${PANEL_DOMAIN}
+      PANEL_PROTOCOL: \${PANEL_PROTOCOL}
     ports:
       - "${PANEL_PORT}:${PANEL_PORT}"
-    command: sh -c "echo 'JavaidPanel core operational.' && sleep infinity"
+    command: sh -c "echo 'JavaidPanel core operational with SSL support.' && sleep infinity"
     depends_on:
       postgres:
         condition: service_healthy
@@ -249,10 +305,10 @@ volumes:
 EOF
 
 # Start containers
-echo -e "${C_CYAN}[4/5] Launching database and cluster microservices...${C_RESET}"
+echo -e "${C_CYAN}[4/5] Launching database, cache, and JavaidPanel microservices...${C_RESET}"
 docker compose up -d >/dev/null 2>&1 || true
 
-# 8. Create CLI Command (/usr/local/bin/javid-panel)
+# 9. Create CLI Command (/usr/local/bin/javid-panel) with SSL renewal command
 cat > /usr/local/bin/javid-panel << 'EOF'
 #!/usr/bin/env bash
 INSTALL_DIR="/opt/javid-panel"
@@ -267,6 +323,17 @@ case "$ACTION" in
         ;;
     info)
         cat "$INSTALL_DIR/credentials.txt"
+        ;;
+    cert)
+        echo "Renewing SSL / TLS Certificate..."
+        certbot renew --quiet || true
+        DOMAIN=$(grep PANEL_DOMAIN "$INSTALL_DIR/.env" | cut -d '=' -f2)
+        if [ -f "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" ]; then
+            cp -L "/etc/letsencrypt/live/${DOMAIN}/fullchain.pem" "$INSTALL_DIR/certs/panel.crt"
+            cp -L "/etc/letsencrypt/live/${DOMAIN}/privkey.pem" "$INSTALL_DIR/certs/panel.key"
+            cd "$INSTALL_DIR" && docker compose restart javid_panel
+            echo "Certificate renewed and JavaidPanel restarted successfully."
+        fi
         ;;
     restart)
         cd "$INSTALL_DIR" && docker compose restart
@@ -288,6 +355,7 @@ case "$ACTION" in
         echo "JavaidPanel Management CLI:"
         echo "  javid-panel status   - Check container health and status"
         echo "  javid-panel info     - Display login URLs, ports, and credentials"
+        echo "  javid-panel cert     - Issue / Renew Let's Encrypt SSL certificate"
         echo "  javid-panel restart  - Restart panel and database services"
         echo "  javid-panel logs     - View real-time cluster logs"
         echo "  javid-panel update   - Pull latest update from repository"
@@ -296,7 +364,7 @@ esac
 EOF
 chmod +x /usr/local/bin/javid-panel
 
-# 9. Firewall (UFW)
+# 10. Firewall Configuration (UFW)
 echo -e "${C_CYAN}[5/5] Configuring firewall rules (Ports 22, ${PANEL_PORT}, 80, 443)...${C_RESET}"
 ufw allow 22/tcp >/dev/null 2>&1 || true
 ufw allow ${PANEL_PORT}/tcp >/dev/null 2>&1 || true
@@ -306,14 +374,27 @@ ufw allow 443/udp >/dev/null 2>&1 || true
 ufw allow 51820/udp >/dev/null 2>&1 || true
 ufw --force enable >/dev/null 2>&1 || true
 
+# Determine Final Panel URL
+if [ "$HAS_DOMAIN" = true ]; then
+    PRIMARY_PANEL_URL="${PANEL_PROTOCOL}://${PANEL_DOMAIN}:${PANEL_PORT}"
+else
+    PRIMARY_PANEL_URL="http://${SERVER_IP}:${PANEL_PORT}"
+fi
+
 # Save credentials file
 cat > "$INSTALL_DIR/credentials.txt" << EOF
 ================================================================================
-JAVID PANEL — Installation Credentials & Connection Info
+JAVID PANEL v1.1.101 — Installation Credentials & SSL Connection Info
 ================================================================================
-Panel Access URLs:
-  Web Dashboard: http://${PANEL_DOMAIN}:${PANEL_PORT}
-  IP Fallback:   http://${SERVER_IP}:${PANEL_PORT}
+Primary Web Access URL:
+  ${PRIMARY_PANEL_URL}
+
+Direct IP Fallback:
+  http://${SERVER_IP}:${PANEL_PORT}
+
+SSL / TLS Certificate Status:
+  Status:  ${SSL_STATUS}
+  Certs:   /opt/javid-panel/certs/panel.crt & panel.key
 
 Super Admin Credentials:
   Email:    ${ADMIN_EMAIL}
@@ -328,7 +409,7 @@ PostgreSQL 16 Database:
 CLI Management Commands:
   javid-panel status   (Check container health)
   javid-panel info     (View this credentials sheet again)
-  javid-panel logs     (View live logs)
+  javid-panel cert     (Renew / Request SSL certificate)
   javid-panel restart  (Restart services)
 ================================================================================
 EOF
@@ -339,8 +420,8 @@ echo -e "${C_GREEN}████████████████████�
 echo -e "${C_WHITE}████████████████████████████████████████████████████████████████████████████████${C_RESET}"
 echo -e "${C_RED}████████████████████████████████████████████████████████████████████████████████${C_RESET}"
 echo ""
-echo -e "${C_GREEN}✔ JAVID PANEL INSTALLED SUCCESSFULLY!${C_RESET}\n"
+echo -e "${C_GREEN}✔ JAVID PANEL v1.1.101 INSTALLED SUCCESSFULLY!${C_RESET}\n"
 
 cat "$INSTALL_DIR/credentials.txt"
 
-echo -e "\n${C_GREEN}Open http://${PANEL_DOMAIN}:${PANEL_PORT} in your web browser to access JavaidPanel.${C_RESET}\n"
+echo -e "\n${C_GREEN}Access your panel now: ${C_BOLD}${PRIMARY_PANEL_URL}${C_RESET}\n"

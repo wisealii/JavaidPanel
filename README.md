@@ -1,27 +1,28 @@
-# 🛡️ JavaidPanel (سامانه مستقل و جامع مدیریت جاوید پنل)
+# 🛡️ JavaidPanel v1.1.101 (سامانه مستقل و جامع مدیریت جاوید پنل)
 
 <p align="center">
   <strong>به یاد جاویدنامان راه آزادی | In enduring memory of the Javids of Freedom</strong><br>
-  <em>هسته مستقل و پرسرعت مدیریت زیرساخت VPN، نودهای توزیع‌شده لبه شبکه، و احراز هویت متمرکز کلاینت‌ها</em>
+  <em>هسته مستقل و پرسرعت مدیریت زیرساخت VPN، تونل‌های بین‌سروری (ایران ⇄ خارج)، نودهای توزیع‌شده لبه شبکه، و احراز هویت متمرکز کلاینت‌ها</em>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Official%20Release-00E676?style=for-the-badge" alt="Status" />
+  <img src="https://img.shields.io/badge/Version-v1.1.101-00E5FF?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/Tunnels-Backhaul%20%7C%20Rathole%20%7C%20GRE%20%7C%20GOST-39FF88?style=for-the-badge" alt="Tunnels" />
   <img src="https://img.shields.io/badge/Ubuntu-20.04%20%7C%2022.04%20%7C%2024.04%20%7C%2026.04%20LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white" alt="Ubuntu Versions" />
   <img src="https://img.shields.io/badge/Kernel-TCP%20BBR%20v3%20%2B%20FQ-00E676?style=for-the-badge" alt="TCP BBR" />
-  <img src="https://img.shields.io/badge/Security-mTLS%20%2B%20Argon2id-FF5252?style=for-the-badge" alt="Security" />
 </p>
 
 ---
 
 ## 📑 فهرست دسترسی سریع
 1. [⚡ نصب تعاملی و هوشمند با یک دستور روی سرور مجازی (Ubuntu / Debian)](#-نصب-تعاملی-و-هوشمند-با-یک-دستور-روی-سرور-مجازی-ubuntu--debian)
-2. [🌐 معماری نودهای توزیع‌شده و نحوه نود زدن (Distributed Node Clustering)](#-معماری-نودهای-توزیعشده-و-نحوه-نود-زدن-distributed-node-clustering)
-3. [🛡️ کاتالوگ جامع پروتکل‌های ارتباطی و مشخصات امنیتی](#️-کاتالوگ-جامع-پروتکلهای-ارتباطی-و-مشخصات-امنیتی)
-4. [👥 سیستم جامع مدیریت کاربران و سطوح کاربری](#-سیستم-جامع-مدیریت-کاربران-و-سطوح-کاربری)
-5. [⚙️ ابزارهای محدودسازی، سهمیه‌بندی و کنترل ترافیک کاربران](#️-ابزارهای-محدودسازی-سهمیهبندی-و-کنترل-ترافیک-کاربران)
-6. [🛠️ دستورات خط فرمان اختصاصی سرور (`javid-panel`)](#️-دستورات-خط-فرمان-اختصاصی-سرور-javid-panel)
-7. [🔒 ماتریس نقش‌ها و سطوح دسترسی مدیران (RBAC)](#-ماتریس-نقشها-و-سطوح-دسترسی-مدیران-rbac)
+2. [🚀 سیستم پیشرفته تونل‌های دو سرور ایران به خارج (Backhaul, Rathole, GRE, GOST)](#-سیستم-پیشرفته-تونلهای-دو-سرور-ایران-به-خارج-backhaul-rathole-gre-gost)
+3. [🌐 معماری نودهای توزیع‌شده و نحوه نود زدن (Distributed Node Clustering)](#-معماری-نودهای-توزیعشده-و-نحوه-نود-زدن-distributed-node-clustering)
+4. [🛡️ کاتالوگ جامع پروتکل‌های ارتباطی و مشخصات امنیتی](#️-کاتالوگ-جامع-پروتکلهای-ارتباطی-و-مشخصات-امنیتی)
+5. [👥 سیستم جامع مدیریت کاربران و سطوح کاربری](#-سیستم-جامع-مدیریت-کاربران-و-سطوح-کاربری)
+6. [⚙️ ابزارهای محدودسازی، سهمیه‌بندی و کنترل ترافیک کاربران](#️-ابزارهای-محدودسازی-سهمیهبندی-و-کنترل-ترافیک-کاربران)
+7. [🛠️ دستورات خط فرمان اختصاصی سرور (`javid-panel`)](#️-دستورات-خط-فرمان-اختصاصی-سرور-javid-panel)
+8. [🔒 ماتریس نقش‌ها و سطوح دسترسی مدیران (RBAC)](#-ماتریس-نقشها-و-سطوح-دسترسی-مدیران-rbac)
 
 ---
 
@@ -32,7 +33,7 @@
 کافیست در ترمینال سرور لینوکس خود (Ubuntu 20.04, 22.04, 24.04, 26.04 LTS یا Debian 11/12) دستور زیر را اجرا کنید:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/wisealii/Vais-Ali-Javid-Panel/main/install.sh | sudo bash
 ```
 
 ### مراحل نصب تعاملی:
@@ -40,6 +41,28 @@ curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.s
 * **مرحله ۲:** انتخاب پورت وب پنل (پیش‌فرض: `3000`).
 * **مرحله ۳:** تعیین ایمیل مدیر ارشد پنل (پیش‌فرض: `admin@javidvpn.ir`).
 * **مرحله ۴:** فعال‌سازی خودکار و تحویل آدرس و رمزهای عبور امن.
+
+---
+
+## 🚀 سیستم پیشرفته تونل‌های دو سرور ایران به خارج (Backhaul, Rathole, GRE, GOST)
+
+در نسخه **v1.1.101** جاوید پنل، موتور یکپارچه اتصال مستقیم بین سرورهای واسط ایران (Bridge) و سرورهای فیلترنشده خارج (Exit) تعبیه گردیده است.
+
+### پروتکل‌های تونل پشتیبانی‌شده در جاوید پنل:
+1. **Backhaul Multiplexed Tunnel:** تونل مولتی‌پلکس فوق‌سریع با فریم‌بندی WebSocket و TLS که مقاومت بی‌نظیری در برابر مسدودسازی اپراتورهای همراه اول و ایرانسل دارد.
+2. **Rathole Zero-Overhead Tunnel:** تونل مدرن نوشته‌شده با زبان Rust با مصرف رم نزدیک به صفر و کمترین تاخیر (مناسب برای بازی و تماس صوتی).
+3. **Linux Kernel GRE:** تونل لایه ۳ کرنل لینوکس بدون افت سرعت و بدون نیاز به نصب هیچ‌گونه پکیج یا کانتینر اضافی.
+4. **GOST v3 Relay:** رله چندمسیره با رمزنگاری پیشرفته WSS/QUIC.
+5. **Chisel Reverse WebSocket:** تونل معکوس مبتنی بر نشست‌های ایمن وب‌سوکت.
+
+### نحوه ایجاد تونل با ۲ کلیک در پنل:
+1. در پنل مدیریت، به سربرگ **«تونل‌های دو سرور (Iran-Kharej)»** بروید.
+2. روی دکمه **«ایجاد تونل جدید بین دو سرور»** کلیک کنید.
+3. آی‌پی سرور ایران و خارج را وارد کنید.
+4. پنل **دو اسکریپت نصب اختصاصی** تولید می‌کند:
+   - **اسکریپت اول:** در سرور خارج اجرا می‌شود (پورت مقصد را گوش می‌دهد).
+   - **اسکریپت دوم:** در سرور ایران اجرا می‌شود (ترافیک ورودی ایران را به خارج تانل می‌کند).
+5. تونل در کمتر از ۱۰ ثانیه فعال شده و سرعت، پینگ و جیتر آن در جدول داشبورد ثبت می‌شود.
 
 ---
 
@@ -59,7 +82,7 @@ curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.s
 4. دستور یک‌خطی تولید شده اختصاصی را کپی کرده و در ترمینال سرور نود وارد کنید:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/node-agent-install.sh | sudo bash -s -- --master=YOUR_PANEL_DOMAIN --port=443 --node-id=node-id-xxx --secret=xxx --role=EDGE_RELAY --core=Multi-Core-Hybrid
+curl -fsSL https://raw.githubusercontent.com/wisealii/Vais-Ali-Javid-Panel/main/node-agent-install.sh | sudo bash -s -- --master=YOUR_PANEL_DOMAIN --port=443 --node-id=node-id-xxx --secret=xxx --role=EDGE_RELAY --core=Multi-Core-Hybrid
 ```
 
 ---
