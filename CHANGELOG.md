@@ -1,3 +1,11 @@
+## 1.1.107-dev — Controller upgrade safeguards
+- Introduce dedicated safe source-upgrade command for Javid Node Controller.
+- Verify installed config, source completeness, Python syntax, service unit and pre-upgrade loopback health.
+- Stage new source, retain old code under unique backup, restart and check health, and attempt automatic rollback on restart/health failure.
+- Do not modify node credentials, database, TLS/SSL, API routes or the panel Gateway.
+- Add isolated unit tests for successful upgrade, rollback, unsafe permissions, missing sources and unhealthy old service.
+- Public Gateway admin identity integration **still requires real auth contracts and migration review**, and live VPS upgrade tests remain pending.
+
 ## 1.1.106-dev — Private Javid Node management dashboard
 
 - Add a real RTL node-admin dashboard served by the existing control API on loopback only, intended for SSH port forwarding.
