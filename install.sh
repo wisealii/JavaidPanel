@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# JavaidPanel one-command installation bootstrap (1.1.104-dev)
+# JavaidPanel one-command installation bootstrap (1.1.105-dev)
 # Installation engine: pinned AlirezaPanel 2.8.0 (VPN-UI v1.9.4 + AdGuard Home v0.107.79)
 # GPL-3.0-or-later integration; see LICENSE, SOURCES.md.
 set -Eeuo pipefail
 umask 077
-VERSION=1.1.104-dev
+VERSION=1.1.105-dev
 CORE_URL="https://raw.githubusercontent.com/wisealii/JavaidPanel/main/installer/core.sh"
 CORE_SHA256="c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c"
 CORE_LOCAL="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/installer/core.sh"
 usage(){
 cat <<'HELP'
-JavaidPanel 1.1.104-dev — verified, one-command bootstrap
+JavaidPanel 1.1.105-dev — verified, one-command bootstrap
 
   curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash
 

@@ -1,3 +1,11 @@
+## 1.1.105-dev — Experimental Javid Node API and SSL assistant
+- Added standalone JSON node-control API with one-time enrollment, node credentials, signed heartbeats, revocation and stale-state monitoring.
+- Added systemd installer for local-only control service and Javid Node health agent; no VPN tunnel is deployed.
+- Added local node-management CLI generating a per-node one-command installer without putting the secret token in shell args.
+- Added step-by-step interactive Let's Encrypt wizard; certificate issuance is separate from HTTPS webserver deployment.
+- Added isolated API and SSL regression suites, including replay rejection, revocation, expiry, admin authorization and heartbeat transitions.
+- **Not yet integrated into the main UI/Gateway; real VPS SSL/mTLS/node-tunnel testing still required.**
+
 ## 1.1.104-dev — public repository documentation refresh
 
 - Publish an independent JavaidPanel README and a static interactive UI demo, explicitly labeled as mock data.

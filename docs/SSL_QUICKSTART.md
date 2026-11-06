@@ -1,0 +1,57 @@
+# راهنمای ۵ مرحله‌ای SSL در JavaidPanel
+
+هدف: دریافت گواهی معتبر Let's Encrypt بدون دستورهای پیچیده. این راهنما برای **VPS آزمایشی با دامنه واقعی** است.
+
+## مرحله ۱ — دامنه
+
+برای نمونه، `panel.example.org` را در DNS به IP عمومی VPS خود متصل کنید. اگر رکورد AAAA دارید، IPv6 هم باید به مقصد درست برسد. انتشار DNS ممکن است زمان ببرد.
+
+## مرحله ۲ — آماده‌سازی پورت
+
+TCP 80 از اینترنت باید باز باشد تا چالش HTTP-01 انجام شود. اگر Nginx/Apache قبلاً روی پورت 80 سرویس می‌دهد، آن را بی‌اجازه متوقف نکنید: در این حالت از روش وب‌روت یا DNS-01 استفاده کنید.
+
+بررسی اولیه:
+
+```bash
+sudo bash tools/ssl-wizard.sh --check panel.example.org
+```
+
+## مرحله ۳ — ایمیل و دریافت گواهی
+
+Certbot را با package manager سیستم نصب کنید و بعد دستور ساده را اجرا کنید:
+
+```bash
+sudo bash tools/ssl-wizard.sh
+```
+
+راهنما به ترتیب **دامنه ← ایمیل ← بررسی DNS و پورت ← تأیید ← دریافت گواهی** را می‌پرسد.
+
+برای اجرای غیرتعاملی:
+
+```bash
+sudo bash tools/ssl-wizard.sh --issue panel.example.org admin@example.org
+```
+
+این کار مسیر `/etc/letsencrypt/live/panel.example.org/fullchain.pem` و `privkey.pem` را در صورت موفقیت ایجاد می‌کند.
+
+## مرحله ۴ — اتصال گواهی به وب‌سرور
+
+**صدور گواهی با فعال‌شدن HTTPS فرق دارد.** بعد از دریافت، مسیرهای گواهی را در vhost واقعی Nginx یا سرویس TLS خودتان تنظیم کنید؛ مثلاً:
+
+```nginx
+ssl_certificate /etc/letsencrypt/live/panel.example.org/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/panel.example.org/privkey.pem;
+```
+
+این خطوط را در server block معتبر `listen 443 ssl` قرار دهید و قبل از reload از `nginx -t` استفاده کنید. اگر وب‌سرور پنل قبلاً مدیریت SSL دارد، **از روش خود پنل استفاده کنید** و vhost موازی نسازید.
+
+## مرحله ۵ — تست و تمدید
+
+```bash
+sudo bash tools/ssl-wizard.sh --status panel.example.org
+sudo certbot renew --dry-run
+```
+
+HTTPS را با مرورگر واقعی و URL دامنه چک کنید. برای تمدید خودکار، بعد از اطمینان از نحوه استقرار، deploy hook ایمن برای reload سرویس فراهم کنید.
+
+**این نسخه هنوز ویزارد HTTPS داخل داشبورد جاوید ندارد.** فایل `ssl-wizard.sh` راهنمای گام‌به‌گام ترمینالی است. اخذ گواهی و تست HTTPS روی VPS واقعی در این مرحله انجام نشده است.
