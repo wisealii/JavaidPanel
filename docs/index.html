@@ -64,7 +64,7 @@ const examples={
 doctor:["VPS preflight · read-only","git clone https://github.com/wisealii/JavaidPanel.git\ncd JavaidPanel\nsudo bash install.sh --doctor"],
 ssl:["Let's Encrypt · certificate only","cd JavaidPanel\nsudo bash install.sh --ssl panel.example.org"],
 node:["Node preflight · read-only","cd JavaidPanel\nbash node-agent-install.sh --check"],
-install:["Full installation · deliberately unavailable","cd JavaidPanel\nsudo bash install.sh --install  # blocked: backend not yet shipped"]
+install:["Experimental one-command install · Supported VPS","curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash"]
 };
 const label=document.getElementById("commandLabel"),code=document.getElementById("commands"),copy=document.getElementById("copy");
 document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed","false"));btn.setAttribute("aria-pressed","true");const v=examples[btn.dataset.mode];label.textContent=v[0];code.textContent=v[1];copy.textContent="کپی"}));
