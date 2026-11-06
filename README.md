@@ -134,4 +134,4 @@ sudo python3 tools/upgrade-control-plane.py --apply
 python3 tools/release-readiness.py
 ```
 
-[راهنمای آمادگی انتشار](docs/RELEASE_READINESS.md). مسیر Docker Compose فعلی به دلیل نبودن Dockerfile و پیکربندی Nginx هنوز قابل استفاده نیست.
+[راهنمای آمادگی انتشار](docs/RELEASE_READINESS.md). فایل Compose ناقصِ با نام «production» برای جلوگیری از نصب اشتباه حذف و در [بایگانی طرح](docs/EXPERIMENTAL_COMPOSE.md) نگهداری شده است. هنوز مسیر نصب کانتینری پایدار معرفی نشده است.

@@ -35,7 +35,7 @@ python3 tools/release-readiness.py --strict
 
 ## ۳. عیب مشخص فعلی
 
-`docker-compose.production.yml` دارای ارجاع به `Dockerfile` و `nginx/nginx.conf` است، اما این فایل‌ها هنوز در مخزن موجود نیستند. **مسیر Docker Compose در حال حاضر قابل استقرار نیست** و نباید به‌عنوان گزینه آماده به کاربران پیشنهاد شود.
+نسخه قبلی `docker-compose.production.yml` به فایل‌های ناموجود ارجاع می‌داد. برای جلوگیری از استقرار اشتباه **از ریشه مخزن حذف و فقط به‌عنوان طرح تاریخی در [EXPERIMENTAL_COMPOSE.md](EXPERIMENTAL_COMPOSE.md) بایگانی شد**. روش Docker Compose عملیاتی هنوز ارائه نشده است.
 
 مسیر اصلی نصب، اسکریپت پین‌شده `install.sh` است؛ این مسیر نیز هنوز به تست عملی VPS نیاز دارد.
 

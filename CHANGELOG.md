@@ -1,3 +1,9 @@
+## 1.1.108-dev — remove misleading production compose
+- Remove the root Docker Compose file that could not build because Dockerfile and Nginx configuration were missing.
+- Archive the old design as a clearly non-executable reference under docs/EXPERIMENTAL_COMPOSE.md.
+- Keep the only documented installation path as the pinned installer until VPS acceptance tests are available.
+- Update regression tests and release status; this does **not** confer production readiness.
+
 ## 1.1.108-dev — readiness audit before VPS release
 - Synchronize VERSION with install.sh bootstrap metadata (previously drifted).
 - Add executable read-only readiness audit with JSON/strict modes and explicit live-VPS, SSL, node, protocol, restore and Gateway blockers.

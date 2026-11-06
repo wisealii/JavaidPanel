@@ -43,8 +43,8 @@ class ReadinessTests(unittest.TestCase):
 
     def test_alternative_production_compose_is_not_misrepresented(self):
         checks={c.code:c for c in mod.run_checks(ROOT)}
-        self.assertIn(checks["compose_production"].status,("blocked","manual"))
-        self.assertIn("Compose",checks["compose_production"].message)
+        self.assertEqual(checks["compose_production"].status,"pass")
+        self.assertIn("No untested alternative",checks["compose_production"].message)
 
 if __name__=="__main__":
     unittest.main()
