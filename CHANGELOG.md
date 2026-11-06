@@ -1,3 +1,8 @@
+## 1.1.104-dev — deployment follow-up
+- Add offline tests simulating a piped `curl | bash` bootstrap with a correct engine and a tampered engine.
+- Clarify remote one-command options for SSL, health checks and base node activation when the repository is not cloned.
+- Distinguish legacy node support from unfinished Javid Node agent.
+
 ## 1.1.104-dev — 2026-11-06
 - Fix early installer checks: require a running systemd instance, supported resources and core dependencies before network download.
 - Refuse repair/SSL/node maintenance when the corresponding installed service files are absent.

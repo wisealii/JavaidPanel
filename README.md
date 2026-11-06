@@ -49,6 +49,11 @@ sudo bash install.sh
 ## پس از نصب
 
 ```bash
+# اگر مخزن را کلون نکرده‌اید، مستقیماً از GitHub اجرا کنید:
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --check
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --ssl
+
+# اگر مخزن را کلون کرده‌اید:
 sudo bash install.sh --check
 sudo bash install.sh --ssl
 ```

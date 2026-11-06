@@ -1,4 +1,4 @@
-# نصب یک‌دستوری JavaidPanel — 1.1.103-dev
+# نصب یک‌دستوری JavaidPanel — 1.1.104-dev
 
 ## یک دستور برای نصب آزمایشی
 
@@ -36,14 +36,28 @@ curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.s
 بعد از نصب، دستور زیر را برای ویزارد گواهی اجرا کنید:
 
 ```bash
-sudo bash install.sh --ssl
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --ssl
 ```
+
+اگر مخزن را کلون کرده‌اید می‌توانید از `sudo bash install.sh --ssl` استفاده کنید. برای استفاده بدون کلون، فرمان فوق لازم است. این مسیر فقط پس از نصب موفق کار می‌کند.
 
 ## وضعیت پشتیبانی
 
 - Ubuntu 24.04 / Debian 12/13، x86_64: **در سطح کد پذیرفته می‌شوند**؛ آزمون نصب زندهٔ ما انجام نشده است.
 - Ubuntu 20.04 / 22.04 / 26.04: در حال حاضر به‌صورت پیش‌فرض رد می‌شوند.
 - حداقل اعلام‌شده در نصب‌کنندهٔ پایه 512 MiB RAM و توصیه 1 GiB است؛ کفایت این اعداد برای بار واقعی تأیید نشده.
+
+## دستورات مدیریت بعد از نصب
+
+بدون نیاز به نگه‌داری فایل `install.sh` روی VPS:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --check
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --ssl
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash -s -- --enable-nodes
+```
+
+گزینه `--enable-nodes` قابلیت نودهای یکپارچه‌سازی قدیمی را فعال می‌کند؛ **موتور نود جدید Javid Node نیست**.
 
 ## نودها
 
