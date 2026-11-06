@@ -63,6 +63,9 @@ def normalize_host(host: str) -> str:
         return str(ipaddress.ip_address(host))
     except ValueError:
         pass
+    # Numeric-only dotted input must be a valid IP, never an arbitrary hostname.
+    if re.fullmatch(r"[0-9.]+", host):
+        raise EnrollmentError("Invalid IP address")
     if not all(_HOST_LABEL.fullmatch(label) for label in host.rstrip(".").split(".")):
         raise EnrollmentError("Invalid DNS hostname")
     if "." not in host or host.endswith(".."):
