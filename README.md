@@ -4,7 +4,7 @@
 
 **مدیریت زیرساخت VPN و اتصال نودهای مستقل**
 
-![Version](https://img.shields.io/badge/version-1.1.107--dev-f04452?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.1.108--dev-f04452?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-development-f6b35e?style=for-the-badge)
 ![CI](https://github.com/wisealii/JavaidPanel/actions/workflows/verify.yml/badge.svg)
 
@@ -16,7 +16,7 @@
 
 ## درباره JavaidPanel
 
-JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.107-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
+JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.108-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
 
 **تفاوت مهم:** اتصال API و عامل سلامت نود اکنون قابل اجرا و دارای تست آفلاین است، ولی هنوز به داشبورد اصلی پنل وصل نیست و موتور VPN یا تونل روی نود راه‌اندازی نمی‌کند. تأیید اتصال واقعی دو VPS و استقرار نهایی باقی مانده است.
 
@@ -125,3 +125,13 @@ sudo python3 tools/upgrade-control-plane.py --apply
 ```
 
 **حتماً پیش از اجرا راهنما را بخوانید:** [مراحل ارتقای امن و بازیابی](docs/NODE_UPGRADE.md). این یک ارتقای آزمایشی کنترلر است؛ نه ارتقای Gateway اصلی و نه نسخهٔ تأییدشده برای سرور عملیاتی.
+
+## معیار انتشار روی VPS
+
+پیش از نصب جدی یا معرفی نسخهٔ پایدار، گزارش `tools/release-readiness.py --strict` باید بدون هیچ مورد معلق یا مسدودکننده موفق شود. این ابزار تضاد نسخه‌ها، هش فایل‌ها و نقص مسیرهای استقرار را گزارش می‌کند، ولی آزمون واقعی VPS را جایگزین نمی‌کند.
+
+```bash
+python3 tools/release-readiness.py
+```
+
+[راهنمای آمادگی انتشار](docs/RELEASE_READINESS.md). مسیر Docker Compose فعلی به دلیل نبودن Dockerfile و پیکربندی Nginx هنوز قابل استفاده نیست.

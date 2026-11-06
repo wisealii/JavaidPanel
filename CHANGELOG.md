@@ -1,3 +1,10 @@
+## 1.1.108-dev — readiness audit before VPS release
+- Synchronize VERSION with install.sh bootstrap metadata (previously drifted).
+- Add executable read-only readiness audit with JSON/strict modes and explicit live-VPS, SSL, node, protocol, restore and Gateway blockers.
+- Detect incomplete production Docker Compose inputs instead of labeling the setup ready.
+- Add CI tests for version drift, SHA-256, false readiness claims, and machine-readable output.
+- **No real VPS has been provisioned or tested; production readiness remains blocked.**
+
 ## 1.1.107-dev — Controller upgrade safeguards
 - Introduce dedicated safe source-upgrade command for Javid Node Controller.
 - Verify installed config, source completeness, Python syntax, service unit and pre-upgrade loopback health.
