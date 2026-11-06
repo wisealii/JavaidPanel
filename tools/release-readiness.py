@@ -52,7 +52,7 @@ def run_checks(root: pathlib.Path | None = None) -> list[Check]:
     version = version_file.read_text(encoding="utf-8").strip()
     entrypoint = script_file.read_text(encoding="utf-8")
     found = re.search(r"^VERSION=([^\n#]+)$", entrypoint, re.M)
-    literal = found.group(1).strip().strip('"'') if found else ""
+    literal = found.group(1).strip().replace(chr(34), "").replace(chr(39), "") if found else ""
     if not re.fullmatch(r"\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?", version):
         add("release_metadata", "blocked", "Invalid VERSION syntax", "Use SemVer or a -dev suffix")
     elif version != literal:
