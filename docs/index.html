@@ -27,30 +27,28 @@ footer{margin:40px 0 0;color:#8c8d9a;font-size:12px}
 <div class="layout">
 <aside class="sidebar" aria-label="فهرست راهنما"><div class="aside-label">شروع کار</div><a class="active" href="#overview">معرفی جاوید پنل</a><a href="#features">قابلیت‌ها</a><a href="#install">نصب سریع</a><a href="#steps">مراحل راه‌اندازی</a><div class="aside-label">مدیریت پنل</div><a href="#ssl">گواهی SSL / TLS</a><a href="#nodes">اتصال نود</a><a href="#comparison">مقایسه نصب</a><div class="aside-label">توسعه</div><a href="#resources">مستندات</a><a href="STATUS.md">وضعیت پروژه</a><a href="INSTALL_UX.md">برنامه توسعه</a></aside>
 <main class="content"><div class="crumb">مستندات / <b>JavaidPanel</b> / شروع کار</div>
-<div class="hero" id="overview"><span class="pill">JP UI · 1.1.102-dev · DOCUMENTATION</span><h1>مدیریت زیرساخت،<br><em>واضح و یکپارچه.</em></h1><p>JavaidPanel محیطی برای مدیریت سرورها، نودها و سرویس‌های VPN است. اسکریپت‌های نصب، راهنماهای گام‌به‌گام و وضعیت توسعه را در همین صفحه ببینید.</p><div class="buttons"><a href="#install" class="btn main">شروع راه‌اندازی ←</a><a href="https://github.com/wisealii/JavaidPanel" class="btn">مشاهده سورس</a></div><div class="status">توجه: این نسخه آزمایشی است. هستهٔ عملیاتی پنل و عامل نود هنوز در مخزن حاضر نیستند؛ نصب کامل تا آماده‌شدن آن‌ها مسدود است. دستورات پایین صرفاً بررسی VPS و صدور مستقل SSL را انجام می‌دهند.</div></div>
+<div class="hero" id="overview"><span class="pill">JP UI · 1.1.103-dev · DOCUMENTATION</span><h1>مدیریت زیرساخت،<br><em>واضح و یکپارچه.</em></h1><p>JavaidPanel محیطی برای مدیریت سرورها، نودها و سرویس‌های VPN است. اسکریپت‌های نصب، راهنماهای گام‌به‌گام و وضعیت توسعه را در همین صفحه ببینید.</p><div class="buttons"><a href="#install" class="btn main">شروع راه‌اندازی ←</a><a href="https://github.com/wisealii/JavaidPanel" class="btn">مشاهده سورس</a></div><div class="status">توجه: نصب یک‌دستوری آزمایشی با هسته VPN-UI/AlirezaPanel فراهم شده است، اما نصب روی VPS واقعی هنوز آزمایش نشده و Javid Node و بخش‌های اختصاصی جدید به هسته متصل نیستند.</div></div>
 <section id="features"><h2>یک پنل، چند بخش اصلی</h2><p>ساختار محصول با هویت اختصاصی مشکی، سفید و قرمز JP UI.</p><div class="cards">
 <div class="card"><div class="symbol">⌘</div><h3>مدیریت سرویس‌ها</h3><p>معماری هدف برای کاربران، اینباندها و مدیریت متمرکز سرویس‌های VPN.</p></div>
 <div class="card"><div class="symbol">⇆</div><h3>نودهای توزیع‌شده</h3><p>تعریف و نظارت نودها با مسیر توسعهٔ احراز هویت امن.</p></div>
 <div class="card"><div class="symbol">◇</div><h3>گواهی و امنیت</h3><p>SSL با دامنه و Certbot، همراه با برنامه اتصال ایمن به backend.</p></div></div></section>
-<section id="install"><h2>نصب و بررسی VPS</h2><p>در تجربهٔ نهایی، مانند NX Panel نصب با یک دستور و بدون سؤال آغاز می‌شود و تنظیمات در ویزارد تکمیل می‌شوند. فعلاً مرحلهٔ بررسی و صدور گواهی در دسترس است.</p>
-<div class="install"><h3>انتخاب عملیات</h3><div class="switches"><button data-mode="doctor" aria-pressed="true">بررسی VPS</button><button data-mode="ssl" aria-pressed="false">صدور SSL</button><button data-mode="node" aria-pressed="false">بررسی نود</button><button data-mode="install" aria-pressed="false">نصب کامل (مسدود)</button></div>
-<div class="terminal"><div class="terminalhead"><span id="commandLabel">VPS preflight · read-only</span><button id="copy" type="button">کپی</button></div><pre id="commands">git clone https://github.com/wisealii/JavaidPanel.git
-cd JavaidPanel
-sudo bash install.sh --doctor</pre></div></div>
-<div class="status">برای SSL دامنه را به IP سرور اشاره بدهید، پورت TCP 80 را برای ACME باز بگذارید و Certbot را نصب کنید. صدور گواهی به معنی فعال‌شدن پنل نیست.</div></section>
+<section id="install"><h2>نصب و بررسی VPS</h2><p>حالا نصب آزمایشی هستهٔ واقعی با یک دستور انجام می‌شود. نصب‌کننده به‌صورت تعاملی آدرس پنل و نوع SSL را دریافت می‌کند. ویزارد تحت‌وب مشابه NX Panel در برنامهٔ توسعه است.</p>
+<div class="install"><h3>انتخاب عملیات</h3><div class="switches"><button data-mode="doctor" aria-pressed="false">بررسی VPS</button><button data-mode="ssl" aria-pressed="false">صدور SSL</button><button data-mode="node" aria-pressed="false">بررسی نود</button><button data-mode="install" aria-pressed="true">نصب آزمایشی یک‌دستوری</button></div>
+<div class="terminal"><div class="terminalhead"><span id="commandLabel">Experimental one-command installation</span><button id="copy" type="button">کپی</button></div><pre id="commands">curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash</pre></div></div>
+<div class="status">برای SSL معتبر، DNS دامنه و دسترسی ACME ضروری است. نسخهٔ جدید از SSL ویزارد نصب‌کنندهٔ پایه استفاده می‌کند؛ اعتبارسنجی عملی هنوز انجام نشده است.</div></section>
 <section id="steps"><h2>مراحل نصب نهایی</h2><p>ترتیب هدف شبیه NX Panel؛ امکاناتی که هنوز تکمیل نشده‌اند به‌صراحت مشخص شده‌اند.</p><div class="steps">
 <div class="step"><b>01</b><h3>نصب یک‌دستوری</h3><p>پیش‌نیازها، هسته واقعی، سلامت سرویس و حفاظت از نصب قبلی.</p></div>
 <div class="step"><b>02</b><h3>ویزارد وب و SSL</h3><p>توکن یک‌بارمصرف، ساخت ادمین، دامنه و مدیریت HTTPS.</p></div>
 <div class="step"><b>03</b><h3>ثبت اولین نود</h3><p>ایجاد نود با اعتبار یک‌بارمصرف و کنترل اتصال واقعی.</p></div></div></section>
-<section id="ssl"><h2>گواهی SSL / TLS</h2><p>ابزار فعلی می‌تواند با Certbot و اعتبارسنجی HTTP-01 گواهی دامنه بگیرد. در نسخه نهایی، نصب و تمدید گواهی باید از داخل تنظیمات پنل انجام شود، مشابه امکانات NX Panel و PasarGuard.</p>
+<section id="ssl"><h2>گواهی SSL / TLS</h2><p>نصب‌کنندهٔ پایه گزینه‌های صدور گواهی دامنه و IP را ارائه می‌دهد. هستهٔ نصب پایه ویزارد SSL دارد؛ مدیریت کامل آن از داخل تنظیمات اختصاصی جاوید هنوز در برنامهٔ توسعه است.</p>
 <a class="btn" href="INSTALLATION.md">جزئیات صدور گواهی و پیش‌نیازها ←</a></section>
-<section id="nodes"><h2>مدیریت نودها</h2><p>نصب‌کنندهٔ نود قدیمی صرفاً کانتینر نمایشی اجرا می‌کرد؛ برای جلوگیری از اشتباه، نصب آن تا وجود daemon عملیاتی و اعتبارسنجی mTLS مسدود است.</p><a class="btn" href="NODES.md">معماری نود و آزمون‌های لازم ←</a></section>
+<section id="nodes"><h2>مدیریت نودها</h2><p>مدیریت نود پایه از یکپارچه‌سازی AlirezaPanel به ارث رسیده است؛ Javid Node اختصاصی و اتصال امن چند VPS هنوز به آزمون و تکمیل نیاز دارد.</p><a class="btn" href="NODES.md">معماری نود و آزمون‌های لازم ←</a></section>
 <section id="comparison"><h2>مقایسه روش نصب</h2><p>نتیجه بررسی مستندات رسمی NX Panel و PasarGuard در مقابل وضعیت واقعی JavaidPanel.</p>
 <table><tr><th>بخش</th><th>NX Panel</th><th>PasarGuard</th><th>JavaidPanel</th></tr>
-<tr><td>نصب</td><td>یک دستور، ویزارد وب</td><td>اسکریپت نصب</td><td>preflight؛ نصب کامل مسدود</td></tr>
-<tr><td>SSL</td><td>مدیریت گواهی و ACME</td><td>دامنه و HTTPS</td><td>دریافت مستقل با Certbot</td></tr>
-<tr><td>نود</td><td>توکن یک‌بارمصرف / SSH</td><td>اسکریپت مستقل</td><td>در انتظار daemon واقعی</td></tr>
-<tr><td>مدیریت سرویس</td><td>CLI و ابزارهای مدیریت</td><td>اسکریپت‌ها</td><td>در انتظار backend</td></tr></table>
+<tr><td>نصب</td><td>یک دستور، ویزارد وب</td><td>اسکریپت نصب</td><td>نصب یک‌دستوری آزمایشی</td></tr>
+<tr><td>SSL</td><td>مدیریت گواهی و ACME</td><td>دامنه و HTTPS</td><td>ویزارد SSL در هسته پایه</td></tr>
+<tr><td>نود</td><td>توکن یک‌بارمصرف / SSH</td><td>اسکریپت مستقل</td><td>نودهای پایه؛ Javid Node ناقص</td></tr>
+<tr><td>مدیریت سرویس</td><td>CLI و ابزارهای مدیریت</td><td>اسکریپت‌ها</td><td>مدیریت هسته پایه؛ تست‌نشده</td></tr></table>
 <p style="margin-top:14px;font-size:12px"><a href="https://docs.nx-panel.org/fa/start/install-panel">منبع NX Panel ↗</a> · <a href="https://docs.pasarguard.org/en/panel/installation/">منبع PasarGuard ↗</a></p></section>
 <section id="resources"><h2>مرکز مستندات</h2><p>راهنماها و وضعیت توسعه، بدون ادعاهای تأییدنشده.</p><div class="docs">
 <a href="INSTALLATION.md"><b>نصب و SSL</b><small>پیش‌نیازها و دستورات امن</small></a>
@@ -59,7 +57,7 @@ sudo bash install.sh --doctor</pre></div></div>
 <a href="STATUS.md"><b>وضعیت واقعی پروژه</b><small>قابلیت‌های موجود و موارد ناقص</small></a>
 <a href="TUNNELS.md"><b>تونل‌ها</b><small>طرح و معیارهای تست</small></a>
 <a href="ARCHITECTURE.md"><b>معماری</b><small>اجزای سورس و سرویس‌ها</small></a></div></section>
-<footer>JavaidPanel · JP UI · نسخه توسعه‌ای 1.1.102-dev · <a href="https://github.com/wisealii/JavaidPanel">GitHub</a></footer></main>
+<footer>JavaidPanel · JP UI · نسخه توسعه‌ای 1.1.103-dev · <a href="https://github.com/wisealii/JavaidPanel">GitHub</a></footer></main>
 <aside class="toc"><strong>در این صفحه</strong><a href="#overview">معرفی</a><a href="#features">امکانات</a><a href="#install">نصب VPS</a><a href="#steps">مراحل راه‌اندازی</a><a href="#ssl">SSL</a><a href="#nodes">نودها</a><a href="#comparison">مقایسه</a><a href="#resources">مستندات</a></aside></div>
 <script>
 const examples={
