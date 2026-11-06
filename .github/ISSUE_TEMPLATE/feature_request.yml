@@ -1,0 +1,21 @@
+name: پیشنهاد قابلیت
+description: قابلیت پیشنهادی برای پنل، نود، تونل یا مستندات
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: چه مشکلی حل می‌شود؟
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: پیشنهاد و معیار پذیرش
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: ملاحظات امنیتی و ناسازگاری

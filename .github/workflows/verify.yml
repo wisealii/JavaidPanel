@@ -30,6 +30,11 @@ jobs:
           class Validator(HTMLParser): pass
           source=Path("docs/index.html").read_text()
           Validator().feed(source)
+          demo=Path("docs/demo.html").read_text(encoding="utf-8")
+          Validator().feed(demo)
+          assert 'DEMO' in demo and 'JavaidPanel' in demo
+          for ref in ['FEATURES.md','NODES.md','NODE_ENROLLMENT.md','SSL.md','ROADMAP.md','TROUBLESHOOTING.md','DEVELOPMENT.md']:
+              assert Path('docs',ref).is_file(), ref
           assert "JavaidPanel" in source
           for path in ["LICENSE","SOURCES.md","docs/INSTALLATION.md","docs/STATUS.md"]:
               assert Path(path).is_file(),path
