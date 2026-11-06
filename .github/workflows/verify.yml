@@ -1,0 +1,34 @@
+name: Repository verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  basic-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate installer shell syntax
+        run: |
+          bash -n install.sh
+          bash -n node-agent-install.sh
+      - name: Verify landing page and required docs
+        run: |
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Validator(HTMLParser):
+              pass
+          index = Path("docs/index.html")
+          assert index.exists()
+          text = index.read_text(encoding="utf-8")
+          Validator().feed(text)
+          for required in ["JavaidPanel", "JP UI", 'id="features"', 'id="install"']:
+              assert required in text, required
+          for name in ["INSTALLATION", "NODES", "TUNNELS", "ARCHITECTURE", "STATUS", "GITHUB_PAGES", "LICENSING"]:
+              assert Path(f"docs/{name}.md").exists(), name
+          print("Static website and documentation checks passed")
+          PY
