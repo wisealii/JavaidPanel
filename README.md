@@ -6,7 +6,7 @@
 
 **JP UI — Black / Red / White**
 
-![Version](https://img.shields.io/badge/version-1.1.103--dev-f04452?style=for-the-badge) ![Installer](https://img.shields.io/badge/installer-one--command-eeeeee?style=for-the-badge) ![Testing](https://img.shields.io/badge/VPS%20validation-pending-ffc36b?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.1.104--dev-f04452?style=for-the-badge) ![Installer](https://img.shields.io/badge/installer-one--command-eeeeee?style=for-the-badge) ![Testing](https://img.shields.io/badge/VPS%20validation-pending-ffc36b?style=for-the-badge)
 
 [مستندات](docs/index.html) · [راهنمای نصب](docs/INSTALLATION.md) · [وضعیت قابلیت‌ها](docs/STATUS.md) · [مجوز و منابع](SOURCES.md)
 

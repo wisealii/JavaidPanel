@@ -1,3 +1,10 @@
+## 1.1.104-dev — 2026-11-06
+- Fix early installer checks: require a running systemd instance, supported resources and core dependencies before network download.
+- Refuse repair/SSL/node maintenance when the corresponding installed service files are absent.
+- Correct misleading root error instruction, reject unexpected CLI arguments, and safely probe an interactive terminal before redirecting stdin.
+- Add automated regression tests for flags, offline preflight, checksum and installer self-test.
+- This is a bootstrap reliability update only; live VPS installation and node connectivity remain unverified.
+
 # JavaidPanel Changelog
 
 ## 1.1.103-dev — 2026-11-06

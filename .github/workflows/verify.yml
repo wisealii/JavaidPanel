@@ -20,6 +20,8 @@ jobs:
           printf '%s  %s\n' 'c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c' 'installer/core.sh' | sha256sum --check
       - name: Installer self-test (no system changes)
         run: bash install.sh --self-test
+      - name: Run offline bootstrap regression tests
+        run: python3 -m unittest discover -s tests -p 'test_bootstrap.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'
