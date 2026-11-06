@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import os
 from pathlib import Path
 import shutil
@@ -11,8 +12,15 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "tools"))
-from upgrade_control_plane import UpgradeError, audit_source, upgrade, validate_install, main
+spec = importlib.util.spec_from_file_location("upgrade_control_plane", ROOT / "tools" / "upgrade-control-plane.py")
+module = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = module
+spec.loader.exec_module(module)
+UpgradeError = module.UpgradeError
+audit_source = module.audit_source
+upgrade = module.upgrade
+validate_install = module.validate_install
+main = module.main
 
 
 class UpgradeTests(unittest.TestCase):
