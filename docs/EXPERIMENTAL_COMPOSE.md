@@ -1,3 +1,14 @@
+# بایگانی طرح اولیه Docker Compose (غیرعملیاتی)
+
+این سند صرفاً برای **نگهداری سابقهٔ طرح** تهیه شده است. فایل `docker-compose.production.yml` قبلی در ریشه پروژه ادعای «production» داشت، درحالی‌که به فایل‌های `Dockerfile` و `nginx/nginx.conf` ناموجود اشاره می‌کرد و یک برنامه Node.js/Redis/PostgreSQL را فرض می‌گرفت که با کنترلر فعلی Python/SQLite یکپارچه نیست.
+
+**آن Compose قابل اجرا و آزمایش‌شده نبود و از مسیر انتشار برداشته شده است.** هیچ‌یک از سرویس‌های داخل طرح زیر نباید با فرمان `docker compose up` به محیط تولید نصب شوند. روش جاریِ آزمایشی همان `install.sh` با هسته پین‌شده است.
+
+برای نسخه کانتینری آینده باید Dockerfile، بک‌اند واقعی قابل build، migrations، TLS، healthchecks، بکاپ و آزمون واقعی اضافه شوند. در این مرحله برنامه‌نویسیِ زیر نسخه عملیاتی نیست.
+
+## طرح تاریخی (صرفاً جهت بازبینی)
+
+```yaml
 version: '3.8'
 
 services:
@@ -122,3 +133,6 @@ volumes:
   redisdata:
   adguard_work:
   adguard_conf:
+```
+
+[مراحل واقعی نصب آزمایشی](INSTALLATION.md) · [آمادگی انتشار](RELEASE_READINESS.md)
