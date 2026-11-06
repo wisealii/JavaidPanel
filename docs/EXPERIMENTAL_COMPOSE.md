@@ -1,0 +1,138 @@
+# بایگانی طرح اولیه Docker Compose (غیرعملیاتی)
+
+این سند صرفاً برای **نگهداری سابقهٔ طرح** تهیه شده است. فایل `docker-compose.production.yml` قبلی در ریشه پروژه ادعای «production» داشت، درحالی‌که به فایل‌های `Dockerfile` و `nginx/nginx.conf` ناموجود اشاره می‌کرد و یک برنامه Node.js/Redis/PostgreSQL را فرض می‌گرفت که با کنترلر فعلی Python/SQLite یکپارچه نیست.
+
+**آن Compose قابل اجرا و آزمایش‌شده نبود و از مسیر انتشار برداشته شده است.** هیچ‌یک از سرویس‌های داخل طرح زیر نباید با فرمان `docker compose up` به محیط تولید نصب شوند. روش جاریِ آزمایشی همان `install.sh` با هسته پین‌شده است.
+
+برای نسخه کانتینری آینده باید Dockerfile، بک‌اند واقعی قابل build، migrations، TLS، healthchecks، بکاپ و آزمون واقعی اضافه شوند. در این مرحله برنامه‌نویسیِ زیر نسخه عملیاتی نیست.
+
+## طرح تاریخی (صرفاً جهت بازبینی)
+
+```yaml
+version: '3.8'
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. PostgreSQL 16 Database
+  # ----------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: javid_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-javid_db}
+      POSTGRES_USER: ${POSTGRES_USER:-javid_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - javid_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-javid_admin} -d ${POSTGRES_DB:-javid_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 2. Redis 7 High-Speed In-Memory Cache
+  # ----------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: javid_redis
+    restart: always
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redisdata:/data
+    networks:
+      - javid_internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------------------------
+  # 3. AdGuard Home DNS & Anti-Censorship Sinkhole (v0.107.79)
+  # ----------------------------------------------------------------------------
+  adguard:
+    image: adguard/adguardhome:v0.107.79
+    container_name: javid_adguard
+    restart: always
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "853:853/tcp" # DNS over TLS (DoT)
+      - "3001:3000/tcp" # Web UI setup
+    volumes:
+      - adguard_work:/opt/adguardhome/work
+      - adguard_conf:/opt/adguardhome/conf
+    networks:
+      - javid_internal
+      - javid_public
+
+  # ----------------------------------------------------------------------------
+  # 4. JAVID PANEL — Core Application & API Gateway
+  # ----------------------------------------------------------------------------
+  javid_panel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: javidvpn/javid-panel:latest
+    container_name: javid_panel
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-javid_admin}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-javid_db}?schema=public
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_INIT_EMAIL: ${ADMIN_INIT_EMAIL:-admin@javidvpn.ir}
+      ADMIN_INIT_PASSWORD: ${ADMIN_INIT_PASSWORD}
+      PANEL_DOMAIN: ${PANEL_DOMAIN:-localhost}
+      MEMORIAL_TRIBUTE_ENABLED: "true"
+      RATE_LIMIT_500KBPS_ENABLED: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - javid_internal
+      - javid_public
+    ports:
+      - "3000:3000"
+
+  # ----------------------------------------------------------------------------
+  # 5. Nginx Reverse Proxy with TLS
+  # ----------------------------------------------------------------------------
+  nginx:
+    image: nginx:alpine
+    container_name: javid_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - javid_panel
+    networks:
+      - javid_public
+
+networks:
+  javid_internal:
+    internal: true
+  javid_public:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:
+  adguard_work:
+  adguard_conf:
+```
+
+[مراحل واقعی نصب آزمایشی](INSTALLATION.md) · [آمادگی انتشار](RELEASE_READINESS.md)
