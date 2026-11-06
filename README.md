@@ -4,11 +4,11 @@
 
 **مدیریت زیرساخت VPN و اتصال نودهای مستقل**
 
-![Version](https://img.shields.io/badge/version-1.1.105--dev-f04452?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.1.106--dev-f04452?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-development-f6b35e?style=for-the-badge)
 ![CI](https://github.com/wisealii/JavaidPanel/actions/workflows/verify.yml/badge.svg)
 
-[**مستندات**](docs/index.html) · [**دمو**](docs/demo.html) · [**شروع مدیریت نودها**](docs/JAVID_NODE_API.md) · [**راهنمای آسان SSL**](docs/SSL_QUICKSTART.md) · [**وضعیت امکانات**](docs/FEATURES.md)
+[**مستندات**](docs/index.html) · [**دمو**](docs/demo.html) · [**اتصال نود و داشبورد مدیریتی**](docs/NODE_DASHBOARD.md) · [**API نودها**](docs/JAVID_NODE_API.md) · [**راهنمای آسان SSL**](docs/SSL_QUICKSTART.md) · [**وضعیت امکانات**](docs/FEATURES.md)
 
 </div>
 
@@ -16,7 +16,7 @@
 
 ## درباره JavaidPanel
 
-JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.105-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
+JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.106-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
 
 **تفاوت مهم:** اتصال API و عامل سلامت نود اکنون قابل اجرا و دارای تست آفلاین است، ولی هنوز به داشبورد اصلی پنل وصل نیست و موتور VPN یا تونل روی نود راه‌اندازی نمی‌کند. تأیید اتصال واقعی دو VPS و استقرار نهایی باقی مانده است.
 
@@ -102,3 +102,15 @@ python3 -m unittest discover -s tests -p 'test_ssl_wizard.py' -v
 [وضعیت کامل](docs/STATUS.md) · [نقشه توسعه](docs/ROADMAP.md) · [راهنمای مشارکت](CONTRIBUTING.md)
 
 **توجه:** هیچ پروتکل، SSL، یا تونل تست‌نشده‌ای به‌عنوان قابلیت پایدار معرفی نمی‌شود.
+
+## داشبورد واقعی «اتصال نود» (آزمایشی)
+
+برای مدیریت نودها، یک صفحه **واقعی** روی همان API کنترلر اضافه شده است. این صفحه با دادهٔ زندهٔ API کار می‌کند و مانند دموی عمومی JavaidPanel ساختگی نیست. برای جلوگیری از دسترسی عمومی، فقط از طریق SSH Tunnel باز شود:
+
+```bash
+ssh -L 9443:127.0.0.1:9443 USER@CONTROL_VPS
+```
+
+در مرورگر دستگاه خودتان: `http://127.0.0.1:9443/admin/nodes`
+
+ساخت نود و دریافت اسکریپت/توکن مستقل، مشاهده آخرین heartbeat و ابطال دسترسی در همین صفحه انجام می‌شود. **این داشبورد درگاه مدیریتی مستقل کنترلر است و هنوز داخل Gateway اصلی پنل ادغام نشده؛ استقرار روی دو VPS تست نشده است.** [راهنمای مرحله‌به‌مرحله](docs/NODE_DASHBOARD.md).

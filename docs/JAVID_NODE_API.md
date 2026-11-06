@@ -106,3 +106,7 @@ python3 -m unittest discover -s tests -p 'test_ssl_wizard.py' -v
 ```
 
 آزمون‌ها درخواست واقعی localhost را با API اجرا می‌کنند، ولی گواهی Let's Encrypt، وضعیت سیستم‌عامل VPS و نصب systemd را آزمایش نمی‌کنند.
+
+## رابط مدیریتی نود (مرحله چهارم)
+
+صفحهٔ `/admin/nodes` از داخل سرویس کنترلر ارائه می‌شود و با همین REST API کار می‌کند، نه اطلاعات نمونه. **هیچ‌گاه آن را در Reverse Proxy عمومی فعال نکنید.** از طریق SSH Tunnel و localhost باز کنید؛ ورود با توکن مدیریتی فقط در حافظهٔ مرورگر است. [راهنمای کامل](NODE_DASHBOARD.md).

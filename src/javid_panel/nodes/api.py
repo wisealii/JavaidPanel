@@ -98,8 +98,54 @@ def make_handler(app: API):
                 raise NodeError('Expected JSON object')
             return obj
 
+        def serve_admin_dashboard(self, path: str) -> bool:
+            """Read-only static UI, restricted to the loopback management listener.
+
+            It is intentionally NOT exposed on a public domain. Administrators
+            use SSH -L to reach the loopback API from their own browser.
+            API calls still require the separately entered admin bearer token.
+            """
+            import ipaddress
+            import re
+            host = self.headers.get('Host', '')
+            if (self.server.server_address[0] not in ('127.0.0.1', '::1', 'localhost')
+                    or not ipaddress.ip_address(self.client_address[0]).is_loopback
+                    or not re.fullmatch(r'(?:127\.0\.0\.1|localhost|\[::1\])(?::[0-9]{1,5})?', host)):
+                self.respond(403, {'error': 'Admin dashboard is loopback-only'})
+                return True
+            names = {
+                '/admin/nodes': ('dashboard.html', 'text/html; charset=utf-8'),
+                '/admin/assets/dashboard.js': ('dashboard.js', 'text/javascript; charset=utf-8'),
+                '/admin/assets/dashboard.css': ('dashboard.css', 'text/css; charset=utf-8'),
+            }
+            if path not in names:
+                self.respond(404, {'error': 'Not found'})
+                return True
+            filename, mime = names[path]
+            try:
+                data = Path(__file__).with_name(filename).read_bytes()
+            except OSError:
+                self.respond(503, {'error': 'Dashboard assets not installed'})
+                return True
+            self.send_response(200)
+            self.send_header('Content-Type', mime)
+            self.send_header('Content-Length', str(len(data)))
+            self.send_header('Cache-Control', 'no-store')
+            self.send_header('X-Content-Type-Options', 'nosniff')
+            self.send_header('X-Frame-Options', 'DENY')
+            self.send_header('Referrer-Policy', 'no-referrer')
+            self.send_header('Content-Security-Policy',
+                "default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
+                "connect-src 'self'; img-src 'self'; form-action 'none'; "
+                "base-uri 'none'; frame-ancestors 'none'")
+            self.end_headers()
+            self.wfile.write(data)
+            return True
+
         def do_GET(self):
             path = urlsplit(self.path).path
+            if path == '/admin/nodes' or path.startswith('/admin/'):
+                return self.serve_admin_dashboard(path)
             if path == '/healthz':
                 return self.respond(200, {'status': 'ok', 'service': 'javid-node-control'})
             if path == '/api/v1/nodes':

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JavaidPanel | اتصال نود</title><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="/admin/assets/dashboard.css"></head>
+<body><main class="layout">
+<header class="top"><div><div class="brand">JAVAID<span>PANEL</span></div><h1>اتصال و مدیریت نودها</h1><small>Javid Node · ابزار مدیریتی آزمایشی، فقط از طریق SSH Tunnel</small></div><span class="badge">Node Control · Development</span></header>
+<div class="warning"><strong>امنیت:</strong> این داشبورد از داخل سرویس مدیریت نود اجرا می‌شود، نه از داخل پنل اصلی. آن را به اینترنت یا Reverse Proxy عمومی متصل نکنید. با تونل SSH و نشانی <span dir="ltr">http://127.0.0.1:9443/admin/nodes</span> باز کنید. توکن مدیر در مرورگر ذخیره نمی‌شود.</div>
+<div class="grid">
+<section class="card"><h2>۱. دسترسی مدیر</h2><label for="admin-token">توکن مدیریتیِ فایل خصوصی کنترلر</label><input type="password" id="admin-token" autocomplete="off" spellcheck="false" placeholder="توکن را وارد کنید">
+<div class="toolbar" style="margin-top:12px"><button class="primary" id="login">ورود و دریافت نودها</button><button class="ghost" id="logout" disabled>پاک‌کردن دسترسی</button><button class="ghost" id="refresh" disabled>به‌روزرسانی</button></div><p class="muted" style="margin-top:9px">توکن را روی سرور از فایل <span class="mono">/etc/javid-panel/node-control.json</span> با دسترسی مدیر بخوانید و در اختیار دیگران نگذارید.</p></section>
+<section class="card"><h2>وضعیت کنترلر</h2><div class="summary"><span>همه: <strong id="count-all">—</strong></span><span>آنلاین: <strong id="count-online">—</strong></span><span>آفلاین: <strong id="count-offline">—</strong></span></div><p class="muted">وضعیت آنلاین فقط بر اساس heartbeat معتبر و تازهٔ عامل نود محاسبه می‌شود. ثبت نود به معنی ایجاد تونل VPN نیست.</p><p id="message" role="status" aria-live="polite"></p></section>
+</div>
+<section class="card hidden" id="create-section"><h2>۲. افزودن سرور و ساخت دستور نصب</h2>
+<form id="create-form"><div class="fields"><label>نام نمایشی نود<input id="node-name" required maxlength="100" placeholder="Germany-01" autocomplete="off"></label><label>IP یا دامنه سرور نود<input id="node-host" required maxlength="253" placeholder="203.0.113.24" autocomplete="off"></label>
+<label>آدرس HTTPS پنل<input id="panel-url" required placeholder="https://panel.example.org" autocomplete="url"></label><label>اعتبار توکن (دقیقه)<input id="ttl" type="number" min="1" max="30" value="10" required></label></div>
+<div class="toolbar" style="margin-top:14px"><button type="submit" class="primary" id="create-button">ایجاد نود و دستور اختصاصی</button></div></form>
+<div class="hidden" id="invitation"><h2 style="margin-top:19px">۳. اجرای دستور روی VPS دوم</h2><p class="muted">این دستور را ابتدا بررسی و سپس روی سرور نود اجرا کنید. توکن جداگانه و فقط همین یک‌بار نمایش داده می‌شود.</p>
+<div class="mono code" id="install-command"></div><button class="tight" id="copy-command">کپی دستور</button>
+<p style="margin-top:15px"><strong>توکن یک‌بارمصرف</strong> <span class="muted">(در URL یا دستور قرار ندهید)</span></p>
+<div class="mono code secret" id="invitation-token"></div><button class="tight" id="copy-token">کپی توکن</button> <button class="tight danger" id="hide-token">پاک‌کردن توکن از صفحه</button>
+<p class="muted" id="expiry"></p></div></section>
+<section class="card hidden" id="nodes-section"><div class="toolbar" style="justify-content:space-between"><h2>نودهای ثبت‌شده</h2><small>به‌روزرسانی خودکار هر ۱۵ ثانیه هنگام ورود</small></div>
+<div class="tablewrap"><table><thead><tr><th>نام</th><th>IP / دامنه</th><th>وضعیت</th><th>آخرین heartbeat</th><th>عملیات</th></tr></thead><tbody id="nodes-body"><tr><td colspan="5">در حال بارگذاری...</td></tr></tbody></table></div>
+<details><summary>معنی وضعیت‌ها</summary><p class="muted">pending = منتظر نصب؛ claimed = ثبت‌شده اما بدون گزارش سلامت؛ online = دریافت heartbeat تازه؛ offline = گزارش سلامت منقضی شده؛ revoked = دسترسی نود باطل شده.</p></details></section>
+<footer class="footer">JavaidPanel · Node Control API · توسعه‌ای. اتصال واقعی VPN، نصب تونل و SSL عمومی در این صفحه اجرا نمی‌شوند.</footer>
+</main><script src="/admin/assets/dashboard.js" defer></script></body></html>
