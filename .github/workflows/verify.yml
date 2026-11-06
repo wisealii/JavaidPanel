@@ -32,6 +32,10 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_node_dashboard.py' -v
       - name: Test safe controller upgrade + rollback
         run: python3 -m unittest discover -s tests -p 'test_node_upgrade.py' -v
+      - name: Test release-readiness detection and fail on source blockers
+        run: |
+          python3 -m unittest discover -s tests -p 'test_release_readiness.py' -v
+          python3 tools/release-readiness.py --json
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'
