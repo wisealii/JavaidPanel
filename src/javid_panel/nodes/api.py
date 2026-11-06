@@ -110,7 +110,7 @@ def make_handler(app: API):
             host = self.headers.get('Host', '')
             if (self.server.server_address[0] not in ('127.0.0.1', '::1', 'localhost')
                     or not ipaddress.ip_address(self.client_address[0]).is_loopback
-                    or not re.fullmatch(r'(?:127\\.0\\.0\\.1|localhost|\\[::1\\])(?::[0-9]{1,5})?', host)):
+                    or not re.fullmatch(r'(?:127\.0\.0\.1|localhost|\[::1\])(?::[0-9]{1,5})?', host)):
                 self.respond(403, {'error': 'Admin dashboard is loopback-only'})
                 return True
             names = {
