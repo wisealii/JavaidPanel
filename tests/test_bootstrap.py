@@ -4,6 +4,8 @@ These tests never attempt to install packages, modify services, or access GitHub
 """
 from __future__ import annotations
 import hashlib
+import os
+import tempfile
 import pathlib
 import re
 import subprocess
@@ -64,6 +66,47 @@ class BootstrapTests(unittest.TestCase):
         p = run("--self-test")
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertIn("No installation performed.", p.stdout)
+
+
+    def _piped_bootstrap(self, bad_core: bool = False) -> subprocess.CompletedProcess[str]:
+        """Simulate curl | bash with a local fake curl; no network or root needed."""
+        with tempfile.TemporaryDirectory() as directory:
+            work = pathlib.Path(directory)
+            bin_dir = work / "bin"
+            bin_dir.mkdir()
+            fake_curl = bin_dir / "curl"
+            fake_curl.write_text(
+                "#!/bin/sh\n"
+                "set -eu\n"
+                "output=''\n"
+                "while [ $# -gt 0 ]; do\n"
+                "  if [ \"$1\" = '-o' ]; then shift; output=$1; fi\n"
+                "  shift\n"
+                "done\n"
+                "test -n \"$output\"\n"
+                "cp \"$JAVID_TEST_CORE\" \"$output\"\n"
+            )
+            fake_curl.chmod(0o755)
+            source = work / "mock-core.sh"
+            source.write_bytes(b"tampered content\n" if bad_core else CORE.read_bytes())
+            env = os.environ.copy()
+            env["PATH"] = str(bin_dir) + os.pathsep + env["PATH"]
+            env["JAVID_TEST_CORE"] = str(source)
+            return subprocess.run(
+                ["bash", "-s", "--", "--self-test"],
+                input=SCRIPT.read_text(), cwd=work, env=env,
+                capture_output=True, text=True, timeout=25,
+            )
+
+    def test_piped_one_command_valid_engine(self) -> None:
+        result = self._piped_bootstrap()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("No installation performed.", result.stdout)
+
+    def test_piped_one_command_rejects_tampered_engine(self) -> None:
+        result = self._piped_bootstrap(bad_core=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("SHA-256 mismatch", result.stderr)
 
     def test_node_check_no_install(self) -> None:
         p = subprocess.run(["bash", str(NODE_SCRIPT), "--check"],
