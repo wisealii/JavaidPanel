@@ -1,0 +1,38 @@
+name: گزارش خطا
+description: گزارش یک خطای قابل بازتولید در JavaidPanel
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "اطلاعات محرمانه، کلید خصوصی، رمز و توکن را اینجا قرار ندهید."
+  - type: input
+    id: version
+    attributes:
+      label: نسخه JavaidPanel
+      placeholder: 1.1.104-dev
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: مراحل بازتولید
+      description: دقیق و بدون اطلاعات حساس
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: رفتار مورد انتظار
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: رفتار واقعی / پیام خطا
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: سیستم‌عامل، معماری و محیط اجرا

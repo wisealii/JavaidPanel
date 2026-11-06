@@ -1,3 +1,12 @@
+## 1.1.104-dev — public repository documentation refresh
+
+- Publish an independent JavaidPanel README and a static interactive UI demo, explicitly labeled as mock data.
+- Add structured documentation for features, nodes, future secure node enrollment, SSL, architecture, troubleshooting, development and roadmap.
+- Expand protocol/tunnel status definitions and add GitHub issue/PR templates.
+- Remove comparison-project marketing references from user-facing documentation while retaining required open-source provenance and license notices.
+- State clearly that the Docker Compose file is currently not deployable (missing Dockerfile and Nginx configuration).
+- **No new runtime service, tested VPS install, or functioning node enrollment is claimed in this documentation update.**
+
 ## 1.1.104-dev — deployment follow-up
 - Add offline tests simulating a piped `curl | bash` bootstrap with a correct engine and a tampered engine.
 - Clarify remote one-command options for SSL, health checks and base node activation when the repository is not cloned.
