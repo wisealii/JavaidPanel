@@ -22,6 +22,8 @@ jobs:
         run: bash install.sh --self-test
       - name: Run offline bootstrap regression tests
         run: python3 -m unittest discover -s tests -p 'test_bootstrap.py' -v
+      - name: Unit tests for offline Javid Node enrollment core
+        run: python3 -m unittest discover -s tests -p 'test_node_enrollment.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'
