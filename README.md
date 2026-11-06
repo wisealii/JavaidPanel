@@ -2,55 +2,61 @@
 
 # JavaidPanel
 
-**سامانه مدیریت زیرساخت VPN و نودهای چندسروری**
+**پنل مدیریت VPN · نودها · سرورها · ابزارهای شبکه**
 
-**JP UI · مشکی / قرمز / سفید**
+**JP UI — Black / Red / White**
 
-![Version](https://img.shields.io/badge/version-1.1.102--dev-f04452?style=for-the-badge)
-![Install](https://img.shields.io/badge/installer-guarded-f5bd63?style=for-the-badge)
-![Nodes](https://img.shields.io/badge/nodes-under%20development-848492?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.1.103--dev-f04452?style=for-the-badge) ![Installer](https://img.shields.io/badge/installer-one--command-eeeeee?style=for-the-badge) ![Testing](https://img.shields.io/badge/VPS%20validation-pending-ffc36b?style=for-the-badge)
 
-[صفحه معرفی و مستندات](docs/index.html) · [نصب](docs/INSTALLATION.md) · [مقایسه نصب](docs/INSTALL_UX.md) · [وضعیت واقعی](docs/STATUS.md)
+[مستندات](docs/index.html) · [راهنمای نصب](docs/INSTALLATION.md) · [وضعیت قابلیت‌ها](docs/STATUS.md) · [مجوز و منابع](SOURCES.md)
 
 </div>
 
-## درباره پروژه
+## نصب روی VPS با یک دستور
 
-JavaidPanel پروژهٔ مدیریت سرورها، کاربران، تونل‌ها، نودها و زیرساخت VPN است. طراحی عمومی سایت با هویت JP UI ارائه شده و مسیر نصب هدف از تجربه NX Panel و PasarGuard الهام می‌گیرد.
+**برای VPS تازه با Ubuntu 24.04 یا Debian 12/13، معماری x86_64 و systemd:**
 
-## هشدار مهم درباره نسخه قبلی
+```bash
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash
+```
 
-در بازبینی نسخه `1.1.101` مشخص شد اسکریپت پنل فقط یک کانتینر Node با دستور `sleep infinity` اجرا می‌کند و اسکریپت نود هم سرویس نمایشی مشابهی بالا می‌آورد. این‌ها **نصب واقعی VPN Panel یا اتصال امن نود نیستند**.
+این دستور **یک بوت‌استرپ واقعی** است: نصب‌کننده یک‌فایلی و پین‌شدهٔ مبتنی بر **AlirezaPanel 2.8.0** را از همین مخزن می‌گیرد، هش SHA-256 را بررسی می‌کند و پس از تأیید، راه‌اندازی VPN-UI v1.9.4 و AdGuard Home v0.107.79 را اجرا می‌کند.
 
-برای جلوگیری از ادعای موفقیت نادرست، نسخه `1.1.102-dev` نصب ساختگی را متوقف می‌کند. **این نسخه هنوز آماده نصب و بهره‌برداری واقعی روی VPS نیست.**
+**نکات مهم:**
+- نصب مستقیم روی VPS واقعی هنوز توسط ما آزمایش نشده است؛ ابتدا روی سرور آزمایشی و پس از مطالعه اسکریپت اجرا شود.
+- این **هستهٔ عملیاتی پایه** است، نه نسخهٔ تکمیل‌شدهٔ Javid Node یا فروش و پشتیبانی؛ این ماژول‌های جدید هنوز به Gateway متصل نشده‌اند.
+- برای حفظ سازگاری، مسیرهای سرویس داخلی همچنان `alirezapanel` هستند.
+- نصب‌کننده روی Ubuntu 20.04/22.04/26.04 مجاز نیست تا پشتیبانی واقعی تأیید شود.
+- برای SSL معتبر دامنه، DNS و امکان پاسخگویی به ACME ضروری است.
+- پروژه از کد GPL-3.0-or-later مشتق شده و نام/مجوز بالادست در `LICENSE` و `SOURCES.md` حفظ شده است.
 
-## بررسی VPS، بدون تغییر سیستم
+## پیش از نصب
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | bash -s -- --doctor
+```
+
+یا فایل‌های پروژه را کلون و قبل از اجرا بازبینی کن:
 
 ```bash
 git clone https://github.com/wisealii/JavaidPanel.git
 cd JavaidPanel
+bash install.sh --self-test
 sudo bash install.sh --doctor
-bash node-agent-install.sh --check
+sudo bash install.sh
 ```
 
-## دریافت گواهی مستقل
-
-اگر دامنه و پیش‌نیازها درست است:
+## پس از نصب
 
 ```bash
-sudo bash install.sh --ssl panel.example.org
+sudo bash install.sh --check
+sudo bash install.sh --ssl
 ```
 
-این فقط گواهی TLS می‌گیرد و **وب‌سرور نصب نمی‌کند**.
+فرمان `--ssl` ابزار مدیریت گواهی موجود در هستهٔ AlirezaPanel را پس از نصب راه می‌اندازد.
 
-## معماری هدف
+## محدودهٔ نسخهٔ آزمایشی
 
-- نصب واقعی و بدون پرسش با یک دستور و لینک setup یک‌بارمصرف
-- ویزارد گرافیکی برای مالک و آدرس و گواهی HTTPS
-- ایجاد نود با توکن یک‌بارمصرف و اتصال احراز هویت‌شده
-- مدیریت وضعیت، ارتقا و بکاپ با CLI
-- مدیریت VPN، اشتراک، سرویس و کاربران پس از تکمیل هسته
+هستهٔ VPN-UI و رابط AdGuard Home از سورس/انتشار پین‌شدهٔ بالادست نصب می‌شوند؛ اجزای اختصاصی و تجاری جدید جاوید و عامل نود مستقل هنوز آمادهٔ بهره‌برداری نیستند. دیدن پیام پایان نصب به معنای تأیید اتصال VPN و همهٔ پروتکل‌ها نیست.
 
-**مستندات:** [نصب](docs/INSTALLATION.md) · [مقایسه با NX/PasarGuard](docs/INSTALL_UX.md) · [مدیریت نودها](docs/NODES.md) · [وضعیت واقعی](docs/STATUS.md)
-
-فایل‌های Docker موجود نیز قبل از استفاده عملی باید بازبینی و تکمیل شوند. مجوزها و انتساب کدهای متن‌باز باید حفظ شود.
+[راهنمای نصب و رفع اشکال](docs/INSTALLATION.md) · [مسیر توسعه](docs/INSTALL_UX.md) · [وضعیت واقعی](docs/STATUS.md)
