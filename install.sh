@@ -1,89 +1,101 @@
 #!/usr/bin/env bash
-# JavaidPanel installation entrypoint (guarded bootstrap, 1.1.102-dev)
-# IMPORTANT: Not a full VPN installation until backend and node runtime are shipped.
+# JavaidPanel one-command installation bootstrap (1.1.103-dev)
+# Installation engine: pinned AlirezaPanel 2.8.0 (VPN-UI v1.9.4 + AdGuard Home v0.107.79)
+# GPL-3.0-or-later integration; see LICENSE, SOURCES.md.
 set -Eeuo pipefail
-VERSION="1.1.102-dev"
-red=$'\e[31m'; green=$'\e[32m'; yellow=$'\e[33m'; reset=$'\e[0m'
-say(){ printf '%s\n' "$*"; }
-error(){ printf '%sERROR: %s%s\n' "$red" "$*" "$reset" >&2; }
-info(){ printf '%s%s%s\n' "$green" "$*" "$reset"; }
-help_text(){
+umask 077
+VERSION=1.1.103-dev
+CORE_URL="https://raw.githubusercontent.com/wisealii/JavaidPanel/main/installer/core.sh"
+CORE_SHA256="c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c"
+CORE_LOCAL="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/installer/core.sh"
+usage(){
 cat <<'HELP'
-JavaidPanel guarded installer v1.1.102-dev
+JavaidPanel 1.1.103-dev — verified, one-command bootstrap
 
-Usage:
-  sudo bash install.sh --doctor        Inspect system without modifying it
-  sudo bash install.sh --ssl DOMAIN    Request a Let's Encrypt certificate for a domain
-  sudo bash install.sh --install       Check readiness for full installation
-  bash install.sh --help               Show this help
+  curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash
 
-STATUS: No working panel backend or node daemon is included in the current GitHub
-repository. The old installer launched 'sleep infinity' instead of a real panel.
-A full installation is intentionally blocked until a tested runtime is available.
+  sudo bash install.sh --doctor      Read-only local system check
+  bash install.sh --self-test        Verify bundled engine locally; do not install
+  sudo bash install.sh --ssl         Configure SSL after successful installation
+  sudo bash install.sh --check       Check installed core services
+  sudo bash install.sh --repair      Repair engine (review backups first)
+  sudo bash install.sh --enable-nodes Enable legacy integrated nodes
+
+SUPPORTED BY PINNED ENGINE: Ubuntu 24.04, Debian 12/13, x86_64, systemd.
+A fresh VPS is required for a first install. No live VPS install test has been completed.
+The engine is based on AlirezaPanel 2.8.0 and still uses its internal service paths.
+New Javid Node/business modules are NOT installed or enabled by this bootstrap.
 HELP
 }
-require_root(){ if (( EUID != 0 )); then error 'Run this action with sudo/root.'; exit 1; fi; }
+fail(){ printf 'JavaidPanel ERROR: %s\n' "$*" >&2; exit 1; }
 doctor(){
-  local failures=0
-  info "JavaidPanel $VERSION — preflight (read-only)"
+  printf 'JavaidPanel %s | system check (no changes)\n' "$VERSION"
   if [[ -r /etc/os-release ]]; then
-     . /etc/os-release
-     say "OS: ${PRETTY_NAME:-unknown} (${ID:-unknown} ${VERSION_ID:-unknown})"
-     case "${ID:-}:${VERSION_ID:-}" in
-       ubuntu:20.04) say "WARN: Ubuntu 20.04 is outside standard support; upgrade recommended.";;
-       ubuntu:22.04|ubuntu:24.04|ubuntu:26.04|debian:12|debian:13)
-         say 'OS recognized; not yet verified for production.';;
-       *) say 'WARN: platform not yet validated.';;
-     esac
-  else
-    error '/etc/os-release missing'; failures=$((failures+1))
-  fi
-  say "CPU architecture: $(uname -m)"
-  if command -v systemctl >/dev/null; then say 'systemd available'; else say 'WARN: systemd missing'; fi
-  for cmd in curl openssl python3 docker certbot; do
-     if command -v "$cmd" >/dev/null; then say "$cmd: installed"; else say "$cmd: absent"; fi
+    (
+      . /etc/os-release
+      printf 'OS: %s %s\n' "${ID:-unknown}" "${VERSION_ID:-unknown}"
+      case "${ID:-}:${VERSION_ID:-}" in
+        ubuntu:24.04|debian:12|debian:13) echo 'OS: supported by pinned engine';;
+        *) echo 'OS: not supported by pinned engine';;
+      esac
+    )
+  else echo 'OS: unable to identify'; fi
+  echo "Architecture: $(uname -m)"
+  for cmd in curl sha256sum systemctl python3; do
+    if command -v "$cmd" >/dev/null 2>&1; then echo "$cmd: available"; else echo "$cmd: missing"; fi
   done
-  if [[ -d /opt/javid-panel ]]; then
-    say 'Existing /opt/javid-panel detected. DO NOT overwrite or reinstall blindly.'
+  if [[ -e /etc/alirezapanel/owner || -e /opt/alirezapanel ]]; then
+    echo 'Existing AlirezaPanel installation detected; do not perform a fresh install.'
   fi
-  if command -v ss >/dev/null; then
-    for port in 80 443; do
-      if ss -ltn "sport = :$port" 2>/dev/null | grep -q LISTEN; then
-        say "TCP $port: in use"
-      else
-        say "TCP $port: no listener detected"
-      fi
-    done
-  fi
-  say 'Result: preflight only; does not verify running VPN or node features.'
-  return "$failures"
+  echo 'This check does not verify live server connectivity or VPN functionality.'
 }
-issue_ssl(){
-  require_root
-  local domain="${1:-}"
-  [[ "$domain" =~ ^[a-zA-Z0-9]([a-zA-Z0-9.-]*[a-zA-Z0-9])?$ ]] && [[ "$domain" == *.* ]] && [[ "$domain" != *..* ]] || {
-    error 'Provide a valid DNS name, e.g. vpn.example.org'; exit 2;
-  }
-  command -v certbot >/dev/null || { error 'certbot not installed. Install it with your OS package manager first.'; exit 2; }
-  say "Requesting certificate for $domain via certbot standalone (TCP 80 must be reachable)."
-  say 'This action obtains a certificate only. It does NOT configure a web server or bring up a panel.'
-  certbot certonly --standalone --non-interactive --agree-tos --register-unsafely-without-email -d "$domain"
-  info "Certbot complete. Certificate path: /etc/letsencrypt/live/$domain/"
-  say 'Configure HTTPS and renewal hooks for the actual backend after it is implemented.'
-}
-install(){
-  require_root
-  doctor || true
-  error "Installation blocked: the checked-in runtime is not complete."
-  say 'The previous installer started a placeholder Node.js process with sleep infinity.'
-  say 'It could not serve a dashboard or register real nodes. Reporting success would be unsafe.'
-  say 'See docs/INSTALLATION.md and docs/STATUS.md for the missing pieces.'
-  exit 2
-}
-case "${1:---help}" in
-  --doctor|doctor|--check) doctor;;
-  --ssl|ssl) issue_ssl "${2:-}";;
-  --install|install) install;;
-  -h|--help|help) help_text;;
-  *) error "Unknown option: $1"; help_text; exit 2;;
+mode="${1:---install}"
+case "$mode" in
+ --help|-h|help) usage; exit 0;;
+ --doctor|doctor) doctor; exit 0;;
+ --install|install|--self-test|--ssl|--check|--repair|--enable-nodes|--fix-restart) ;;
+ *) usage; fail "Unknown option: $mode";;
 esac
+[[ $# -le 1 ]] || fail 'Only one command flag is supported.'
+for cmd in sha256sum bash; do command -v "$cmd" >/dev/null 2>&1 || fail "Missing required tool: $cmd"; done
+if [[ "$mode" != "--self-test" && "$EUID" -ne 0 ]]; then
+  fail "Root privileges needed. Use: curl -fsSL $CORE_URL | sudo bash (or sudo bash install.sh)."
+fi
+if [[ "$mode" == --install || "$mode" == install ]]; then
+  [[ -r /etc/os-release ]] || fail '/etc/os-release missing.'
+  . /etc/os-release
+  case "${ID:-}:${VERSION_ID:-}" in
+    ubuntu:24.04|debian:12|debian:13) ;;
+    *) fail "Unsupported OS ${ID:-unknown} ${VERSION_ID:-unknown}; pinned core only supports Ubuntu 24.04 or Debian 12/13.";;
+  esac
+  [[ "$(uname -m)" == "x86_64" ]] || fail 'Only x86_64 is supported.'
+  command -v systemctl >/dev/null || fail 'systemd is required.'
+  [[ ! -e /opt/alirezapanel && ! -e /etc/alirezapanel ]] || fail 'Existing AlirezaPanel installation detected. Stop and use a backup/repair workflow.'
+fi
+temporary=""
+cleanup(){ if [[ -n "$temporary" && -e "$temporary" ]]; then rm -f -- "$temporary"; fi; }
+trap cleanup EXIT
+if [[ -f "$CORE_LOCAL" ]]; then
+  core="$CORE_LOCAL"
+else
+  command -v curl >/dev/null || fail 'curl is required to download the pinned engine.'
+  temporary="$(mktemp)"
+  curl -fLSs --retry 3 --connect-timeout 15 --max-time 180 "$CORE_URL" -o "$temporary" || fail 'Cannot download pinned engine.'
+  core="$temporary"
+fi
+printf '%s  %s\n' "$CORE_SHA256" "$core" | sha256sum --check --status || fail 'Engine SHA-256 mismatch. Stopping without executing downloaded code.'
+bash -n "$core" || fail 'Engine Bash syntax invalid.'
+if [[ "$mode" == "--self-test" ]]; then
+  bash "$core" --self-test
+else
+  # Reading from /dev/tty enables the interactive SSL/domain setup even when
+  # the bootstrap itself was supplied through a curl | sudo bash pipeline.
+  if [[ -r /dev/tty ]]; then
+    exec </dev/tty
+  fi
+  if [[ "$mode" == "--install" || "$mode" == "install" ]]; then
+    bash "$core"
+  else
+    bash "$core" "$mode"
+  fi
+fi

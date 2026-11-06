@@ -7,28 +7,28 @@ on:
 permissions:
   contents: read
 jobs:
-  basic-checks:
+  static:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate installer shell syntax
+      - name: Shell syntax and pinned source checksum
+        shell: bash
         run: |
           bash -n install.sh
+          bash -n installer/core.sh
           bash -n node-agent-install.sh
-      - name: Verify landing page and required docs
+          printf '%s  %s\n' 'c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c' 'installer/core.sh' | sha256sum --check
+      - name: Installer self-test (no system changes)
+        run: bash install.sh --self-test
+      - name: Validate docs and landing page
         run: |
           python3 - <<'PY'
-          from html.parser import HTMLParser
           from pathlib import Path
-          class Validator(HTMLParser):
-              pass
-          index = Path("docs/index.html")
-          assert index.exists()
-          text = index.read_text(encoding="utf-8")
-          Validator().feed(text)
-          for required in ["JavaidPanel", "JP UI", 'id="features"', 'id="install"']:
-              assert required in text, required
-          for name in ["INSTALLATION", "NODES", "TUNNELS", "ARCHITECTURE", "STATUS", "GITHUB_PAGES", "LICENSING"]:
-              assert Path(f"docs/{name}.md").exists(), name
-          print("Static website and documentation checks passed")
+          from html.parser import HTMLParser
+          class Validator(HTMLParser): pass
+          source=Path("docs/index.html").read_text()
+          Validator().feed(source)
+          assert "JavaidPanel" in source
+          for path in ["LICENSE","SOURCES.md","docs/INSTALLATION.md","docs/STATUS.md"]:
+              assert Path(path).is_file(),path
           PY
