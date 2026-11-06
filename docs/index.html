@@ -1,79 +1,74 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#090a0f" />
-<meta name="description" content="JavaidPanel — زیرساخت VPN، مدیریت سرورها، نودها و تونل‌ها در یک محیط یکپارچه" />
-<title>JavaidPanel — JP UI</title>
+<!doctype html>
+<html lang="fa" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="description" content="JavaidPanel · مستندات، راه‌اندازی، مدیریت نودها و گواهی HTTPS">
+<title>JavaidPanel | مستندات و نصب</title>
 <style>
-:root{color-scheme:dark;--bg:#090a0f;--ink:#fff;--muted:#aeb0bc;--red:#f04452;--redlight:#ff818d;--surface:#16171e;--line:#30313a;--white:#fbfbfd;--font:Tahoma,"Segoe UI",sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:var(--font);line-height:1.85;background:var(--bg);color:var(--ink)}a{color:inherit;text-decoration:none}button{font:inherit}a:focus-visible,button:focus-visible{outline:3px solid #ffbac0;outline-offset:4px}.wrap{max-width:1200px;margin:auto;padding:0 24px}
-header{position:sticky;top:0;z-index:9;border-bottom:1px solid #34313c;background:#090a0feb;backdrop-filter:blur(14px)}.top{min-height:77px;display:flex;align-items:center;justify-content:space-between;gap:24px}.logo{font-weight:900;font-size:20px;direction:ltr;letter-spacing:-.5px;display:flex;align-items:center;gap:12px}.logo b{color:var(--red)}.monogram{background:linear-gradient(135deg,#ff5a69,#8d1428);border-radius:13px;width:46px;height:46px;display:grid;place-items:center;box-shadow:0 8px 28px #f0445245;color:#fff;font-size:25px}nav{display:flex;gap:27px;font-size:13px;color:#dddde6}nav a:hover{color:var(--redlight)}.navlink{background:var(--white);color:#17181d!important;padding:9px 18px;border-radius:11px;font-weight:800}
-.hero{padding:107px 0 92px;overflow:hidden;position:relative}.hero:before{content:"";position:absolute;width:730px;height:630px;left:-300px;top:-245px;background:radial-gradient(ellipse,#f044522a 0%,transparent 67%);pointer-events:none}.hero-grid{display:grid;grid-template-columns:1fr 1.03fr;gap:56px;align-items:center;position:relative}.eyebrow{display:inline-block;border:1px solid #66343f;background:#311920;border-radius:50px;padding:4px 18px;color:#ff9ba5;font-size:12px;font-weight:800}.hero h1{font-size:clamp(37px,5vw,67px);line-height:1.4;letter-spacing:-1.2px;margin:24px 0}.hero h1 span{color:var(--red)}.hero p{color:var(--muted);font-size:17px;max-width:520px;margin:0}.actions{display:flex;flex-wrap:wrap;gap:12px;margin:30px 0}.btn{display:inline-flex;min-height:48px;align-items:center;justify-content:center;border-radius:12px;padding:8px 25px;font-size:14px;font-weight:bold;border:1px solid #62606a;transition:transform .2s}.btn:hover{transform:translateY(-3px)}.btn.primary{background:var(--red);border-color:var(--red);box-shadow:0 12px 34px #f0445230}.note{font-size:12px!important;color:#9c9eab!important}
-.preview{direction:ltr;background:linear-gradient(130deg,#2d2028,#111218);border-radius:24px;border:1px solid #66404b;padding:13px;box-shadow:0 30px 88px #000a;transform:rotate(-1deg)}.browser{background:#111218;border:1px solid #44414b;border-radius:15px;overflow:hidden}.bar{display:flex;gap:6px;align-items:center;padding:13px 15px;border-bottom:1px solid #363540}.bar i{width:9px;height:9px;border-radius:50%;background:#f05b69}.bar i:nth-child(2){background:#f5c26d}.bar i:nth-child(3){background:#58d29e}.bar small{margin:auto;color:#a9a9b6;font-size:10px}.dash{padding:24px;direction:rtl}.dash-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.dash-head strong{font-size:17px}.dash-head small{background:#442028;border-radius:7px;color:#ff939f;padding:5px 10px;font-size:10px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.metric{padding:13px;background:#202129;border:1px solid #343540;border-radius:11px}.metric span{color:#b9b9c4;font-size:10px}.metric strong{display:block;font-size:24px}.metric:first-child strong{color:#ff7481}.chart{padding:16px;background:#1c1d25;border:1px solid #343540;border-radius:12px}.chart p{margin:0 0 10px;color:#b9b9c4;font-size:11px}.bars{direction:ltr;display:flex;gap:7px;align-items:end;height:100px}.bars i{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(#ff6877,#852230)}.previewfoot{display:flex;justify-content:space-between;gap:8px;margin-top:15px;color:#b6b6c3;font-size:10px}
-section{padding:85px 0}.alt{background:#111218;border-block:1px solid #2c2d37}.heading{text-align:center;max-width:800px;margin:0 auto 37px}.heading h2{font-size:clamp(28px,3.5vw,42px);line-height:1.55;margin:0 0 8px}.heading p{color:var(--muted);margin:0}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature{background:var(--white);color:#17181d;padding:27px;border-radius:18px;min-height:214px;box-shadow:0 10px 35px #0002}.ico{width:47px;height:47px;border-radius:13px;background:#ffe5e8;color:#c52235;font-weight:900;font-size:22px;display:grid;place-items:center}.feature h3{margin:15px 0 5px;font-size:18px}.feature p{font-size:13px;color:#646570;margin:0}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.step{background:#1c1d25;border:1px solid #393943;padding:24px;border-radius:16px}.step b{font-size:30px;color:#ff7581}.step h3{margin:5px 0}.step p{margin:0;color:#b3b4bf;font-size:13px}.terminal{background:var(--white);color:#1a1b23;border-radius:17px;max-width:950px;margin:0 auto;overflow:hidden;direction:ltr}.terminalhead{display:flex;justify-content:space-between;align-items:center;gap:14px;background:#ededf1;border-bottom:1px solid #d7d7df;padding:12px 20px}.terminalhead span{font-weight:800;font-size:12px}.terminal button{cursor:pointer;background:#fff;border-radius:9px;border:1px solid #cccdd7;padding:7px 15px;color:#171821;font-size:12px}.terminal pre{white-space:pre;overflow-x:auto;padding:23px;margin:0;line-height:2;font-size:13px}.under{color:#ffb1b8;font-size:13px;text-align:center;margin-top:18px}.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.doc{border:1px solid #393a44;border-radius:16px;padding:26px;background:#1b1c23;transition:border-color .15s}.doc:hover{border-color:var(--red)}.doc h3{margin:0 0 8px}.doc p{margin:0;color:#aeb0bc;font-size:13px}
-footer{border-top:1px solid #31323b;padding:28px 0;color:#a4a5b1;font-size:12px}.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-@media(max-width:950px){nav{display:none}.hero-grid{grid-template-columns:1fr}.hero{padding:65px 0}.preview{max-width:650px;margin:auto}.grid,.steps,.docs{grid-template-columns:repeat(2,1fr)}}@media(max-width:610px){.wrap{padding:0 18px}.hero h1{font-size:38px}.grid,.steps,.docs{grid-template-columns:1fr}.metrics{gap:5px}.metric strong{font-size:19px}section{padding:60px 0}.preview{transform:none}.logo{font-size:16px}}
-</style>
-</head>
-<body>
-<header><div class="wrap top">
-<a class="logo" href="#home" aria-label="JavaidPanel"><span class="monogram">J</span><span>JAVAID<b>PANEL</b></span></a>
-<nav aria-label="منوی اصلی"><a href="#features">امکانات</a><a href="#architecture">ساختار</a><a href="#install">نصب</a><a href="#docs">مستندات</a></nav>
-<a class="navlink" href="https://github.com/wisealii/JavaidPanel">GitHub</a>
-</div></header>
-<main>
-<section class="hero" id="home"><div class="wrap hero-grid">
-<div><span class="eyebrow">JP UI · OPEN SOURCE INFRASTRUCTURE</span>
-<h1>زیرساختت را<br><span>هوشمندانه مدیریت کن.</span></h1>
-<p>JavaidPanel، محیطی یکپارچه برای مدیریت سرویس‌های VPN، سرورها، نودها، کاربران و ابزارهای اتصال بین سرورها.</p>
-<div class="actions"><a href="#install" class="btn primary">مشاهده راهنمای نصب</a><a href="#features" class="btn">آشنایی با امکانات</a></div>
-<p class="note">پروژه در مرحلهٔ توسعه و اعتبارسنجی است. پیش‌نمایش سمت چپ، دادهٔ نمایشی دارد.</p>
-</div>
-<div class="preview" aria-label="پیش‌نمایش شماتیک محیط پنل"><div class="browser">
-<div class="bar"><i></i><i></i><i></i><small>JavaidPanel / Overview</small></div>
-<div class="dash"><div class="dash-head"><strong>نمای کلی زیرساخت</strong><small>DEMO · PREVIEW</small></div>
-<div class="metrics"><div class="metric"><span>نودها</span><strong>08</strong></div><div class="metric"><span>سرویس‌ها</span><strong>1,248</strong></div><div class="metric"><span>سرورها</span><strong>04</strong></div></div>
-<div class="chart"><p>نمودار ترافیک · نمونهٔ بصری</p><div class="bars"><i style="height:44%"></i><i style="height:61%"></i><i style="height:50%"></i><i style="height:76%"></i><i style="height:59%"></i><i style="height:92%"></i><i style="height:73%"></i><i style="height:86%"></i><i style="height:64%"></i><i style="height:80%"></i><i style="height:93%"></i><i style="height:68%"></i></div></div>
-<div class="previewfoot"><span>JP UI Dashboard</span><span>اطلاعات صرفاً نمایشی هستند</span></div>
-</div></div></div>
-</div></section>
-<section class="alt" id="features"><div class="wrap"><div class="heading"><h2>همه‌چیز، در یک مرکز کنترل</h2><p>بخش‌های اصلی زیرساخت، با ساختاری روشن و قابل توسعه</p></div>
-<div class="grid">
-<article class="feature"><div class="ico">⌘</div><h3>مدیریت VPN</h3><p>متمرکزسازی مدیریت سرویس‌ها، اینباندها و تنظیمات ارتباطی.</p></article>
-<article class="feature"><div class="ico">⌁</div><h3>نودهای توزیع‌شده</h3><p>معماری چندسروری و ابزارهای کنترل وضعیت نودها.</p></article>
-<article class="feature"><div class="ico">⇄</div><h3>تونل‌های بین سروری</h3><p>مسیر توسعهٔ ابزارهای ارتباط VPS با VPS و مدیریت چرخهٔ اتصال.</p></article>
-<article class="feature"><div class="ico">◈</div><h3>کاربران و دسترسی‌ها</h3><p>ساختاری برای مدیریت کاربران، محدودیت مصرف و کنترل سطوح دسترسی.</p></article>
-<article class="feature"><div class="ico">◎</div><h3>پایش و وضعیت</h3><p>تمرکز بر مشاهدهٔ وضعیت سرور و رویدادهای مدیریتی.</p></article>
-<article class="feature"><div class="ico">⚙</div><h3>اسکریپت‌های نصب</h3><p>دسترسی مستقیم به فایل‌های نصب سرور و عامل نود در GitHub.</p></article>
-</div></div></section>
-<section id="architecture"><div class="wrap"><div class="heading"><h2>چطور ساختار پروژه شکل گرفته؟</h2><p>نقشهٔ ساده‌ای از اجزای موجود در ریپازیتوری</p></div>
-<div class="steps">
-<div class="step"><b>01</b><h3>مدیریت مرکزی</h3><p>پنل اصلی و فایل نصب‌کنندهٔ `install.sh` برای راه‌اندازی بخش مرکزی.</p></div>
-<div class="step"><b>02</b><h3>سرورهای جانبی</h3><p>عامل نود و اسکریپت مستقل `node-agent-install.sh` برای توسعهٔ چندسروری.</p></div>
-<div class="step"><b>03</b><h3>استقرار و نگهداری</h3><p>Docker Compose، مستندات و مسیر آزمون سازگاری پیش از استفادهٔ عملیاتی.</p></div>
-</div></div></section>
-<section class="alt" id="install"><div class="wrap"><div class="heading"><h2>شروع با کد منبع</h2><p>ابتدا اسکریپت‌ها را دریافت و بررسی کنید، سپس روی محیط آزمایشی اجرا کنید.</p></div>
-<div class="terminal"><div class="terminalhead"><span>Terminal · Safe first steps</span><button id="copy" type="button">کپی دستورات</button></div><pre id="commands">git clone https://github.com/wisealii/JavaidPanel.git
+:root{--bg:#090a0f;--panel:#15161d;--raised:#1b1c25;--line:#30313c;--red:#f04452;--red2:#ff7280;--white:#fdfdfe;--soft:#b5b5c2;--ink:#17181f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--white);font:15px/1.85 Tahoma,Arial,sans-serif}
+a{color:inherit;text-decoration:none}a:hover{color:var(--red2)}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--red2);outline-offset:3px}
+header{height:73px;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10;background:#090a0fee;backdrop-filter:blur(14px)}.top{max-width:1490px;margin:auto;height:100%;padding:0 30px;display:flex;align-items:center;gap:26px}
+.brand{display:flex;align-items:center;gap:12px;direction:ltr;font:900 19px Arial;letter-spacing:-.5px}.brand b{color:var(--red)}.mark{display:grid;place-items:center;width:43px;height:43px;border-radius:12px;background:var(--red);color:white;font-size:28px;box-shadow:0 8px 35px #f0445240}.top nav{display:flex;gap:22px;margin-right:auto;color:#d6d6de;font-size:13px}.top .github{padding:8px 15px;background:white;color:#16161c;border-radius:10px;font-size:12px;font-weight:bold}
+.layout{display:grid;grid-template-columns:246px minmax(0,1fr) 194px;gap:0;max-width:1490px;margin:auto;min-height:calc(100vh - 73px)}
+.sidebar{border-left:1px solid var(--line);position:sticky;top:73px;align-self:start;height:calc(100vh - 73px);overflow:auto;padding:30px 18px 32px}.aside-label{color:#787a88;font-size:11px;font-weight:900;margin:20px 13px 8px}.sidebar a{display:block;border-radius:9px;padding:8px 13px;font-size:13px;color:#d3d3de}.sidebar a:hover,.sidebar a.active{background:#42212a;color:#ff98a2}.sidebar a.active{border-right:3px solid var(--red)}
+.toc{border-right:1px solid var(--line);position:sticky;top:73px;align-self:start;height:calc(100vh - 73px);padding:32px 20px;color:#c8c8d2}.toc strong{font-size:12px}.toc a{font-size:12px;display:block;color:#8e90a0;padding:6px 0}.toc a:hover{color:var(--red2)}
+.content{padding:36px 58px 100px;min-width:0}.crumb{color:#a1a1af;font-size:12px}.crumb b{color:#ff8692}.hero{padding:48px 0 55px;border-bottom:1px solid var(--line)}.pill{display:inline-flex;color:#ffa0a9;background:#351a23;border:1px solid #6c3241;padding:3px 14px;border-radius:99px;font-size:11px;font-weight:bold}.hero h1{font-size:clamp(37px,4.4vw,63px);line-height:1.37;margin:22px 0;letter-spacing:-1px}.hero h1 em{font-style:normal;color:var(--red)}.hero p{font-size:16px;color:var(--soft);max-width:750px}.buttons{display:flex;flex-wrap:wrap;gap:11px;margin:27px 0}.btn{border-radius:11px;padding:9px 20px;border:1px solid #62616b;font-size:13px;font-weight:bold;display:inline-flex;align-items:center}.btn.main{background:var(--red);border-color:var(--red);color:white}
+.status{border-right:3px solid #e9aa53;background:#2b241e;color:#f2d7a9;border-radius:8px;padding:12px 17px;font-size:12px;max-width:780px}
+section{scroll-margin-top:105px;padding:44px 0;border-bottom:1px solid #30303a}section h2{font-size:27px;margin:0 0 11px}section p{color:var(--soft);margin-top:0}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:24px 0}.card{background:#f9f9fb;color:#20212a;border-radius:14px;padding:24px;min-height:177px;box-shadow:0 8px 27px #0002}.card .symbol{display:grid;place-items:center;width:43px;height:43px;background:#ffe4e7;color:#c8243b;border-radius:12px;font-weight:900;font-size:20px}.card h3{font-size:16px;margin:12px 0 5px}.card p{color:#666775;font-size:12px;margin:0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin:22px 0}.step{border:1px solid var(--line);border-radius:12px;padding:20px;background:#171820}.step b{color:var(--red2);font-size:24px}.step h3{margin:7px 0;font-size:14px}.step p{font-size:12px;margin:0}
+.install{border:1px solid #4c404a;border-radius:15px;overflow:hidden;background:#181920;margin:24px 0}.install h3{padding:19px 22px;margin:0;border-bottom:1px solid #36343d}.switches{display:flex;gap:8px;flex-wrap:wrap;padding:15px 19px}.switches button{border:1px solid #43444e;color:#dedee7;background:#25262e;border-radius:9px;padding:8px 15px;font-size:12px}.switches button[aria-pressed="true"]{background:#6b2833;border-color:#ee6978;color:#fff}.terminal{margin:0 19px 19px;border:1px solid #dddde5;background:#fafafd;color:#22232d;border-radius:11px;overflow:hidden;direction:ltr}.terminalhead{padding:9px 14px;border-bottom:1px solid #dddde5;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#f0f0f4}.terminalhead span{font-size:12px;font-weight:bold}.terminal button{padding:4px 12px;background:#fff;border:1px solid #d4d5dc;border-radius:8px;color:#25252e;font-size:12px}.terminal pre{white-space:pre;overflow:auto;line-height:2;font-size:12px;margin:0;padding:19px}
+table{width:100%;border-collapse:collapse;font-size:12px;text-align:right;overflow:hidden}th,td{padding:12px;border-bottom:1px solid var(--line)}th{background:#22232d}td{color:#d0d0da}td:first-child{color:#ff919c}code{font-family:Consolas,monospace;background:#272730;border-radius:4px;padding:1px 4px}
+.docs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.docs a{background:#1a1b23;border:1px solid #393943;padding:20px;border-radius:12px}.docs a:hover{border-color:var(--red)}.docs b{display:block}.docs small{color:#999ba8}
+footer{margin:40px 0 0;color:#8c8d9a;font-size:12px}
+@media(max-width:1200px){.layout{grid-template-columns:210px minmax(0,1fr)}.toc{display:none}.content{padding:35px 35px 90px}}@media(max-width:780px){.layout{display:block}.sidebar{height:auto;position:static;display:flex;overflow:auto;gap:8px;border:0;border-bottom:1px solid var(--line);padding:10px 18px}.aside-label{display:none}.sidebar a{white-space:nowrap}.content{padding:24px 18px 70px}.top nav{display:none}.top{padding:0 17px}.brand{font-size:15px}.cards,.steps{grid-template-columns:1fr}.docs{grid-template-columns:1fr}.hero{padding:27px 0 45px}.hero h1{font-size:36px}.top .github{margin-right:auto}table{font-size:11px}}
+</style></head><body>
+<header><div class="top"><a class="brand" href="#overview"><span class="mark">J</span><span>JAVAID<b>PANEL</b></span></a><nav><a href="#overview">معرفی</a><a href="#install">نصب</a><a href="#ssl">گواهی‌ها</a><a href="#nodes">نودها</a><a href="#resources">مستندات</a></nav><a class="github" href="https://github.com/wisealii/JavaidPanel">GitHub ↗</a></div></header>
+<div class="layout">
+<aside class="sidebar" aria-label="فهرست راهنما"><div class="aside-label">شروع کار</div><a class="active" href="#overview">معرفی جاوید پنل</a><a href="#features">قابلیت‌ها</a><a href="#install">نصب سریع</a><a href="#steps">مراحل راه‌اندازی</a><div class="aside-label">مدیریت پنل</div><a href="#ssl">گواهی SSL / TLS</a><a href="#nodes">اتصال نود</a><a href="#comparison">مقایسه نصب</a><div class="aside-label">توسعه</div><a href="#resources">مستندات</a><a href="STATUS.md">وضعیت پروژه</a><a href="INSTALL_UX.md">برنامه توسعه</a></aside>
+<main class="content"><div class="crumb">مستندات / <b>JavaidPanel</b> / شروع کار</div>
+<div class="hero" id="overview"><span class="pill">JP UI · 1.1.102-dev · DOCUMENTATION</span><h1>مدیریت زیرساخت،<br><em>واضح و یکپارچه.</em></h1><p>JavaidPanel محیطی برای مدیریت سرورها، نودها و سرویس‌های VPN است. اسکریپت‌های نصب، راهنماهای گام‌به‌گام و وضعیت توسعه را در همین صفحه ببینید.</p><div class="buttons"><a href="#install" class="btn main">شروع راه‌اندازی ←</a><a href="https://github.com/wisealii/JavaidPanel" class="btn">مشاهده سورس</a></div><div class="status">توجه: این نسخه آزمایشی است. هستهٔ عملیاتی پنل و عامل نود هنوز در مخزن حاضر نیستند؛ نصب کامل تا آماده‌شدن آن‌ها مسدود است. دستورات پایین صرفاً بررسی VPS و صدور مستقل SSL را انجام می‌دهند.</div></div>
+<section id="features"><h2>یک پنل، چند بخش اصلی</h2><p>ساختار محصول با هویت اختصاصی مشکی، سفید و قرمز JP UI.</p><div class="cards">
+<div class="card"><div class="symbol">⌘</div><h3>مدیریت سرویس‌ها</h3><p>معماری هدف برای کاربران، اینباندها و مدیریت متمرکز سرویس‌های VPN.</p></div>
+<div class="card"><div class="symbol">⇆</div><h3>نودهای توزیع‌شده</h3><p>تعریف و نظارت نودها با مسیر توسعهٔ احراز هویت امن.</p></div>
+<div class="card"><div class="symbol">◇</div><h3>گواهی و امنیت</h3><p>SSL با دامنه و Certbot، همراه با برنامه اتصال ایمن به backend.</p></div></div></section>
+<section id="install"><h2>نصب و بررسی VPS</h2><p>در تجربهٔ نهایی، مانند NX Panel نصب با یک دستور و بدون سؤال آغاز می‌شود و تنظیمات در ویزارد تکمیل می‌شوند. فعلاً مرحلهٔ بررسی و صدور گواهی در دسترس است.</p>
+<div class="install"><h3>انتخاب عملیات</h3><div class="switches"><button data-mode="doctor" aria-pressed="true">بررسی VPS</button><button data-mode="ssl" aria-pressed="false">صدور SSL</button><button data-mode="node" aria-pressed="false">بررسی نود</button><button data-mode="install" aria-pressed="false">نصب کامل (مسدود)</button></div>
+<div class="terminal"><div class="terminalhead"><span id="commandLabel">VPS preflight · read-only</span><button id="copy" type="button">کپی</button></div><pre id="commands">git clone https://github.com/wisealii/JavaidPanel.git
 cd JavaidPanel
-bash -n install.sh
-bash -n node-agent-install.sh</pre></div>
-<p class="under">نصب عملیاتی و سازگاری سیستم‌عامل‌ها هنوز نیازمند آزمون مستقل است. <a href="INSTALLATION.md" style="text-decoration:underline">راهنمای نصب و هشدارها</a></p>
-</div></section>
-<section id="docs"><div class="wrap"><div class="heading"><h2>مستندات پروژه</h2><p>از نصب و راه‌اندازی تا نودها و وضعیت قابلیت‌های واقعی</p></div><div class="docs">
-<a class="doc" href="INSTALLATION.md"><h3>نصب و راه‌اندازی</h3><p>پیش‌نیازهای VPS، بررسی اسکریپت و اجرای آزمایشی.</p></a>
-<a class="doc" href="NODES.md"><h3>مدیریت نودها</h3><p>نصب عامل، امنیت ارتباط و معیارهای اعتبارسنجی.</p></a>
-<a class="doc" href="TUNNELS.md"><h3>تونل‌ها</h3><p>معرفی روش‌ها و شرایط آماده‌شدن هر آداپتر.</p></a>
-<a class="doc" href="ARCHITECTURE.md"><h3>معماری</h3><p>اجزای موجود، نقش فایل‌ها و ساختار توسعه.</p></a>
-<a class="doc" href="STATUS.md"><h3>وضعیت فنی</h3><p>تفکیک قابلیت‌های توصیف‌شده از موارد واقعاً آزمایش‌شده.</p></a>
-<a class="doc" href="GITHUB_PAGES.md"><h3>انتشار صفحه</h3><p>راهنمای فعال‌سازی GitHub Pages.</p></a>
-</div></div></section></main>
-<footer><div class="wrap foot"><span>© JavaidPanel · JP UI</span><span>Black / Red / White · <a href="https://github.com/wisealii/JavaidPanel">Source on GitHub</a></span></div></footer>
+sudo bash install.sh --doctor</pre></div></div>
+<div class="status">برای SSL دامنه را به IP سرور اشاره بدهید، پورت TCP 80 را برای ACME باز بگذارید و Certbot را نصب کنید. صدور گواهی به معنی فعال‌شدن پنل نیست.</div></section>
+<section id="steps"><h2>مراحل نصب نهایی</h2><p>ترتیب هدف شبیه NX Panel؛ امکاناتی که هنوز تکمیل نشده‌اند به‌صراحت مشخص شده‌اند.</p><div class="steps">
+<div class="step"><b>01</b><h3>نصب یک‌دستوری</h3><p>پیش‌نیازها، هسته واقعی، سلامت سرویس و حفاظت از نصب قبلی.</p></div>
+<div class="step"><b>02</b><h3>ویزارد وب و SSL</h3><p>توکن یک‌بارمصرف، ساخت ادمین، دامنه و مدیریت HTTPS.</p></div>
+<div class="step"><b>03</b><h3>ثبت اولین نود</h3><p>ایجاد نود با اعتبار یک‌بارمصرف و کنترل اتصال واقعی.</p></div></div></section>
+<section id="ssl"><h2>گواهی SSL / TLS</h2><p>ابزار فعلی می‌تواند با Certbot و اعتبارسنجی HTTP-01 گواهی دامنه بگیرد. در نسخه نهایی، نصب و تمدید گواهی باید از داخل تنظیمات پنل انجام شود، مشابه امکانات NX Panel و PasarGuard.</p>
+<a class="btn" href="INSTALLATION.md">جزئیات صدور گواهی و پیش‌نیازها ←</a></section>
+<section id="nodes"><h2>مدیریت نودها</h2><p>نصب‌کنندهٔ نود قدیمی صرفاً کانتینر نمایشی اجرا می‌کرد؛ برای جلوگیری از اشتباه، نصب آن تا وجود daemon عملیاتی و اعتبارسنجی mTLS مسدود است.</p><a class="btn" href="NODES.md">معماری نود و آزمون‌های لازم ←</a></section>
+<section id="comparison"><h2>مقایسه روش نصب</h2><p>نتیجه بررسی مستندات رسمی NX Panel و PasarGuard در مقابل وضعیت واقعی JavaidPanel.</p>
+<table><tr><th>بخش</th><th>NX Panel</th><th>PasarGuard</th><th>JavaidPanel</th></tr>
+<tr><td>نصب</td><td>یک دستور، ویزارد وب</td><td>اسکریپت نصب</td><td>preflight؛ نصب کامل مسدود</td></tr>
+<tr><td>SSL</td><td>مدیریت گواهی و ACME</td><td>دامنه و HTTPS</td><td>دریافت مستقل با Certbot</td></tr>
+<tr><td>نود</td><td>توکن یک‌بارمصرف / SSH</td><td>اسکریپت مستقل</td><td>در انتظار daemon واقعی</td></tr>
+<tr><td>مدیریت سرویس</td><td>CLI و ابزارهای مدیریت</td><td>اسکریپت‌ها</td><td>در انتظار backend</td></tr></table>
+<p style="margin-top:14px;font-size:12px"><a href="https://docs.nx-panel.org/fa/start/install-panel">منبع NX Panel ↗</a> · <a href="https://docs.pasarguard.org/en/panel/installation/">منبع PasarGuard ↗</a></p></section>
+<section id="resources"><h2>مرکز مستندات</h2><p>راهنماها و وضعیت توسعه، بدون ادعاهای تأییدنشده.</p><div class="docs">
+<a href="INSTALLATION.md"><b>نصب و SSL</b><small>پیش‌نیازها و دستورات امن</small></a>
+<a href="NODES.md"><b>مدیریت نودها</b><small>ثبت، احراز هویت و پایداری</small></a>
+<a href="INSTALL_UX.md"><b>طرح نصب شبیه NX</b><small>ویزارد، توکن و معیار پذیرش</small></a>
+<a href="STATUS.md"><b>وضعیت واقعی پروژه</b><small>قابلیت‌های موجود و موارد ناقص</small></a>
+<a href="TUNNELS.md"><b>تونل‌ها</b><small>طرح و معیارهای تست</small></a>
+<a href="ARCHITECTURE.md"><b>معماری</b><small>اجزای سورس و سرویس‌ها</small></a></div></section>
+<footer>JavaidPanel · JP UI · نسخه توسعه‌ای 1.1.102-dev · <a href="https://github.com/wisealii/JavaidPanel">GitHub</a></footer></main>
+<aside class="toc"><strong>در این صفحه</strong><a href="#overview">معرفی</a><a href="#features">امکانات</a><a href="#install">نصب VPS</a><a href="#steps">مراحل راه‌اندازی</a><a href="#ssl">SSL</a><a href="#nodes">نودها</a><a href="#comparison">مقایسه</a><a href="#resources">مستندات</a></aside></div>
 <script>
-const copy=document.getElementById("copy");
-copy.addEventListener("click",async()=>{const value=document.getElementById("commands").textContent;try{await navigator.clipboard.writeText(value);copy.textContent="کپی شد ✓";setTimeout(()=>copy.textContent="کپی دستورات",1800)}catch{copy.textContent="متن را دستی انتخاب کنید"}});
-</script>
-</body></html>
+const examples={
+doctor:["VPS preflight · read-only","git clone https://github.com/wisealii/JavaidPanel.git\ncd JavaidPanel\nsudo bash install.sh --doctor"],
+ssl:["Let's Encrypt · certificate only","cd JavaidPanel\nsudo bash install.sh --ssl panel.example.org"],
+node:["Node preflight · read-only","cd JavaidPanel\nbash node-agent-install.sh --check"],
+install:["Full installation · deliberately unavailable","cd JavaidPanel\nsudo bash install.sh --install  # blocked: backend not yet shipped"]
+};
+const label=document.getElementById("commandLabel"),code=document.getElementById("commands"),copy=document.getElementById("copy");
+document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed","false"));btn.setAttribute("aria-pressed","true");const v=examples[btn.dataset.mode];label.textContent=v[0];code.textContent=v[1];copy.textContent="کپی"}));
+copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(code.textContent);copy.textContent="کپی شد ✓"}catch{copy.textContent="کپی در مرورگر مجاز نیست"}});
+</script></body></html>

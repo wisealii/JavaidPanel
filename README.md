@@ -1,90 +1,56 @@
 <div align="center">
 
-# JAVID PANEL
-### کنترل یکپارچهٔ زیرساخت VPN
+# JavaidPanel
 
-**JavaidPanel · JP UI · Black / Red / White**
+**سامانه مدیریت زیرساخت VPN و نودهای چندسروری**
 
-![Version](https://img.shields.io/badge/version-1.1.101-ef4351?style=for-the-badge) ![Status](https://img.shields.io/badge/status-development-f0b35b?style=for-the-badge) ![Theme](https://img.shields.io/badge/JP_UI-black%20%2B%20red%20%2B%20white-151519?style=for-the-badge)
+**JP UI · مشکی / قرمز / سفید**
 
-[**صفحه معرفی**](docs/index.html) · [**راهنمای نصب**](docs/INSTALLATION.md) · [**مستندات نودها**](docs/NODES.md) · [**تونل‌ها**](docs/TUNNELS.md) · [**وضعیت پیاده‌سازی**](docs/STATUS.md)
+![Version](https://img.shields.io/badge/version-1.1.102--dev-f04452?style=for-the-badge)
+![Install](https://img.shields.io/badge/installer-guarded-f5bd63?style=for-the-badge)
+![Nodes](https://img.shields.io/badge/nodes-under%20development-848492?style=for-the-badge)
+
+[صفحه معرفی و مستندات](docs/index.html) · [نصب](docs/INSTALLATION.md) · [مقایسه نصب](docs/INSTALL_UX.md) · [وضعیت واقعی](docs/STATUS.md)
 
 </div>
 
----
+## درباره پروژه
 
-## درباره JavaidPanel
+JavaidPanel پروژهٔ مدیریت سرورها، کاربران، تونل‌ها، نودها و زیرساخت VPN است. طراحی عمومی سایت با هویت JP UI ارائه شده و مسیر نصب هدف از تجربه NX Panel و PasarGuard الهام می‌گیرد.
 
-**JavaidPanel** پروژه‌ای برای مدیریت زیرساخت VPN، سرورها، کاربران، اینباندها، نودهای توزیع‌شده و ابزارهای تونل است. هدف آن مدیریت یکپارچه، طراحی واضح و توسعه‌پذیری است.
+## هشدار مهم درباره نسخه قبلی
 
-نسخهٔ معرفی‌شده در سورس نصب‌کنندهٔ فعلی **1.1.101** است. بازطراحی ظاهری ریپازیتوری بر اساس هویت اختصاصی **JP UI** با رنگ‌های مشکی، قرمز و سفید انجام شده است.
+در بازبینی نسخه `1.1.101` مشخص شد اسکریپت پنل فقط یک کانتینر Node با دستور `sleep infinity` اجرا می‌کند و اسکریپت نود هم سرویس نمایشی مشابهی بالا می‌آورد. این‌ها **نصب واقعی VPN Panel یا اتصال امن نود نیستند**.
 
-> **مهم:** این مخزن تا زمان طی‌کردن آزمون‌های واقعی VPS نباید به‌عنوان نسخهٔ کاملاً پایدار معرفی شود. وجود گزینه یا پروتکل در توضیحات قبلی، به‌تنهایی تأیید عملکرد عملیاتی آن نیست.
+برای جلوگیری از ادعای موفقیت نادرست، نسخه `1.1.102-dev` نصب ساختگی را متوقف می‌کند. **این نسخه هنوز آماده نصب و بهره‌برداری واقعی روی VPS نیست.**
 
-## قابلیت‌ها و وضعیت
-
-| بخش | وضعیت مشاهده‌شده در این بازطراحی |
-|:---|:---|
-| نصب‌کنندهٔ اصلی | `install.sh` در مخزن موجود است؛ حفظ شده |
-| نصب عامل نود | `node-agent-install.sh` موجود است؛ حفظ شده |
-| محیط Docker | `docker-compose.production.yml` موجود است؛ حفظ شده |
-| مدیریت VPN و پروتکل‌ها | ادعاهای README قبلی؛ نیازمند تأیید کد و تست |
-| نودهای چندسروری | اسکریپت عامل موجود؛ اتصال واقعی نیازمند تست |
-| تونل‌های سرور به سرور | نیازمند بررسی پیاده‌سازی تک‌تک روش‌ها |
-| صفحهٔ معرفی | طراحی ایستای اختصاصی در `docs/index.html` |
-| تست نصب روی VPS | در این مرحله انجام نشده |
-
-## شروع کار
-
-برای دریافت مخزن و بررسی اولیهٔ اسکریپت‌ها:
+## بررسی VPS، بدون تغییر سیستم
 
 ```bash
 git clone https://github.com/wisealii/JavaidPanel.git
 cd JavaidPanel
-bash -n install.sh
-bash -n node-agent-install.sh
+sudo bash install.sh --doctor
+bash node-agent-install.sh --check
 ```
 
-نصب روی VPS آزمایشی تنها **پس از مطالعه و بازبینی اسکریپت**:
+## دریافت گواهی مستقل
+
+اگر دامنه و پیش‌نیازها درست است:
 
 ```bash
-sudo bash install.sh
+sudo bash install.sh --ssl panel.example.org
 ```
 
-**هرگز قبل از بازبینی کد، دستور دانلود و اجرای مستقیم با دسترسی root را صرفاً از روی یک تبلیغ اجرا نکنید.** اطلاعات پیش‌نیاز و هشدارها در [راهنمای نصب](docs/INSTALLATION.md) آمده است.
+این فقط گواهی TLS می‌گیرد و **وب‌سرور نصب نمی‌کند**.
 
-## نقشهٔ پروژه
+## معماری هدف
 
-```text
-JavaidPanel/
-├── README.md
-├── VERSION
-├── install.sh
-├── node-agent-install.sh
-├── docker-compose.production.yml
-├── docs/
-│   ├── index.html
-│   ├── INSTALLATION.md
-│   ├── NODES.md
-│   ├── TUNNELS.md
-│   ├── ARCHITECTURE.md
-│   ├── STATUS.md
-│   └── GITHUB_PAGES.md
-└── .github/workflows/
-    └── verify.yml
-```
+- نصب واقعی و بدون پرسش با یک دستور و لینک setup یک‌بارمصرف
+- ویزارد گرافیکی برای مالک و آدرس و گواهی HTTPS
+- ایجاد نود با توکن یک‌بارمصرف و اتصال احراز هویت‌شده
+- مدیریت وضعیت، ارتقا و بکاپ با CLI
+- مدیریت VPN، اشتراک، سرویس و کاربران پس از تکمیل هسته
 
-## رنگ‌بندی JP UI
+**مستندات:** [نصب](docs/INSTALLATION.md) · [مقایسه با NX/PasarGuard](docs/INSTALL_UX.md) · [مدیریت نودها](docs/NODES.md) · [وضعیت واقعی](docs/STATUS.md)
 
-- مشکی عمیق: `#0B0C10`
-- قرمز جاوید: `#F04452`
-- سفید کارت‌ها: `#FAFAFB`
-- خاکستری زمینه: `#A5A5B2`
-
-این طراحی برای **صفحهٔ GitHub Pages** است. تم استاندارد خود `github.com` را نمی‌توان به‌صورت اختصاصی برای یک مخزن تغییر داد.
-
-## وضعیت و مسئولیت
-
-بازطراحی صفحهٔ عمومی **بدون تغییر فایل‌های اصلی نصب‌کننده و عامل نود** تهیه شده است. پس از تست‌های سروری و بازبینی امنیتی، می‌توان انتشار نسخهٔ پایدار را برنامه‌ریزی کرد.
-
-همهٔ وابستگی‌های متن‌باز و کدهای اقتباسی باید با رعایت مجوز و انتساب اصلی نگهداری شوند. به [یادداشت منابع و مجوزها](docs/LICENSING.md) مراجعه کنید.
+فایل‌های Docker موجود نیز قبل از استفاده عملی باید بازبینی و تکمیل شوند. مجوزها و انتساب کدهای متن‌باز باید حفظ شود.
