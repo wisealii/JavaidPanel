@@ -1,6 +1,6 @@
 # Javid Node Enrollment — Offline Core
 
-The files in `src/javid_panel/nodes/enrollment.py` implement a **minimal standalone persistence primitive** for future secure node registration. This is not yet an API, a full daemon, an SSH installer or a VPN service.
+The files in `src/javid_panel/nodes/enrollment.py` implement a **minimal standalone persistence primitive** for future secure node registration. This was the initial offline prototype. A separate experimental API and heartbeat agent now exist in `runtime.py`, `api.py`, and `agent.py`. See `JAVID_NODE_API.md`. It is not a VPN/tunnel service.
 
 ## Implemented and unit-tested
 

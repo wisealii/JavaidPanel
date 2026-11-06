@@ -112,7 +112,7 @@ class BootstrapTests(unittest.TestCase):
         p = subprocess.run(["bash", str(NODE_SCRIPT), "--check"],
                            capture_output=True, text=True, timeout=10)
         self.assertEqual(p.returncode, 0, p.stderr)
-        self.assertIn("NOT INCLUDED", p.stdout)
+        self.assertIn("no real VPN tunnels", p.stdout)
 
     def test_no_placeholder_services_in_core(self) -> None:
         core = CORE.read_text()

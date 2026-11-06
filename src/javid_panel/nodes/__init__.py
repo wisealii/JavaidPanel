@@ -1,1 +1,1 @@
-# Node enrollment core; service API and live agent are not implemented.\n
+"""Javid Node authenticated enrollment and heartbeat."""

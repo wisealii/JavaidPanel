@@ -1,1 +1,1 @@
-# JavidPanel application package — modules not yet integrated with the live gateway.
+"""JavaidPanel independent control-plane modules."""
