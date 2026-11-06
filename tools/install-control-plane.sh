@@ -13,6 +13,9 @@ JavaidPanel node-control API setup (experimental)
 
 Run from the root of a checked-out JavaidPanel repository.
 API binds ONLY to http://127.0.0.1:9443 (admin token never in public URL).
+Private dashboard: SSH -L 9443:127.0.0.1:9443 root@CONTROL_VPS
+Then open http://127.0.0.1:9443/admin/nodes locally.
+Never proxy /admin/* publicly.
 Use a dedicated HTTPS reverse proxy to expose /api/v1/nodes/* securely.
 This does not install a VPN engine or alter existing panel services.
 HELP
@@ -44,6 +47,9 @@ install -m 0644 src/javid_panel/__init__.py /opt/javid-control/src/javid_panel/_
 install -m 0644 src/javid_panel/nodes/__init__.py /opt/javid-control/src/javid_panel/nodes/__init__.py
 install -m 0644 src/javid_panel/nodes/runtime.py /opt/javid-control/src/javid_panel/nodes/runtime.py
 install -m 0644 src/javid_panel/nodes/api.py /opt/javid-control/src/javid_panel/nodes/api.py
+install -m 0644 src/javid_panel/nodes/dashboard.html /opt/javid-control/src/javid_panel/nodes/dashboard.html
+install -m 0644 src/javid_panel/nodes/dashboard.css /opt/javid-control/src/javid_panel/nodes/dashboard.css
+install -m 0644 src/javid_panel/nodes/dashboard.js /opt/javid-control/src/javid_panel/nodes/dashboard.js
 runuser -u javidpanel -- env PYTHONPATH=/opt/javid-control/src \
   /usr/bin/python3 -m javid_panel.nodes.api init --config /etc/javid-panel/node-control.json
 cat > /etc/systemd/system/javid-node-control.service <<'UNIT'

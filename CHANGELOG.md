@@ -1,3 +1,11 @@
+## 1.1.106-dev — Private Javid Node management dashboard
+
+- Add a real RTL node-admin dashboard served by the existing control API on loopback only, intended for SSH port forwarding.
+- Connect UI to authenticated JSON API for node creation, install-command generation, single-display invitation token, heartbeat status and revocation.
+- Add static-asset whitelist, loopback + Host checks, restrictive Content Security Policy, no-store caching and DOM textContent rendering for untrusted node names.
+- Install dashboard assets alongside node-control API and add dedicated live HTTP integration tests.
+- Do not expose management dashboard through the public HTTPS reverse proxy. No VPN tunnel is installed and the dashboard is not integrated with the legacy gateway.
+
 ## 1.1.105-dev — Experimental Javid Node API and SSL assistant
 - Added standalone JSON node-control API with one-time enrollment, node credentials, signed heartbeats, revocation and stale-state monitoring.
 - Added systemd installer for local-only control service and Javid Node health agent; no VPN tunnel is deployed.
