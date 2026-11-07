@@ -1,6 +1,6 @@
 # نصب و راه‌اندازی JavaidPanel
 
-**نسخه سورس:** 1.1.110-dev · **وضعیت:** نصب آزمایشی؛ تست کامل VPS انجام نشده است.
+**نسخه سورس:** 1.1.111-dev · **وضعیت:** نصب آزمایشی؛ تست کامل VPS انجام نشده است.
 
 ## ۱. آماده‌سازی سرور
 
@@ -93,3 +93,7 @@ curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.s
 ### محدودیت نصب فعلی
 
 `install.sh` فقط Gateway و هسته پایه را نصب می‌کند؛ API و عامل مستقل **Javid Node** با آن نصب نمی‌شوند. [ممیزی امکانات فعلی](CURRENT_FEATURES_AUDIT.md).
+
+## ۸. تست خواندنی بعد از نصب
+
+پس از نصب آزمایشی، `sudo python3 tools/vps-postinstall-smoke.py --run` را از مخزن اجرا کنید؛ این دستور فایل‌های خصوصی را افشا یا سرویس‌ها را تغییر نمی‌دهد. آزمون ورود مدیر، TLS بیرونی، VPN واقعی و backup/restore باید جداگانه انجام شود. [راهنمای تست](VPS_SMOKE_TEST.md).

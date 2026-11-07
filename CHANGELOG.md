@@ -1,3 +1,9 @@
+## 1.1.111-dev — Existing-core post-install VPS checks
+- Add read-only VPS smoke tool for installed Gateway, VPN/DNS systemd units, private config permissions, SQLite integrity and internal readiness probe.
+- Avoid reading or printing admin credentials/tokens; show manual gates for browser login, external trusted HTTPS, real VPN client and restore.
+- Add isolated local regression tests without touching system services.
+- No new VPN protocols/engines, and no claim of successful real VPS deployment.
+
 ## 1.1.110-dev — existing-features audit and explicit install access mode
 - Inventory existing integrated core, embedded modules, standalone Javid Node/API and maintenance tools with source evidence; no new protocols or speculative features.
 - Block unattended first install without an explicit access mode: no implicit self-signed HTTPS fallback when there is no controlling TTY.
