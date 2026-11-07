@@ -51,12 +51,16 @@ check_domain(){
   [[ -z "$ipv6" ]] || printf 'Resolved IPv6 address(es):\n%s\n' "$ipv6"
   printf 'IMPORTANT: This checks DNS resolution only. It cannot verify that every public A/AAAA record points to THIS VPS or that port 80 is reachable externally.\n'
   step 3 'بررسی پورت 80 / Check TCP 80'
-  if command -v ss >/dev/null; then
-    if ss -H -ltn '( sport = :80 )' 2>/dev/null | grep -q .; then
-      printf 'WARNING: TCP port 80 already has a listener. Standalone HTTP-01 cannot bind it.\n' >&2
-      printf 'Use a compatible webroot or DNS-01 method for existing production web servers.\n' >&2
-      return 3
-    fi
+  command -v ss >/dev/null || { printf 'ERROR: ss (iproute2) required to check TCP 80 safely.\n' >&2; return 5; }
+  local listeners
+  if ! listeners="$(ss -H -ltn '( sport = :80 )' 2>/dev/null)"; then
+    printf 'ERROR: Cannot inspect local TCP 80 socket state.\n' >&2
+    return 5
+  fi
+  if [[ -n "$listeners" ]]; then
+    printf 'WARNING: TCP port 80 already has a listener. Standalone HTTP-01 cannot bind it.\n' >&2
+    printf 'Use a compatible webroot or DNS-01 method for existing production web servers.\n' >&2
+    return 3
   fi
   printf 'No local TCP 80 listener detected. Verify cloud firewall and external reachability.\n'
 }
