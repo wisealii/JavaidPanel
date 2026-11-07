@@ -48,6 +48,10 @@ jobs:
         run: |
           python3 tools/version-archive.py --check
           python3 -m unittest discover -s tests -p 'test_version_archive.py' -v
+      - name: Validate per-version archive and machine-readable catalog
+        run: |
+          python3 tools/verify-version-catalog.py
+          python3 -m unittest discover -s tests -p 'test_version_catalog.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'

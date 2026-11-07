@@ -1,3 +1,10 @@
+## 1.1.113-dev — Per-version release pages and machine-readable catalog
+- Features: Add separate Markdown pages for each documented development version with its source-backed changes, additions and limitations.
+- Features: Add docs/VERSIONS.md and docs/versions.json for browsing and machine consumption alongside the generated docs/VERSION_ARCHIVE.md.
+- Tests: Add catalog consistency checks and CI regression tests for VERSION, installer, README, changelog, feature catalog and historical pages.
+- Compatibility: Metadata and documentation changes only; no VPN engine, Gateway or installed user data is modified.
+- Limitations: Documentation is not an immutable Git snapshot or verified GitHub Release. Live VPS, SSL, client VPN and full restore remain unverified.
+
 ## 1.1.112-dev — Version archive, release governance and GitHub documentation
 - Features: Add generated historical development version index and per-version documented changes, source-backed by CHANGELOG.
 - Features: Add repeatable version archive tool, release process policy and CI regression tests to prevent version drift.

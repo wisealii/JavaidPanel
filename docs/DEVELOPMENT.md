@@ -47,3 +47,13 @@ bash install.sh --self-test
 - fuzz ورودی IP/پورت/توکن نود
 
 [نقشه راه](ROADMAP.md) · [امنیت](../SECURITY.md)
+
+## اعتبارسنجی تاریخچه نسخه‌ها
+
+```bash
+python3 tools/version-archive.py --check
+python3 tools/verify-version-catalog.py
+python3 -m unittest discover -s tests -p 'test_version_catalog.py' -v
+```
+
+آرشیوهای مستندات با انتشار واقعی GitHub Tag/Release یکسان نیستند.

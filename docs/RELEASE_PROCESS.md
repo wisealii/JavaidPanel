@@ -50,3 +50,7 @@
 `python3 tools/version-archive.py --check` در CI باید ناموفق شود اگر `VERSION` با نخستین عنوان CHANGELOG هماهنگ نیست یا آرشیو بازتولیدپذیر نیست. موارد تکراری تاریخی مانند دو ورودی `1.1.108-dev` **حفظ و آشکار** می‌شوند؛ تا وقتی Commitهای واقعی بررسی نشده‌اند، ادغام یا بازنویسی تاریخی ممنوع است.
 
 [آرشیو نسخه‌ها](VERSION_ARCHIVE.md) · [ممیزی امکانات](CURRENT_FEATURES_AUDIT.md)
+
+## صفحات مستقل نسخه و کاتالوگ JSON
+
+علاوه بر آرشیو خودکار مرکزی [VERSION_ARCHIVE.md](VERSION_ARCHIVE.md)، [VERSIONS.md](VERSIONS.md) صفحات مجزای هر نسخه در [releases/](releases/) و داده ساختاریافته [versions.json](versions.json) را لینک می‌کند. هنگام انتشار یک نسخه جدید باید فایل مربوط به نسخه و metadata آن را نیز در همان PR اضافه کرد؛ تست `python3 tools/verify-version-catalog.py` در CI یکپارچگی را کنترل می‌کند. لینک GitHub Release و Git Tag تنها پس از ساخت و تأیید واقعی منتشر می‌شود.

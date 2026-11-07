@@ -1,0 +1,323 @@
+{
+  "schema_version": 1,
+  "project": "JavaidPanel",
+  "current_version": "1.1.113-dev",
+  "archive_policy": "Development-source archives only. The historical entries do not imply verified git tags, GitHub Releases, binary artifacts, VPS testing, or deployable releases.",
+  "versions": [
+    {
+      "version": "1.1.102-dev",
+      "phase": "dev",
+      "date": "2026-11-06",
+      "archive": "docs/releases/1.1.102-dev.md",
+      "features": [
+        "بازبینی مسیر نصب placeholder و جلوگیری از نصب ناامن",
+        "افزودن preflight و راهنمای TLS"
+      ],
+      "changes": [
+        "نسخه اولیه توسعه‌ای؛ نصب واقعی VPS تأیید نشده است"
+      ],
+      "pr_numbers": [],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.103-dev",
+      "phase": "dev",
+      "date": "2026-11-06",
+      "archive": "docs/releases/1.1.103-dev.md",
+      "features": [
+        "بوت‌استرپ نصب یک‌دستوری با بررسی SHA-256",
+        "مسیرهای doctor، check، ssl و repair"
+      ],
+      "changes": [
+        "بازگردانی موتور یکپارچه‌سازی پین‌شده در installer/core.sh",
+        "حفظ مجوز و انتساب پروژه‌های متن‌باز"
+      ],
+      "pr_numbers": [],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.104-dev",
+      "phase": "dev",
+      "date": "2026-11-06",
+      "archive": "docs/releases/1.1.104-dev.md",
+      "features": [
+        "بررسی‌های نصب و اجرای systemd",
+        "تست آفلاین بوت‌استرپ و هش فایل",
+        "مستندات عمومی و دمو با داده نمونه"
+      ],
+      "changes": [
+        "این نسخه چند مرحله اصلاحی و مستندسازی در CHANGELOG دارد",
+        "توسعه ماژول‌های عملیاتی جدید در این شماره ادعا نشده است"
+      ],
+      "pr_numbers": [],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.105-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.105-dev.md",
+      "features": [
+        "API مستقل Javid Node با توکن یک‌بارمصرف",
+        "عامل گزارش سلامت با heartbeat امضاشده",
+        "ابزار مستقل کنترلر و راهنمای Certbot"
+      ],
+      "changes": [
+        "آزمون‌های محلی برای API، replay، ابطال و SSL"
+      ],
+      "pr_numbers": [
+        8
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.106-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.106-dev.md",
+      "features": [
+        "داشبورد خصوصی مدیریت نود از localhost",
+        "ثبت نود، مشاهده وضعیت و ابطال دسترسی با API واقعی"
+      ],
+      "changes": [
+        "تست HTTP و محدودسازی دسترسی صفحه مدیریت از طریق SSH Tunnel"
+      ],
+      "pr_numbers": [
+        10
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.107-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.107-dev.md",
+      "features": [
+        "ارتقای سورس کنترلر Javid Node با backup",
+        "تلاش برای rollback هنگام خطای restart یا health"
+      ],
+      "changes": [
+        "آزمون‌های ایزوله برای حفظ تنظیمات و rollback"
+      ],
+      "pr_numbers": [
+        11
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.108-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.108-dev.md",
+      "features": [
+        "آزمون آمادگی انتشار VPS و تشخیص نواقص",
+        "اصلاح ناهماهنگی VERSION و نصب‌کننده",
+        "حذف Compose ناقص از مسیر نصب"
+      ],
+      "changes": [
+        "طرح قدیمی Docker در اسناد بایگانی شد، نه به‌عنوان سرویس آماده"
+      ],
+      "pr_numbers": [
+        12,
+        13
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.109-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.109-dev.md",
+      "features": [
+        "بررسی سخت‌گیرانه DNS و پورت ۸۰ قبل از SSL",
+        "پشتیبانی از DNS فقط IPv6 در بررسی اولیه",
+        "تایم‌لاین توسعه P0 تا P3"
+      ],
+      "changes": [
+        "تست آفلاین نبود DNS، پورت اشغال‌شده و خطای ss"
+      ],
+      "pr_numbers": [
+        14
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.110-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.110-dev.md",
+      "features": [
+        "ممیزی امکانات موجود در سورس",
+        "جلوگیری از انتخاب ضمنی SSL خودامضاشده در نصب بدون TTY"
+      ],
+      "changes": [
+        "کاتالوگ امکانات جاری و تست شاهد سورس"
+      ],
+      "pr_numbers": [
+        15
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.111-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.111-dev.md",
+      "features": [
+        "ابزار خواندنی بررسی VPS پس از نصب",
+        "بررسی مجوز فایل، SQLite، systemd و probe موجود"
+      ],
+      "changes": [
+        "آزمون‌های محلی بدون دسترسی به سرویس‌های واقعی VPS"
+      ],
+      "pr_numbers": [
+        16
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.112-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.112-dev.md",
+      "features": [
+        "فهرست ساختاریافته نسخه‌ها و آرشیو Markdown هر نسخه",
+        "اعتبارسنجی یکپارچگی نسخه‌ها و تاریخچه در CI",
+        "راهنمای انتشار ایمن GitHub Release و Tag"
+      ],
+      "changes": [
+        "ثبت metadata تاریخی نسخه‌ها بدون جعل تگ یا نتیجه تست",
+        "هماهنگی VERSION، نصب‌کننده، README و فهرست امکانات"
+      ],
+      "pr_numbers": [
+        17
+      ],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    },
+    {
+      "version": "1.1.113-dev",
+      "phase": "dev",
+      "date": null,
+      "archive": "docs/releases/1.1.113-dev.md",
+      "features": [
+        "آرشیو مستقل و قابل مرور برای هر نسخه توسعه‌ای",
+        "فهرست ماشینی نسخه‌ها، امکانات و محدودیت‌ها",
+        "تست یکپارچگی صفحات نسخه و تاریخچه به‌عنوان گیت CI"
+      ],
+      "changes": [
+        "گسترش آرشیو مرکزی 1.1.112-dev بدون حذف یا بازنویسی آن",
+        "افزودن صفحات مجزا و صحت‌سنجی خودکار برای هر شماره نسخه"
+      ],
+      "pr_numbers": [],
+      "git_tag": null,
+      "github_release_published": false,
+      "verification": {
+        "source_changes_documented": true,
+        "ci_for_archive": "pending",
+        "live_vps_install": false,
+        "ssl_external": false,
+        "vpn_client": false,
+        "backup_restore": false
+      }
+    }
+  ]
+}

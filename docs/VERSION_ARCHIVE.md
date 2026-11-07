@@ -2,11 +2,12 @@
 
 > این فهرست به‌صورت خودکار از CHANGELOG.md تولید می‌شود. ورودی‌های تاریخی به معنی وجود Git tag، GitHub Release یا فایل نصب مستقل نیستند.
 
-نسخه فعال: **1.1.112-dev**
+نسخه فعال: **1.1.113-dev**
 
 | نسخه ثبت‌شده | تغییرات مستند | نوع |
 |---|---|---|
-| `1.1.112-dev` | Version archive, release governance and GitHub documentation | توسعه فعلی |
+| `1.1.113-dev` | Per-version release pages and machine-readable catalog | توسعه فعلی |
+| `1.1.112-dev` | Version archive, release governance and GitHub documentation | تاریخچه توسعه |
 | `1.1.111-dev` | Existing-core post-install VPS checks | تاریخچه توسعه |
 | `1.1.110-dev` | existing-features audit and explicit install access mode | تاریخچه توسعه |
 | `1.1.109-dev` | priority gates and safer certificate preflight | تاریخچه توسعه |
@@ -22,6 +23,14 @@
 | `1.1.102-dev` | 2026-11-06 | تاریخچه توسعه |
 
 ## جزئیات نسخه‌ها
+
+### 1.1.113-dev — Per-version release pages and machine-readable catalog
+
+- Features: Add separate Markdown pages for each documented development version with its source-backed changes, additions and limitations.
+- Features: Add docs/VERSIONS.md and docs/versions.json for browsing and machine consumption alongside the generated docs/VERSION_ARCHIVE.md.
+- Tests: Add catalog consistency checks and CI regression tests for VERSION, installer, README, changelog, feature catalog and historical pages.
+- Compatibility: Metadata and documentation changes only; no VPN engine, Gateway or installed user data is modified.
+- Limitations: Documentation is not an immutable Git snapshot or verified GitHub Release. Live VPS, SSL, client VPN and full restore remain unverified.
 
 ### 1.1.112-dev — Version archive, release governance and GitHub documentation
 
