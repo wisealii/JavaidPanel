@@ -40,6 +40,10 @@ jobs:
         run: |
           python3 tools/audit-current-features.py --json
           python3 -m unittest discover -s tests -p 'test_current_features_audit.py' -v
+      - name: Offline regression tests for VPS post-install smoke check
+        run: |
+          python3 tools/vps-postinstall-smoke.py --check
+          python3 -m unittest discover -s tests -p 'test_vps_postinstall_smoke.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'

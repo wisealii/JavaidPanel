@@ -1,6 +1,6 @@
 {
   "project": "JavaidPanel",
-  "version": "1.1.110-dev",
+  "version": "1.1.111-dev",
   "method": "Source evidence only; offline tests are not live VPS validation.",
   "features": [
     {
@@ -191,6 +191,15 @@
       "file": "tools/release-readiness.py",
       "marker": "def run_checks(",
       "acceptance": "ارائه شواهد نصب VPS، SSL، recovery و پروتکل"
+    },
+    {
+      "area": "نگهداری",
+      "name": "بررسی خواندنی پس از نصب VPS",
+      "scope": "dev",
+      "status": "offline_tested",
+      "file": "tools/vps-postinstall-smoke.py",
+      "marker": "def run_check(",
+      "acceptance": "اجرای واقعی در VPS آزمایشی همراه لاگ بدون اسرار"
     }
   ]
 }
