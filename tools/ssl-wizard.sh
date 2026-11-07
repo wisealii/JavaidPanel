@@ -39,21 +39,28 @@ check_domain(){
   printf 'Domain: %s\n' "$domain"
   step 2 'بررسی DNS / Check DNS'
   command -v getent >/dev/null || fail 'getent required for local DNS resolution'
-  local ips
-  ips="$(getent ahostsv4 "$domain" 2>/dev/null | awk '$2=="STREAM" {print $1}' | sort -u || true)"
-  if [[ -z "$ips" ]]; then
-    printf 'WARNING: No IPv4 DNS response. Check A/AAAA records and routing.\n' >&2
-  else
-    printf 'Resolved IPv4 address(es):\n%s\n' "$ips"
+  local ipv4 ipv6
+  ipv4="$(getent ahostsv4 "$domain" 2>/dev/null | awk '$2=="STREAM" {print $1}' | sort -u || true)"
+  ipv6="$(getent ahostsv6 "$domain" 2>/dev/null | awk '$2=="STREAM" {print $1}' | sort -u || true)"
+  if [[ -z "$ipv4" && -z "$ipv6" ]]; then
+    printf 'ERROR: DNS lookup returned no A or AAAA address.\n' >&2
+    printf 'Set the domain DNS record first, wait for propagation, then retry.\n' >&2
+    return 4
   fi
-  printf 'Confirm that the public DNS points to THIS server before requesting a certificate.\n'
+  [[ -z "$ipv4" ]] || printf 'Resolved IPv4 address(es):\n%s\n' "$ipv4"
+  [[ -z "$ipv6" ]] || printf 'Resolved IPv6 address(es):\n%s\n' "$ipv6"
+  printf 'IMPORTANT: This checks DNS resolution only. It cannot verify that every public A/AAAA record points to THIS VPS or that port 80 is reachable externally.\n'
   step 3 'بررسی پورت 80 / Check TCP 80'
-  if command -v ss >/dev/null; then
-    if ss -H -ltn '( sport = :80 )' 2>/dev/null | grep -q .; then
-      printf 'WARNING: TCP port 80 already has a listener. Standalone HTTP-01 cannot bind it.\n' >&2
-      printf 'Use a compatible webroot or DNS-01 method for existing production web servers.\n' >&2
-      return 3
-    fi
+  command -v ss >/dev/null || { printf 'ERROR: ss (iproute2) required to check TCP 80 safely.\n' >&2; return 5; }
+  local listeners
+  if ! listeners="$(ss -H -ltn '( sport = :80 )' 2>/dev/null)"; then
+    printf 'ERROR: Cannot inspect local TCP 80 socket state.\n' >&2
+    return 5
+  fi
+  if [[ -n "$listeners" ]]; then
+    printf 'WARNING: TCP port 80 already has a listener. Standalone HTTP-01 cannot bind it.\n' >&2
+    printf 'Use a compatible webroot or DNS-01 method for existing production web servers.\n' >&2
+    return 3
   fi
   printf 'No local TCP 80 listener detected. Verify cloud firewall and external reachability.\n'
 }
@@ -63,7 +70,7 @@ issue(){
   (( EUID == 0 )) || fail 'Run certificate issuance with sudo'
   command -v certbot >/dev/null || fail 'Install certbot from your OS package manager first'
   if ! check_domain "$domain"; then
-    fail 'Port 80 appears occupied. No service was stopped or modified.'
+    fail 'DNS or TCP 80 preflight failed. No service was stopped or modified.'
   fi
   step 4 "صدور گواهی از Let's Encrypt / Issue certificate"
   certbot certonly --standalone --preferred-challenges http-01 --non-interactive \
@@ -92,7 +99,7 @@ case "$mode" in
     printf 'This wizard requests a certificate. It will not restart your VPN panel.\n'
     read -r -p '1) Enter panel domain: ' domain </dev/tty
     read -r -p '2) Enter email for renewal alerts: ' email </dev/tty
-    check_domain "$domain" || fail 'Resolve the port 80 conflict before proceeding.'
+    check_domain "$domain" || fail 'Resolve the DNS or TCP 80 preflight problem before proceeding.'
     read -r -p 'Request certificate now? [yes/NO] ' answer </dev/tty
     [[ "$answer" == yes ]] || { echo 'Cancelled; no certificate requested.'; exit 0; }
     issue "$domain" "$email";;
