@@ -36,6 +36,10 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p 'test_release_readiness.py' -v
           python3 tools/release-readiness.py --json
+      - name: Audit only existing capabilities with source evidence
+        run: |
+          python3 tools/audit-current-features.py --json
+          python3 -m unittest discover -s tests -p 'test_current_features_audit.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'

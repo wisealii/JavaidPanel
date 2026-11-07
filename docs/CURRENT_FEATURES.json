@@ -1,0 +1,196 @@
+{
+  "project": "JavaidPanel",
+  "version": "1.1.110-dev",
+  "method": "Source evidence only; offline tests are not live VPS validation.",
+  "features": [
+    {
+      "area": "نصب",
+      "name": "نصب یک‌دستوری با SHA-256",
+      "scope": "core",
+      "status": "offline_tested",
+      "file": "install.sh",
+      "marker": "sha256sum --check --status",
+      "acceptance": "نصب کامل در VPS تازه و بررسی URL نهایی"
+    },
+    {
+      "area": "نصب",
+      "name": "بررسی نسخه OS/CPU/RAM/فضای دیسک",
+      "scope": "core",
+      "status": "offline_tested",
+      "file": "install.sh",
+      "marker": "At least 2 GiB free space",
+      "acceptance": "preflight واقعی Ubuntu/Debian و گزارش نقص بدون تغییر سیستم"
+    },
+    {
+      "area": "نصب",
+      "name": "ویزارد حالت دامنه یا IP و HTTPS",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "Choose how the panel should be opened:",
+      "acceptance": "تست تعاملی دامنه، DNS، ACME و مرورگر HTTPS"
+    },
+    {
+      "area": "امنیت",
+      "name": "گواهی Let's Encrypt و مدیریت تمدید",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "alirezapanel-cert-renew.service",
+      "acceptance": "صدور واقعی، تمدید آزمایشی و reload معتبر"
+    },
+    {
+      "area": "حساب",
+      "name": "ایجاد حساب مدیر و رمز اولیه",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "def reset_password(password=None):",
+      "acceptance": "ورود واقعی مدیر و بازیابی رمز"
+    },
+    {
+      "area": "دیتابیس",
+      "name": "Seed دیتابیس داخلی VPN",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "def seed_vpn():",
+      "acceptance": "تست ساخت دیتابیس، reboot، ارتقا و migration"
+    },
+    {
+      "area": "هسته",
+      "name": "اجرای VPN backend پین‌شده",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "VPN_SHA=",
+      "acceptance": "کلاینت VPN واقعی، اتصال و قطع، ترافیک"
+    },
+    {
+      "area": "هسته",
+      "name": "اجرای DNS backend و UI",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "AGH_SHA=",
+      "acceptance": "تست DNS از کلاینت، فایروال و reboot"
+    },
+    {
+      "area": "Gateway",
+      "name": "احراز هویت و مسیر یکپارچه",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "class Gateway:",
+      "acceptance": "درخواست HTTP و نشست معتبر روی VPS"
+    },
+    {
+      "area": "Gateway",
+      "name": "پروکسی و ناوبری داخلی",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "cat > \"$STAGE/brand.js\"",
+      "acceptance": "تمام مسیرهای UI و نشست صحیح"
+    },
+    {
+      "area": "پایش",
+      "name": "ماژول insights و dns clients",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "cat > \"$STAGE/insights.py\"",
+      "acceptance": "تطبیق آمار با داده واقعی"
+    },
+    {
+      "area": "نود پایه",
+      "name": "مدیریت نودهای هسته پایه",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "NODE_EMBEDDED_PY_EOF",
+      "acceptance": "اتصال واقعی دو VPS، احراز هویت و قطع/وصل"
+    },
+    {
+      "area": "نگهداری",
+      "name": "بررسی سرویس‌ها و سلامت",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "def check(login=False):",
+      "acceptance": "healthcheck واقعی، خطاهای سرویس و reboot"
+    },
+    {
+      "area": "نگهداری",
+      "name": "backup دستی فایل‌های هسته",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "backup)",
+      "acceptance": "بازگردانی واقعی backup در VPS دیگر"
+    },
+    {
+      "area": "نگهداری",
+      "name": "repair و restart و تنظیم مجدد SSL",
+      "scope": "core",
+      "status": "source_only",
+      "file": "installer/core.sh",
+      "marker": "--repair",
+      "acceptance": "تست repair/rollback با داده"
+    },
+    {
+      "area": "Javid Node",
+      "name": "API ثبت نود و توکن یک‌بارمصرف",
+      "scope": "addon",
+      "status": "offline_tested",
+      "file": "src/javid_panel/nodes/api.py",
+      "marker": "/api/v1/nodes",
+      "acceptance": "نصب عامل و توکن روی دو VPS"
+    },
+    {
+      "area": "Javid Node",
+      "name": "عامل سلامت و heartbeat امضاشده",
+      "scope": "addon",
+      "status": "offline_tested",
+      "file": "src/javid_panel/nodes/runtime.py",
+      "marker": "def heartbeat(",
+      "acceptance": "TLS معتبر، replay rejection و قطع واقعی"
+    },
+    {
+      "area": "Javid Node",
+      "name": "داشبورد خصوصی مدیریت نود",
+      "scope": "addon",
+      "status": "offline_tested",
+      "file": "src/javid_panel/nodes/dashboard.html",
+      "marker": "اتصال و مدیریت نودها",
+      "acceptance": "نصب کنترلر روی VPS، تست ورود از SSH Tunnel"
+    },
+    {
+      "area": "Javid Node",
+      "name": "به‌روزرسانی سورس کنترلر با rollback",
+      "scope": "addon",
+      "status": "offline_tested",
+      "file": "tools/upgrade-control-plane.py",
+      "marker": "def upgrade(",
+      "acceptance": "تست upgrade و restore واقعی VPS"
+    },
+    {
+      "area": "ابزار",
+      "name": "راهنمای SSL ترمینالی",
+      "scope": "addon",
+      "status": "offline_tested",
+      "file": "tools/ssl-wizard.sh",
+      "marker": "valid_domain()",
+      "acceptance": "صدور موفق گواهی و پیکربندی وب‌سرور"
+    },
+    {
+      "area": "ابزار",
+      "name": "گیت آمادگی انتشار",
+      "scope": "dev",
+      "status": "offline_tested",
+      "file": "tools/release-readiness.py",
+      "marker": "def run_checks(",
+      "acceptance": "ارائه شواهد نصب VPS، SSL، recovery و پروتکل"
+    }
+  ]
+}

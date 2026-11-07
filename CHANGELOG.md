@@ -1,3 +1,10 @@
+## 1.1.110-dev — existing-features audit and explicit install access mode
+- Inventory existing integrated core, embedded modules, standalone Javid Node/API and maintenance tools with source evidence; no new protocols or speculative features.
+- Block unattended first install without an explicit access mode: no implicit self-signed HTTPS fallback when there is no controlling TTY.
+- Add regression coverage for the noninteractive safety guard and repeatable source-inventory checks.
+- Clarify that the standalone Javid Node service is **not installed** by the current one-command main installer.
+- Live VPS, admin login, Let's Encrypt, protocol connectivity and restore remain unverified.
+
 ## 1.1.109-dev — priority gates and safer certificate preflight
 - Treat missing A/AAAA DNS as a hard SSL preflight error (previously warned and continued).
 - Support IPv6-only DNS in the guided preflight and reject unavailable socket inspection instead of incorrectly assuming TCP 80 is unused.
