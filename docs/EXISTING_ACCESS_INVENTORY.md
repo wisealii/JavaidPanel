@@ -41,6 +41,29 @@ Evidence: `src/javid_panel/nodes/api.py` (`make_handler`, `require_admin`, `auth
 
 Do not interpret the single admin bearer as a fully implemented multi-role permission system. The gateway may have different identity/session handling; review its generated route handlers before defining any shared RBAC contract.
 
+
+
+## Embedded Gateway authorization map (source inspection, 2026-11-07)
+
+Evidence: `installer/core.sh` embedded `Gateway.is_admin`, `Gateway.validate_origin`, `Gateway.dispatch`, `Nodes.admin`, `Nodes.route`, `Insights.route`, `DNSClients.api`, `DNSClients.public`, and `Features.route`. This is a **source-based route map**, not a VPS authorization test. The upstream VPN backend is still responsible for its own proxied routes.
+
+| Existing path / handler | Current server-side access check | Notes |
+| --- | --- | --- |
+| `_alireza/session` | Reports `Gateway.is_admin` status | Session probe; not itself an authorization grant |
+| `panel/content`, `panel/dns`, `dns/*` | `Gateway.is_admin` | Uses existing `vpn-ui` cookie checked against upstream `panel/admins/permissions`; DNS backend uses a gateway-owned service session |
+| `panel/nodes`, `_alireza/nodes-ui`, `_alireza/nodes/*`, `_alireza/remote/*` | `Nodes.admin` | Calls origin validation and `Gateway.is_admin`; current check is super-admin-style, not per-node delegated RBAC |
+| `_alireza/insights/*` | `Nodes.admin` | Read/configure require existing admin session |
+| `_alireza/features/*` | `Nodes.admin` | Includes TLS metadata and client policy management |
+| `_alireza/dns-clients/*` | `Gateway.is_admin` | Managed DNS client and plan operations; retired path returns HTTP 410 |
+| Public managed DNS and node subscription routes | Credential/token and route-specific checks | Intentionally not general admin-session endpoints; inspect token/IP/HTTPS validation separately |
+| Other VPN backend paths | Forwarded to pinned upstream VPN service | **Not proven safe for new roles by Gateway alone**; upstream authorization and API semantics need separate audit |
+
+The gateway also validates Origin / `Sec-Fetch-Site` for applicable requests. `Nodes.route` and managed DNS public routing are dispatched before the common origin check, with their own route-specific authentication. Do **not** remove or reorder these controls without regression tests.
+
+**Important distinction:** embedded core `Nodes` already has a management surface using the Gateway session, whereas standalone `src/javid_panel/nodes/api.py` has its own bearer-token administrator and loopback dashboard. These are **two existing code paths**, not evidence that a new role system is needed. Do not merge, expose, or replace either until their responsibilities, deployment paths and compatibility are verified.
+
+**Current RBAC conclusion:** source confirms a shared super-admin check for the embedded management routes above. It does **not** confirm delegated server-manager or support permissions, nor does it prove that upstream VPN admin roles map safely to those operations. Do not grant those roles by simply forwarding the administrator cookie or node-control bearer. A future design should enumerate exact allowed operations and be approved before implementation.
+
 ## Safe next actions
 
 1. Map gateway route handlers, login/session checks, existing users and administrative functions directly in `installer/core.sh`. Record route-by-route evidence before granting or restricting anything.
