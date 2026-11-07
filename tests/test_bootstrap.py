@@ -114,6 +114,20 @@ class BootstrapTests(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stderr)
         self.assertIn("does not check real VPN tunnels", p.stdout)
 
+    def test_unattended_install_refuses_implicit_weak_tls(self) -> None:
+        """A new session with no controlling TTY must not start package work."""
+        env = os.environ.copy()
+        env.pop("ALIREZA_TLS_MODE", None)
+        result = subprocess.run(
+            ["bash", str(SCRIPT), "--install"],
+            cwd=ROOT, env=env, stdin=subprocess.DEVNULL,
+            capture_output=True, text=True, timeout=10,
+            start_new_session=True,
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("No interactive terminal", result.stderr)
+        self.assertIn("Refusing a silent fallback", result.stderr)
+
     def test_no_placeholder_services_in_core(self) -> None:
         core = CORE.read_text()
         self.assertNotIn("sleep infinity", core)
