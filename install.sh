@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# JavaidPanel one-command installation bootstrap (1.1.109-dev)
+# JavaidPanel one-command installation bootstrap (1.1.110-dev)
 # Installation engine: pinned AlirezaPanel 2.8.0 (VPN-UI v1.9.4 + AdGuard Home v0.107.79)
 # GPL-3.0-or-later integration; see LICENSE, SOURCES.md.
 set -Eeuo pipefail
 umask 077
-VERSION=1.1.109-dev
+VERSION=1.1.110-dev
 CORE_URL="https://raw.githubusercontent.com/wisealii/JavaidPanel/main/installer/core.sh"
 CORE_SHA256="c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c"
 CORE_LOCAL="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/installer/core.sh"
 usage(){
 cat <<'HELP'
-JavaidPanel 1.1.109-dev — verified, one-command bootstrap
+JavaidPanel 1.1.110-dev — verified, one-command bootstrap
 
   curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash
 
@@ -62,6 +62,15 @@ case "$mode" in
  *) usage; fail "Unknown option: $mode";;
 esac
 for cmd in sha256sum bash; do command -v "$cmd" >/dev/null 2>&1 || fail "Missing required tool: $cmd"; done
+# A piped/noninteractive installer without explicit access mode used to
+# silently fall back to self-signed IP HTTPS in the pinned engine. Require
+# an intentional selection before any package installation or disk writes.
+# An interactive controlling TTY remains sufficient for the core access wizard.
+if [[ "$mode" == "--install" || "$mode" == install ]]; then
+  if [[ -z "${ALIREZA_TLS_MODE:-}" ]] && ! ( : </dev/tty ) 2>/dev/null; then
+    fail 'No interactive terminal and no ALIREZA_TLS_MODE selected. Refusing a silent fallback to self-signed IP HTTPS. On a real TTY run the one-command installer, or explicitly set ALIREZA_TLS_MODE=domain with ALIREZA_HOST and ALIREZA_ACME_EMAIL in a trusted environment.'
+  fi
+fi
 if [[ "$mode" != "--self-test" && "$EUID" -ne 0 ]]; then
   fail "Root privileges needed. Use: curl -fsSL https://raw.githubusercontent.com/wisealii/JavaidPanel/main/install.sh | sudo bash (or sudo bash install.sh)."
 fi
