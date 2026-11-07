@@ -47,3 +47,12 @@ bash install.sh --self-test
 - fuzz ورودی IP/پورت/توکن نود
 
 [نقشه راه](ROADMAP.md) · [امنیت](../SECURITY.md)
+
+## بررسی انسجام نسخه قبل از انتشار
+
+```bash
+python3 tools/verify-version-archive.py
+python3 -m unittest discover -s tests -p 'test_version_archive.py' -v
+```
+
+[فرایند انتشار و آرشیو](RELEASING.md) · [نسخه‌ها](VERSIONS.md). پرونده‌های قدیمی توضیح تغییرات‌اند؛ برای کد دقیق هر نسخه به Git Tag معتبر نیاز داریم.

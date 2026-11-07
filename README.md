@@ -4,11 +4,11 @@
 
 **مدیریت زیرساخت VPN و اتصال نودهای مستقل**
 
-![Version](https://img.shields.io/badge/version-1.1.111--dev-f04452?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.1.112--dev-f04452?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-development-f6b35e?style=for-the-badge)
 ![CI](https://github.com/wisealii/JavaidPanel/actions/workflows/verify.yml/badge.svg)
 
-[**مستندات**](docs/index.html) · [**دمو**](docs/demo.html) · [**اتصال نود و داشبورد مدیریتی**](docs/NODE_DASHBOARD.md) · [**API نودها**](docs/JAVID_NODE_API.md) · [**راهنمای آسان SSL**](docs/SSL_QUICKSTART.md) · [**وضعیت امکانات**](docs/FEATURES.md)
+[**آرشیو نسخه‌ها**](docs/VERSIONS.md) · [**فهرست تغییرات**](CHANGELOG.md) · [**مستندات**](docs/index.html) · [**دمو**](docs/demo.html) · [**اتصال نود و داشبورد مدیریتی**](docs/NODE_DASHBOARD.md) · [**API نودها**](docs/JAVID_NODE_API.md) · [**راهنمای آسان SSL**](docs/SSL_QUICKSTART.md) · [**وضعیت امکانات**](docs/FEATURES.md)
 
 </div>
 
@@ -16,7 +16,7 @@
 
 ## درباره JavaidPanel
 
-JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.111-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
+JavaidPanel پروژهٔ مدیریت VPN، سرورها و نودهای چندسروری با هویت مستقل JP UI است. در نسخهٔ **1.1.112-dev** یک سرویس مستقل API برای ایجاد نود، صدور توکن ثبت یک‌بارمصرف، عامل گزارش سلامت و ابطال نود اضافه شده است.
 
 **تفاوت مهم:** اتصال API و عامل سلامت نود اکنون قابل اجرا و دارای تست آفلاین است، ولی هنوز به داشبورد اصلی پنل وصل نیست و موتور VPN یا تونل روی نود راه‌اندازی نمی‌کند. تأیید اتصال واقعی دو VPS و استقرار نهایی باقی مانده است.
 
@@ -147,3 +147,7 @@ python3 tools/release-readiness.py
 ## ابزار بررسی واقعیِ پس از نصب
 
 برای VPS آزمایشی، ابزار **خواندنی** `tools/vps-postinstall-smoke.py` وضعیت نصب هسته موجود، مجوز فایل‌ها، SQLite و health probe را بدون افشای رمز بررسی می‌کند. تا آزمایش کامل ورود، SSL، اتصال VPN و بکاپ، آماده بهره‌برداری نیست. [راهنمای آزمون بعد از نصب](docs/VPS_SMOKE_TEST.md).
+
+## نسخه‌ها، آرشیو و شواهد توسعه
+
+هر نسخه از این پس پرونده مستقل شامل امکانات اضافه‌شده، تغییرات واقعی، محدودیت‌های نصب و لینک PRهای ثبت‌شده دارد. [فهرست همه نسخه‌ها](docs/VERSIONS.md) · [آرشیو ماشینی](docs/versions.json) · [استاندارد انتشار و Tag](docs/RELEASING.md). برای نسخه‌های تاریخی که GitHub Tag/Release آن‌ها تأیید نشده، هیچ لینک یا تاریخ جعلی ایجاد نمی‌شود. همه نسخه‌های فعلی توسعه‌ای هستند و هنوز روی VPS واقعی تأیید نشده‌اند.

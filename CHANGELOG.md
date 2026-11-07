@@ -1,3 +1,10 @@
+## 1.1.112-dev — Version catalog, release notes archive and CI governance
+- Add a version-by-version archive with independent Markdown notes for 1.1.102-dev through 1.1.112-dev and a machine-readable metadata catalog.
+- Document each historical version's added features, changes, limitations and known PR links without inventing release timestamps, binary artifacts or GitHub tags.
+- Add CI validation and regression tests requiring consistent versions across VERSION, bootstrap, README, feature catalog, CHANGELOG and per-version release notes.
+- Add release governance instructions explaining verified Git tags and GitHub prereleases, and distinguishing docs archives from immutable source snapshots.
+- **No live VPS test and no historic GitHub Releases/Tags are claimed.**
+
 ## 1.1.111-dev — Existing-core post-install VPS checks
 - Add read-only VPS smoke tool for installed Gateway, VPN/DNS systemd units, private config permissions, SQLite integrity and internal readiness probe.
 - Avoid reading or printing admin credentials/tokens; show manual gates for browser login, external trusted HTTPS, real VPN client and restore.
