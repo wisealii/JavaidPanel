@@ -1,6 +1,6 @@
 {
   "project": "JavaidPanel",
-  "version": "1.1.112-dev",
+  "version": "1.1.113-dev",
   "method": "Source evidence only; offline tests are not live VPS validation.",
   "features": [
     {

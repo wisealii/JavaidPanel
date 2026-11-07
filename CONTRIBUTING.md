@@ -8,3 +8,7 @@
 6. از افزودن اسرار، توکن، رمز عبور و IPهای خصوصی واقعی به PR خودداری کنید.
 
 بازطراحی ظاهر عمومی را از تغییرات موتور VPN و اسکریپت نصب جدا نگه دارید تا بازبینی آسان شود.
+
+## تاریخچه و پرونده‌های نسخه
+
+هنگام افزایش `VERSION`، علاوه بر CHANGELOG و [آرشیو مرکزی](docs/VERSION_ARCHIVE.md)، پرونده `docs/releases/<version>.md`، جدول [VERSIONS.md](docs/VERSIONS.md) و فهرست [versions.json](docs/versions.json) را به‌روزرسانی کنید. پیش از PR از `python3 tools/verify-version-catalog.py` استفاده کنید.
