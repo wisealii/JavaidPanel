@@ -44,6 +44,10 @@ jobs:
         run: |
           python3 tools/vps-postinstall-smoke.py --check
           python3 -m unittest discover -s tests -p 'test_vps_postinstall_smoke.py' -v
+      - name: Validate version history and release archive
+        run: |
+          python3 tools/version-archive.py --check
+          python3 -m unittest discover -s tests -p 'test_version_archive.py' -v
       - name: Validate docs and landing page
         run: |
           python3 - <<'PY'

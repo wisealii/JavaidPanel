@@ -71,4 +71,5 @@ install:["Experimental one-command install · Supported VPS","curl -fsSL https:/
 const label=document.getElementById("commandLabel"),code=document.getElementById("commands"),copy=document.getElementById("copy");
 document.querySelectorAll("[data-mode]").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.setAttribute("aria-pressed","false"));btn.setAttribute("aria-pressed","true");const v=examples[btn.dataset.mode];label.textContent=v[0];code.textContent=v[1];copy.textContent="کپی"}));
 copy.addEventListener("click",async()=>{try{await navigator.clipboard.writeText(code.textContent);copy.textContent="کپی شد ✓"}catch{copy.textContent="کپی در مرورگر مجاز نیست"}});
-</script></body></html>
+</script><section style="max-width:850px;margin:24px auto;padding:20px;border:1px solid #444;border-radius:12px"><h2>نسخه‌ها و تاریخچه JavaidPanel</h2><p>فهرست نسخه‌های توسعه، تغییرات مستند هر نسخه و سیاست انتشار را ببینید. این آرشیو به معنای تأیید نصب VPS یا وجود GitHub Release برای تمام نسخه‌های قدیمی نیست.</p><p><a href="VERSION_ARCHIVE.md">آرشیو نسخه‌ها</a> · <a href="RELEASE_PROCESS.md">قواعد انتشار</a></p></section>
+</body></html>

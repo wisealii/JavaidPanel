@@ -1,3 +1,11 @@
+## 1.1.112-dev — Version archive, release governance and GitHub documentation
+- Features: Add generated historical development version index and per-version documented changes, source-backed by CHANGELOG.
+- Features: Add repeatable version archive tool, release process policy and CI regression tests to prevent version drift.
+- Fixes: Distinguish documented milestones from actual Git tags, GitHub Releases and VPS-verified installable builds.
+- Tests: Validate changelog headings, version synchronization, archive reproducibility and historical duplicate preservation.
+- Compatibility: Documentation and tooling only; no change to pinned installer core, VPN engines or existing user data.
+- Limitations: No GitHub Release or historical tag is claimed; VPS install, ACME SSL, client VPN and backup restore remain unverified.
+
 ## 1.1.111-dev — Existing-core post-install VPS checks
 - Add read-only VPS smoke tool for installed Gateway, VPN/DNS systemd units, private config permissions, SQLite integrity and internal readiness probe.
 - Avoid reading or printing admin credentials/tokens; show manual gates for browser login, external trusted HTTPS, real VPN client and restore.
