@@ -1,3 +1,10 @@
+## 1.1.109-dev — priority gates and safer certificate preflight
+- Treat missing A/AAAA DNS as a hard SSL preflight error (previously warned and continued).
+- Support IPv6-only DNS in the guided preflight and reject unavailable socket inspection instead of incorrectly assuming TCP 80 is unused.
+- Add regression tests for IPv4, IPv6-only, absent DNS, occupied TCP 80, and failed socket inspection.
+- Document prioritized P0/P1/P2/P3 dependency roadmap and explicit acceptance gates.
+- Does not configure webserver TLS or claim a live ACME issuance; no VPS install test yet.
+
 ## 1.1.108-dev — remove misleading production compose
 - Remove the root Docker Compose file that could not build because Dockerfile and Nginx configuration were missing.
 - Archive the old design as a clearly non-executable reference under docs/EXPERIMENTAL_COMPOSE.md.
