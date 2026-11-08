@@ -69,6 +69,16 @@ class DashboardTests(unittest.TestCase):
         status,_,_=self.fetch('/admin/assets/dashboard.js',host='panel.example.org')
         self.assertEqual(status,403)
 
+    def test_spoofed_loopback_host_refused(self):
+        # A remote origin must not become trusted merely by prefixing a
+        # loopback hostname. Preserve legitimate localhost access.
+        for host in ('localhost.evil.example', '127.0.0.1.evil.example',
+                     'localhost@evil.example', '127.0.0.1:9443.evil.example'):
+            with self.subTest(host=host):
+                status, _, _ = self.fetch('/admin/nodes', host=host)
+                self.assertEqual(status, 403)
+        self.assertEqual(self.fetch('/admin/nodes', host='localhost')[0], 200)
+
     def test_path_traversal_refused(self):
         status,_,_=self.fetch('/admin/does-not-exist')
         self.assertEqual(status,404)
