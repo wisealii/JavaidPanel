@@ -62,6 +62,28 @@ class NodeAPIIntegration(unittest.TestCase):
         self.assertEqual(self.req('/api/v1/nodes',token='wrong')[0],401)
         self.assertEqual(self.req('/api/v1/nodes',token=self.admin)[0],200)
 
+    def test_admin_mutations_reject_missing_or_invalid_bearer(self):
+        # Existing admin endpoints must reject unauthenticated writes before
+        # validating payloads or changing the node registry.
+        enrollment = '/api/v1/nodes/enrollments'
+        for token in (None, 'wrong'):
+            with self.subTest(route=enrollment, token=bool(token)):
+                status, _, _ = self.req(
+                    enrollment, {'name': 'DENIED', 'host': '203.0.113.11'},
+                    token=token)
+                self.assertEqual(status, 401)
+        self.assertEqual(self.req('/api/v1/nodes', token=self.admin)[1]['nodes'], [])
+
+        inv = self.issue()
+        revoke = f"/api/v1/nodes/{inv['node_id']}/revoke"
+        for token in (None, 'wrong'):
+            with self.subTest(route=revoke, token=bool(token)):
+                self.assertEqual(self.req(revoke, {}, token=token)[0], 401)
+        nodes = self.req('/api/v1/nodes', token=self.admin)[1]['nodes']
+        self.assertEqual(len(nodes), 1)
+        self.assertNotEqual(nodes[0]['state'], 'revoked')
+        self.assertEqual(self.req(revoke, {}, token=self.admin)[0], 200)
+
     def test_end_to_end_claim_and_heartbeat(self):
         inv=self.issue()
         self.assertEqual(self.req('/api/v1/nodes/claim',{'enrollment_id':inv['enrollment_id'],'token':'X'*44})[0],403)
