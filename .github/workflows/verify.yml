@@ -26,6 +26,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p 'test_node_enrollment.py' -v
       - name: Test authenticated node API and replay-resistant heartbeat
         run: python3 -m unittest discover -s tests -p 'test_node_api.py' -v
+      - name: Regression tests for existing node admin bearer boundary
+        run: python3 -m unittest discover -s tests -p 'test_node_bearer_boundary.py' -v
       - name: Test guided SSL wizard and installer shell syntax
         run: python3 -m unittest discover -s tests -p 'test_ssl_wizard.py' -v
       - name: Test private authenticated node dashboard
