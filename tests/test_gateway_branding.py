@@ -79,6 +79,7 @@ assert.equal(partial.nodeValue, 'customer-alirezapanel');
         self.assertIn('JavaidPanel', embedded('logo.svg'))
         self.assertIn('#f04452', embedded('theme.css'))
         self.assertIn("'profile': 'alirezapanel', 'label': 'JavaidPanel · '", embedded('features.py'))
+        self.assertIn('background:var(--ap-orange-soft)!important;color:var(--ap-text)!important', embedded('nodes.html'))
 
     def test_bootstrap_and_ci_pin_exact_core(self):
         digest = hashlib.sha256((ROOT / 'installer/core.sh').read_bytes()).hexdigest()
