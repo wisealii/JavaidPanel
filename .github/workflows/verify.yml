@@ -17,7 +17,7 @@ jobs:
           bash -n install.sh
           bash -n installer/core.sh
           bash -n node-agent-install.sh
-          printf '%s  %s\n' '27b783369058c49ab2cbeee7de810ae6af3bf4c177adc626c97e8eb495be37e8' 'installer/core.sh' | sha256sum --check
+          printf '%s  %s\n' '0bba6e9cc939364081f31d9e82e636d0f4d5f9044384164297a9a9c9c41a17d7' 'installer/core.sh' | sha256sum --check
       - name: Installer self-test (no system changes)
         run: bash install.sh --self-test
       - name: Test embedded Gateway presentation compatibility

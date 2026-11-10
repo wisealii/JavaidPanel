@@ -1095,7 +1095,7 @@ def check(login=False):
         url = 'http://127.0.0.1:' + str(cfg['port']) + current_base()
     with opener.open(url, timeout=20) as response:
         text = response.read().decode()
-        assert 'alirezapanel' in text and '_alireza/brand.js' in text, 'Brand injection failed'
+        assert '<title>JavaidPanel</title>' in text and '_alireza/brand.js' in text, 'Brand injection failed'
     print('OK public gateway and branded login')
     try:
         opener.open(url + 'dns/control/status', timeout=20)

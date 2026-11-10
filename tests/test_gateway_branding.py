@@ -16,6 +16,16 @@ def embedded(name):
 
 
 class GatewayBrandingTests(unittest.TestCase):
+    def test_installed_health_check_accepts_javaid_login_and_rejects_missing_adapter(self):
+        module = ast.parse(embedded('manage.py'))
+        check = next(n for n in module.body if isinstance(n, ast.FunctionDef) and n.name == 'check')
+        assertion = next(n for n in ast.walk(check) if isinstance(n, ast.Assert))
+        compiled = compile(ast.Module(body=[assertion], type_ignores=[]), '<health assertion>', 'exec')
+        page = '<html><title>JavaidPanel</title><script src="/existing/_alireza/brand.js?v=javaid-1"></script></html>'
+        exec(compiled, {'text': page})
+        with self.assertRaises(AssertionError):
+            exec(compiled, {'text': '<title>JavaidPanel</title>'})
+
     def test_adapter_preserves_user_and_legal_text(self):
         # Execute the real DOM visitor without polling, network or a live panel.
         prefix = embedded('brand.js').split('  function identity() {', 1)[0]
