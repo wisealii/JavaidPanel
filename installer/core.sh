@@ -4538,7 +4538,7 @@ class Features:
             cert = ssl._ssl._test_decode_cert(cert_path)
             choices = obj.setdefault('sslCertificates', [])
             if not any(c.get('profile') == 'alirezapanel' for c in choices):
-                choices.insert(0, {'profile': 'alirezapanel', 'label': 'alirezapanel · '+self.g.config['host'],
+                choices.insert(0, {'profile': 'alirezapanel', 'label': 'JavaidPanel · '+self.g.config['host'],
                     'covers': [self.g.config['host']], 'expired': ssl.cert_time_to_seconds(cert['notAfter']) <= time.time(),
                     'selfSigned': cert.get('issuer') == cert.get('subject'), 'certPath': cert_path, 'keyPath': key_path})
         # Serve supported subscriptions over the SAME TLS gateway as the panel.
