@@ -555,18 +555,18 @@ class Gateway:
             text = text.replace('data-alireza-policy :data-email="client.email">فیلتر / گیمینگ</button>', 'data-alireza-policy :data-email="client.email">فیلتر / گیمینگ</button><button type="button" class="alireza-user-logs" data-alireza-user-logs :data-email="client.email">لاگ اتصال</button>')
         # Don't replace arbitrary JavaScript/JSON identifiers, protocol names,
         # URLs, user configuration or legal attribution. Branding is DOM-only.
-        text = re.sub(r"<title>.*?</title>", "<title>alirezapanel" + (" · DNS" if agh else "") + "</title>",
+        text = re.sub(r"<title>.*?</title>", "<title>JavaidPanel" + (" · DNS" if agh else "") + "</title>",
                       text, count=1, flags=re.I | re.S)
         opts = json.dumps({"base": base, "dns": agh}, ensure_ascii=True).replace("<", "\\u003c")
         # The stylesheet loads after the upstream styles. Mark the document before
         # first paint; don't override saved user theme choices on every visit.
         tag = ('<link rel="stylesheet" href="' + html.escape(base, quote=True) +
-               '_alireza/theme.css?v=2.8.0"><script>document.documentElement.setAttribute("data-alireza-theme","ember");'
+               '_alireza/theme.css?v=javaid-1"><script>document.documentElement.setAttribute("data-alireza-theme","ember");'
                'const apLang=(document.cookie.match(/(?:^|;\\s*)lang=([^;]*)/)||[])[1]||navigator.language||"en-US";'
                'try{document.documentElement.lang=decodeURIComponent(apLang).replace("_","-");}catch(_){document.documentElement.lang="en-US";}'
                'document.documentElement.dir=/^(fa|ar|he)(-|$)/i.test(document.documentElement.lang)?"rtl":"ltr";'
                'window.ALIREZA=' + opts + ';</script><script defer src="' +
-               html.escape(base, quote=True) + '_alireza/brand.js?v=2.8.0"></script>')
+               html.escape(base, quote=True) + '_alireza/brand.js?v=javaid-1"></script>')
         if not agh:
             tag += '<script defer src="' + html.escape(base, quote=True) + '_alireza/nodes.js?v=2.8.0"></script>'
         if not agh:
@@ -594,9 +594,9 @@ class Gateway:
         body = '''<body><div id="message"></div>''' + (sprite.group(0) if sprite else "") + '''
 <div id="app" v-cloak class="bo-shell" :class="themeSwitcher.currentTheme">
   <a-sidebar></a-sidebar><div class="bo-main">
-  <header class="bo-topbar"><div class="bo-topbar-inner"><h1 class="bo-topbar-title">alirezapanel · DNS</h1></div></header>
+  <header class="bo-topbar"><div class="bo-topbar-inner"><h1 class="bo-topbar-title">JavaidPanel · DNS</h1></div></header>
   <main class="bo-content" style="min-width:0">
-  <iframe id="alireza-dns" title="alirezapanel DNS · تنظیمات پیشرفته" src="''' + src + '''" style="width:100%;min-height:480px;border:0" allow="clipboard-write"></iframe>
+  <iframe id="alireza-dns" title="JavaidPanel DNS · تنظیمات پیشرفته" src="''' + src + '''" style="width:100%;min-height:480px;border:0" allow="clipboard-write"></iframe>
   </main></div></div>''' + "\n".join(scripts) + '''
 <script>const app=new Vue({el:'#app',data:{themeSwitcher}});</script></body>'''
         return self.brand_html("<!doctype html><html><head>" + head.group(1) + "</head>" + body + "</html>", base)
@@ -653,9 +653,9 @@ class Gateway:
         if feature_response is not None:
             return feature_response
         if relative == "_alireza/brand.js":
-            return web.FileResponse(self.root / "brand.js", headers={"Cache-Control": "public,max-age=86400,immutable" if request.query.get("v") == "2.8.0" else "no-cache"})
+            return web.FileResponse(self.root / "brand.js", headers={"Cache-Control": "public,max-age=86400,immutable" if request.query.get("v") == "javaid-1" else "no-cache"})
         if relative == "_alireza/theme.css":
-            return web.FileResponse(self.root / "theme.css", headers={"Cache-Control": "public,max-age=86400,immutable" if request.query.get("v") == "2.8.0" else "no-cache"})
+            return web.FileResponse(self.root / "theme.css", headers={"Cache-Control": "public,max-age=86400,immutable" if request.query.get("v") == "javaid-1" else "no-cache"})
         if relative == "_alireza/logo.svg":
             return web.FileResponse(self.root / "logo.svg", headers={"Cache-Control": "public,max-age=86400"})
         if relative == "_alireza/session":
@@ -671,7 +671,7 @@ class Gateway:
                 document=self.dns_shell(await response.text(),base)
             document=re.sub(r'<iframe\b[^>]*id="alireza-dns".*?</iframe>',
                 '<section id="alireza-content" aria-live="polite"></section>',document,flags=re.S)
-            document=document.replace('alirezapanel · DNS','alirezapanel · Content')
+            document=document.replace('JavaidPanel · DNS','JavaidPanel · Content')
             return web.Response(text=document,content_type='text/html',headers={'Cache-Control':'no-store'})
         if relative in ("panel/dns", "panel/dns/"):
             if not await self.is_admin(request):
@@ -689,8 +689,8 @@ class Gateway:
             if not await self.is_admin(request):
                 if request.headers.get("Sec-Fetch-Dest") in ("iframe", "document"):
                     return web.Response(status=401, content_type="text/html", text=
-                        '<!doctype html><title>alirezapanel</title><p>Session expired or DNS access denied.</p><a target="_top" href="' +
-                        html.escape(base, quote=True) + '">Sign in to alirezapanel</a>')
+                        '<!doctype html><title>JavaidPanel</title><p>Session expired or DNS access denied.</p><a target="_top" href="' +
+                        html.escape(base, quote=True) + '">Sign in to JavaidPanel</a>')
                 raise web.HTTPUnauthorized(text="Super-admin session required.")
             if relative == "dns":
                 raise web.HTTPFound(base + "dns/")
@@ -1095,7 +1095,7 @@ def check(login=False):
         url = 'http://127.0.0.1:' + str(cfg['port']) + current_base()
     with opener.open(url, timeout=20) as response:
         text = response.read().decode()
-        assert 'alirezapanel' in text and '_alireza/brand.js' in text, 'Brand injection failed'
+        assert '<title>JavaidPanel</title>' in text and '_alireza/brand.js' in text, 'Brand injection failed'
     print('OK public gateway and branded login')
     try:
         opener.open(url + 'dns/control/status', timeout=20)
@@ -1151,16 +1151,16 @@ if __name__ == '__main__':
 ALIREZAPANEL_EMBEDDED_1_EOF
 
 cat > "$STAGE/brand.js" <<'ALIREZAPANEL_EMBEDDED_2_EOF'
-/* alirezapanel presentation adapter. No upstream API/config rewriting. */
+/* JavaidPanel presentation adapter. No upstream API/config rewriting. */
 (() => {
   'use strict';
   const config = window.ALIREZA;
   if (!config) return;
   const base = config.base;
-  const brand = 'alirezapanel';
+  const brand = 'JavaidPanel';
   const names = /AdGuard\s*Home|VPN[\s-]?UI|3X-UI/gi;
-  const ignored = 'script,style,textarea,input,pre,code,[contenteditable="true"],.logs__table,.query-log,.ace_editor';
-  const replace = (value) => value.replace(names, brand);
+  const ignored = 'script,style,textarea,input,pre,code,[contenteditable="true"],.logs__table,.query-log,.ace_editor,.ant-table,footer,.license,[data-license],a[href*="github.com"]';
+  const replace = (value) => value.replace(names, brand).replace(/^(\s*\[?)alirezapanel(\]?\s*)$/i, '$1' + brand + '$2');
   const seen = new WeakSet();
   function visit(root) {
     if (root.nodeType === Node.TEXT_NODE) {
@@ -1183,18 +1183,18 @@ cat > "$STAGE/brand.js" <<'ALIREZAPANEL_EMBEDDED_2_EOF'
     const title = brand + (config.dns ? ' · DNS' : '');
     if (document.title !== title) document.title = title;
     for (const icon of document.querySelectorAll('link[rel~="icon"]')) {
-      const target = base + '_alireza/logo.svg?v=1.1.0';
+      const target = base + '_alireza/logo.svg?v=javaid-1';
       if (icon.getAttribute('href') !== target) icon.setAttribute('href', target);
     }
     if (!document.querySelector('link[rel~="icon"]')) {
       const link = document.createElement('link'); link.rel = 'icon';
-      link.href = base + '_alireza/logo.svg?v=1.1.0'; document.head.appendChild(link);
+      link.href = base + '_alireza/logo.svg?v=javaid-1'; document.head.appendChild(link);
     }
     for (const logo of document.querySelectorAll('.bo-rail-brand img,.login-logo img,.header-brand-img,img[alt="alirezapanel"]')) {
       if (seen.has(logo)) continue;
       seen.add(logo);
       if (logo.tagName.toLowerCase() === 'img') {
-        logo.src = base + '_alireza/logo.svg?v=1.1.0'; logo.alt = brand;
+        logo.src = base + '_alireza/logo.svg?v=javaid-1'; logo.alt = brand;
       } else {
         // Keep React's own SVG node, replacing only its visual mark via CSS.
         logo.style.display = 'none';
@@ -1245,15 +1245,15 @@ cat > "$STAGE/brand.js" <<'ALIREZAPANEL_EMBEDDED_2_EOF'
 ALIREZAPANEL_EMBEDDED_2_EOF
 
 cat > "$STAGE/theme.css" <<'ALIREZAPANEL_EMBEDDED_3_EOF'
-/* alirezapanel / Ember. Presentation only; no protocol or API changes.
+/* JavaidPanel / Ember compatibility selectors. Presentation only; no protocol or API changes.
    No remote fonts, canvas, blur filters or continuous animation. */
 html[data-alireza-theme="ember"],
 html[data-alireza-theme="ember"] body,
 html[data-alireza-theme="ember"][data-theme="ultra-dark"] body.dark {
   --ap-bg:#080b12; --ap-surface:#0f1420; --ap-raised:#171e2d;
   --ap-border:#273248; --ap-text:#f4f7ff; --ap-muted:#9da9bd;
-  --ap-orange:#59d7ff; --ap-orange-hover:#8be5ff; --ap-orange-soft:#102d3d;
-  --ap-on-orange:#03131b; --ap-ring:rgba(89,215,255,.24);
+  --ap-orange:#f04452; --ap-orange-hover:#ff6b76; --ap-orange-soft:#361820;
+  --ap-on-orange:#1b0710; --ap-ring:rgba(240,68,82,.24);
   --bg:var(--ap-bg); --surface:var(--ap-surface); --surface-2:var(--ap-raised);
   --border:var(--ap-border); --border-strong:#49413a;
   --text:var(--ap-text); --text-2:var(--ap-muted); --text-3:#a9a39d;
@@ -1562,7 +1562,7 @@ html[data-alireza-theme="ember"] body.light,
 html[data-alireza-theme="ember"][data-theme="light"],
 html[data-alireza-theme="ember"][data-theme="light"] body{
  --ap-bg:#f2f6fc;--ap-surface:#fff;--ap-raised:#edf2fa;--ap-border:#d7e2f1;--ap-text:#14233c;--ap-muted:#576b89;
- --ap-orange:#1764b7;--ap-orange-hover:#154d88;--ap-orange-soft:#e5f1ff;--ap-on-orange:#fff;--ap-ring:#1764b720;
+ --ap-orange:#b92335;--ap-orange-hover:#971b2b;--ap-orange-soft:#ffedf0;--ap-on-orange:#fff;--ap-ring:#b9233520;
  --border-strong:#bdcfe5;--text-3:#7184a1;color-scheme:light;
 }
 html[data-alireza-theme="ember"] .bo-main{
@@ -1626,7 +1626,7 @@ html[data-alireza-theme="ember"] body{--font-sans:system-ui,-apple-system,BlinkM
 ALIREZAPANEL_EMBEDDED_3_EOF
 
 cat > "$STAGE/logo.svg" <<'ALIREZAPANEL_EMBEDDED_4_EOF'
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><rect width="48" height="48" rx="14" fill="#ff963f"/><path d="M24 8 38 14v10c0 8-7 13-14 16C17 37 10 32 10 24V14Z" fill="#211208"/><path d="m17 29 7-14 7 14m-11-5h8" fill="none" stroke="#ffb170" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="JavaidPanel"><title>JavaidPanel</title><rect width="48" height="48" rx="14" fill="#f04452"/><path d="M10 27v3a5 5 0 0 0 10 0V15M27 35V15h6a6 6 0 0 1 0 12h-6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 ALIREZAPANEL_EMBEDDED_4_EOF
 
 cat > "$STAGE/README.txt" <<'ALIREZAPANEL_EMBEDDED_5_EOF'
@@ -2753,7 +2753,7 @@ class Nodes:
                 'Cookie':request.headers.get('Cookie',''),'Host':request.host,'Accept-Encoding':'identity'},allow_redirects=False) as response:
                 if response.status!=200: raise web.HTTPBadGateway()
                 page=self.g.dns_shell((await bounded(response)).decode(),base)
-            page=page.replace('alirezapanel · DNS','alirezapanel · Nodes').replace('id="alireza-dns"','id="alireza-nodes"').replace('title="alirezapanel DNS · تنظیمات پیشرفته"','title="alirezapanel · Nodes"')
+            page=page.replace('JavaidPanel · DNS','JavaidPanel · Nodes').replace('id="alireza-dns"','id="alireza-nodes"').replace('title="JavaidPanel DNS · تنظیمات پیشرفته"','title="JavaidPanel · Nodes"')
             page=page.replace('src="'+html.escape(base+'dns/',quote=True)+'"','src="'+html.escape(base+'_alireza/nodes-ui',quote=True)+'"')
             return web.Response(text=page,content_type='text/html',headers={'Cache-Control':'no-store'})
         if tail=='_alireza/nodes-ui':
@@ -3195,12 +3195,13 @@ NODE_EMBEDDED_JS_EOF
 
 cat > "$STAGE/nodes.html" <<'NODE_EMBEDDED_HTML_EOF'
 <!doctype html>
-<html lang="fa" dir="rtl" data-alireza-theme="ember"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>alirezapanel · Nodes</title>
-<link rel="stylesheet" href="__BASE_ATTR___alireza/theme.css?v=2.8.0"><style>
+<html lang="fa" dir="rtl" data-alireza-theme="ember"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>JavaidPanel · Nodes</title>
+<link rel="stylesheet" href="__BASE_ATTR___alireza/theme.css?v=javaid-1"><style>
 @font-face{font-family:Vazirmatn;font-style:normal;font-weight:400;font-display:swap;src:url("__BASE_ATTR__assets/Vazirmatn-UI-NL-Regular.woff2") format("woff2")}
 body{font-family:system-ui,Vazirmatn,sans-serif!important}
 *{box-sizing:border-box}body{margin:0;background:#0e0e11;color:#f5f2ef;font:14px system-ui,sans-serif;line-height:1.9;padding:26px}main{max-width:1160px;margin:auto}h1,h2,p{margin-top:0}h1{font-size:27px;margin-bottom:3px}h2{font-size:18px}.muted{color:#b7b2ad}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:#18181c;border:1px solid #303037;border-radius:16px;padding:22px;margin:18px 0}.card .card{margin:10px 0;padding:15px}button,a.btn{background:#ff963f;color:#211208;border:1px solid #ff963f;border-radius:9px;padding:9px 15px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}button.secondary{background:#242126;color:#f5f2ef;border-color:#494049}button.danger{background:#372023;color:#ffb0b0;border-color:#603034}button:disabled{opacity:.5;cursor:wait}input,textarea,select{display:block;width:100%;background:#101013;color:#f5f2ef;border:1px solid #494149;border-radius:9px;padding:11px;font:inherit;margin:6px 0 14px}textarea{min-height:110px;resize:vertical;direction:ltr;font:12px monospace}input.code{direction:ltr;font:13px monospace}label{display:block}.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.row>*{margin-block:0}#notice{position:sticky;top:0;z-index:2;padding:12px 16px;background:#34271d;border:1px solid #795036;border-radius:9px;white-space:pre-wrap}#notice:empty{display:none}.nodehead{display:flex;justify-content:space-between;gap:12px;align-items:center}.endpoint{direction:ltr;text-align:right;overflow-wrap:anywhere}.source{display:grid;grid-template-columns:1fr 1.5fr auto;gap:10px;align-items:center}.source select{margin:0}.badge{color:#ffb170;font-size:12px}summary{cursor:pointer;color:#ffb170}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #ffb170;outline-offset:3px}@media(max-width:700px){body{padding:14px}.grid{grid-template-columns:1fr}.source{grid-template-columns:1fr}.nodehead{align-items:start;flex-direction:column}}
 a.btn{color:#211208!important}a.btn:hover{color:#211208!important;background:#ffb170}
+body{background:var(--ap-bg);color:var(--ap-text)}.card{background:var(--ap-surface);border-color:var(--ap-border)}button,a.btn{border-color:var(--ap-border);background:var(--ap-orange-soft)!important;color:var(--ap-text)!important}button.secondary{background:var(--ap-raised);color:var(--ap-text)!important}.muted{color:var(--ap-muted)}input,textarea,select{background:var(--ap-bg);color:var(--ap-text);border-color:var(--ap-border)}.badge,summary{color:var(--ap-orange)}a.btn:hover{background:var(--ap-orange-hover)}
 </style></head><body><main>
 <div id="notice" role="status" aria-live="polite"></div>
 <h1 data-ap-en="Nodes and locations">نودها و لوکیشن‌ها</h1><p class="muted" data-ap-en="Manage your servers here. Each server keeps its own inbounds and settings.">سرورهایت را از همین پنل مدیریت کن. هر سرور، اینباندها و تنظیمات مستقل خودش را دارد.</p>
@@ -3457,9 +3458,9 @@ def page(title, sources, links, downloads=(), protocols=None, configs=()):
     files = ''.join('<div class="native-file"><div><span class="native-dot"></span><span><strong>'+esc(name)+'</strong><small class="proto">'+esc(proto(name))+'</small></span></div><div class="native-actions"><button type="button" class="ghost" data-copy="'+esc(url,quote=True)+'">کپی لینک</button><a class="file" href="'+esc(url,quote=True)+'" download="'+esc(name,quote=True)+'">دریافت فایل</a></div></div>' for name,url in downloads)
     config_rows = ''.join('<div class="native-file"><div><span class="native-dot"></span><span><strong>'+esc(name)+'</strong><small class="proto">'+esc(kind)+'</small></span></div><div class="native-actions"><button type="button" class="ghost" data-copy-config="'+esc(value,quote=True)+'">کپی کانفیگ</button></div></div>' for name,value,kind in configs)
     config_html = '<section class="links"><div class="section-head"><div><h2>کانفیگ‌های قابل کپی</h2><p class="muted">هر URI واقعی که vpn-ui برای این شناسه منتشر کرده اینجا جداگانه نمایش داده می‌شود؛ هیچ پارامتر Reality/transport حدس زده نمی‌شود.</p></div><span class="pill">'+str(len(configs))+' URI</span></div>'+config_rows+'</section>' if configs else ''
-    return '''<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>'''+esc(title)+''' · alirezapanel</title><style>
+    return '''<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>'''+esc(title)+''' · JavaidPanel</title><style>
 :root{color-scheme:dark;--bg:#080b12;--surface:#0f1420;--line:#273248;--muted:#9da9bd;--accent:#59d7ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% 0,#14344f88,transparent 46%),radial-gradient(ellipse at 10% 0,#251f5266,transparent 40%),var(--bg);color:#f6f2ef;font:15px/1.8 system-ui,sans-serif}main{max-width:1050px;margin:auto;padding:36px 24px 60px}header{display:flex;justify-content:space-between;gap:20px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:22px}.brand{font-weight:700;letter-spacing:.5px;color:var(--accent)}.eyebrow{font-size:12px;color:var(--muted);margin:0}h1{font-size:clamp(24px,4vw,36px);margin:5px 0 0;overflow-wrap:anywhere}h2{font-size:17px;margin:0}.muted,dt{color:var(--muted)}.intro{margin:24px 0}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));gap:18px}.card,.links{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.pill{font-size:11px;background:#59d7ff15;color:var(--accent);padding:3px 10px;border-radius:20px}.usage{display:flex;align-items:center;gap:26px;margin:22px 0}.usage p{font-size:12px;margin:3px 0}.big{font-size:28px;font-weight:650;letter-spacing:-1px}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.metrics>div{padding:10px;border:1px solid var(--line);border-radius:12px;background:#080b1266;min-width:0}.metrics small{display:block;color:var(--muted);font-size:10px}.metrics strong{display:block;overflow:hidden;text-overflow:ellipsis;font-size:12px}.ring{position:relative;width:128px;height:128px;flex-shrink:0}.ring svg{width:100%;height:100%;transform:rotate(-90deg)}circle{fill:none;stroke-width:8}.track{stroke:#30333e}.fill{stroke:var(--accent);stroke-linecap:round}.ring strong{position:absolute;inset:0;display:grid;place-content:center;font-size:23px;direction:ltr}.split{height:6px;background:#849bec;border-radius:8px;overflow:hidden;direction:ltr}.split span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#6ca8ff)}.chart-label{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:11px;color:var(--muted)}.chart-label strong{color:#f6f2ef}.remain{height:6px;margin-top:6px;background:#252b38;border-radius:8px;overflow:hidden;direction:ltr}.remain span{display:block;height:100%;background:linear-gradient(90deg,#6ca8ff,var(--accent))}dl{margin-bottom:0}dl>div{display:flex;justify-content:space-between;gap:16px;padding:9px 0;border-bottom:1px solid #30323c80}dl>div:last-child{border:0}dd{margin:0;text-align:end;font-variant-numeric:tabular-nums}.links{margin-top:22px}.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px}.section-head p{margin:5px 0 0}.protocol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:9px;margin-top:16px}.protocol-card{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);background:#080b1266;border-radius:12px;padding:11px 12px}.protocol-card span{font-size:12px;color:var(--muted)}.protocol-card strong{font-size:17px;color:var(--accent)}.link-row{display:flex;gap:12px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}.link-row:last-child{border:0}.link-row>div{flex:1;min-width:0}.link-row strong{display:block;font-size:14px}.link-row>div>a{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;color:var(--muted);max-width:100%}a{color:var(--accent);text-decoration:none}button,.download,.file{font:inherit;font-size:13px;border:1px solid #35506a;border-radius:10px;padding:8px 13px;background:transparent;color:var(--accent);cursor:pointer;white-space:nowrap}button{background:var(--accent);color:#03131b;font-weight:650}a:focus-visible,button:focus-visible{outline:2px solid #c8d4ff;outline-offset:4px}.file{display:inline-block;margin:0;white-space:normal;overflow-wrap:anywhere}.native-file{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.native-file>div{min-width:0;display:flex;align-items:center;gap:8px}.native-file strong{overflow-wrap:anywhere}.proto{display:inline-block;margin-inline-start:8px;color:var(--muted);font-size:10px;border:1px solid var(--line);border-radius:999px;padding:0 7px}.native-actions{display:flex;gap:7px;align-items:center}.ghost{background:transparent;color:var(--accent);font-weight:500}.native-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);flex:none}footer{margin-top:24px;font-size:12px;color:var(--muted)}#feedback{min-height:24px;color:var(--accent)}@media(max-width:540px){main{padding:22px 14px}.card,.links{padding:18px}.link-row{flex-wrap:wrap}.link-row>div{flex-basis:100%}.usage{gap:18px}.big{font-size:25px}.metrics{grid-template-columns:1fr}.native-file{align-items:flex-start;flex-direction:column}.native-actions{width:100%;flex-wrap:wrap}header{align-items:start;flex-direction:column;gap:10px}}@media(prefers-color-scheme:light){:root{color-scheme:light;--bg:#f6f3ef;--surface:#fff;--line:#e4dfd8;--muted:#686672;--accent:#a4541c}body{color:#28252c}.track{stroke:#ebe5df}.fill{stroke:#da8445}button{background:#f0a86d}.pill{background:#a4541c10}}
-</style></head><body><main><header><div><p class="eyebrow">اشتراک شخصی</p><h1>'''+esc(title)+'''</h1></div><span class="brand" dir="ltr">alirezapanel</span></header><p class="intro muted">حجم، انقضا و همه مسیرهای اتصال در یک نگاه؛ لینک اشتراک با یک لمس مستقیماً کپی می‌شود.</p><div class="cards">'''+cards+'''</div>'''+inventory_html+'''<section class="links"><h2>لینک اشتراک و کانفیگ‌ها</h2><p class="muted">فرمت مناسب برنامه را مستقیم کپی کنید. فایل‌های مستقل WireGuard/OpenVPN/AmneziaWG و سایر خروجی‌های بومی، در صورت فعال بودن پروتکل، پایین همین بخش نمایش داده می‌شوند.</p>'''+actions+files+'''<p id="feedback" role="status" aria-live="polite"></p></section>'''+config_html+'''<footer>این لینک خصوصی است؛ آن را فقط در اختیار صاحب اشتراک قرار دهید.<br>نمودارها مصرف تجمیعی فعلی سرور را نشان می‌دهند؛ آمار با بازکردن دوبارهٔ صفحه تازه می‌شود. سهمیهٔ هر منبع مستقل است.</footer></main><script>
+</style></head><body><main><header><div><p class="eyebrow">اشتراک شخصی</p><h1>'''+esc(title)+'''</h1></div><span class="brand" dir="ltr">JavaidPanel</span></header><p class="intro muted">حجم، انقضا و همه مسیرهای اتصال در یک نگاه؛ لینک اشتراک با یک لمس مستقیماً کپی می‌شود.</p><div class="cards">'''+cards+'''</div>'''+inventory_html+'''<section class="links"><h2>لینک اشتراک و کانفیگ‌ها</h2><p class="muted">فرمت مناسب برنامه را مستقیم کپی کنید. فایل‌های مستقل WireGuard/OpenVPN/AmneziaWG و سایر خروجی‌های بومی، در صورت فعال بودن پروتکل، پایین همین بخش نمایش داده می‌شوند.</p>'''+actions+files+'''<p id="feedback" role="status" aria-live="polite"></p></section>'''+config_html+'''<footer>این لینک خصوصی است؛ آن را فقط در اختیار صاحب اشتراک قرار دهید.<br>نمودارها مصرف تجمیعی فعلی سرور را نشان می‌دهند؛ آمار با بازکردن دوبارهٔ صفحه تازه می‌شود. سهمیهٔ هر منبع مستقل است.</footer></main><script>
 document.addEventListener('click',async function(e){const b=e.target.closest('[data-copy],[data-copy-config]');if(!b)return;const raw=b.dataset.copyConfig;const value=raw!==undefined?raw:new URL(b.dataset.copy,location.href).href;const out=document.getElementById('feedback');try{if(navigator.clipboard&&isSecureContext)await navigator.clipboard.writeText(value);else{const t=document.createElement('textarea');t.value=value;document.body.append(t);t.select();const ok=document.execCommand('copy');t.remove();if(!ok)throw Error();}out.textContent=raw!==undefined?'✓ کانفیگ مستقیماً کپی شد.':'✓ لینک مستقیماً کپی شد.';}catch(_){out.textContent='مرورگر اجازه کپی خودکار نداد؛ مقدار را دستی کپی کنید.';}});
 </script></body></html>'''
 NODE_EMBEDDED_SUBSCRIBER_PY_EOF
@@ -4537,7 +4538,7 @@ class Features:
             cert = ssl._ssl._test_decode_cert(cert_path)
             choices = obj.setdefault('sslCertificates', [])
             if not any(c.get('profile') == 'alirezapanel' for c in choices):
-                choices.insert(0, {'profile': 'alirezapanel', 'label': 'alirezapanel · '+self.g.config['host'],
+                choices.insert(0, {'profile': 'alirezapanel', 'label': 'JavaidPanel · '+self.g.config['host'],
                     'covers': [self.g.config['host']], 'expired': ssl.cert_time_to_seconds(cert['notAfter']) <= time.time(),
                     'selfSigned': cert.get('issuer') == cert.get('subject'), 'certPath': cert_path, 'keyPath': key_path})
         # Serve supported subscriptions over the SAME TLS gateway as the panel.

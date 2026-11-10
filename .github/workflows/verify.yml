@@ -17,9 +17,11 @@ jobs:
           bash -n install.sh
           bash -n installer/core.sh
           bash -n node-agent-install.sh
-          printf '%s  %s\n' 'c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c' 'installer/core.sh' | sha256sum --check
+          printf '%s  %s\n' '1cab9105e143c7553f5e5935b27e9b99cc7b70448b3bec8c31e8d86f73a37f09' 'installer/core.sh' | sha256sum --check
       - name: Installer self-test (no system changes)
         run: bash install.sh --self-test
+      - name: Test embedded Gateway presentation compatibility
+        run: python3 -m unittest discover -s tests -p 'test_gateway_branding.py' -v
       - name: Run offline bootstrap regression tests
         run: python3 -m unittest discover -s tests -p 'test_bootstrap.py' -v
       - name: Unit tests for offline Javid Node enrollment core

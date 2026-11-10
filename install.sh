@@ -6,7 +6,7 @@ set -Eeuo pipefail
 umask 077
 VERSION=1.1.113-dev
 CORE_URL="https://raw.githubusercontent.com/wisealii/JavaidPanel/main/installer/core.sh"
-CORE_SHA256="c24354d80b223023541c388a6d493be893660c6798e98e5d70725fcb18ab174c"
+CORE_SHA256="1cab9105e143c7553f5e5935b27e9b99cc7b70448b3bec8c31e8d86f73a37f09"
 CORE_LOCAL="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/installer/core.sh"
 usage(){
 cat <<'HELP'
